@@ -1,0 +1,101 @@
+/* ========== RESPONSIVE OVERRIDES ========== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 15px;
+    }
+
+    header .rectangle {
+        width: 100vw;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+        margin-right: 0;
+    }
+
+    .contact-phone,
+    .contact-email,
+    .contact-map {
+        justify-content: center;
+    }
+
+    .navbar {
+        padding: 10px;
+    }
+
+    .hamburger {
+        display: block !important;
+        cursor: pointer;
+        color: white;
+        font-size: 24px;
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .navbar-container {
+        display: none !important;
+        flex-direction: column;
+        width: 100%;
+        background: #134CBC;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        height: auto;
+    }
+
+    .navbar-container.mobile-active {
+        display: flex !important;
+    }
+
+    .navbar ul li a {
+        font-size: 16px;
+        padding: 10px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+    }
+
+    .navbar ul li ul.dropdown {
+        position: static;
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+        box-shadow: none;
+        transform: none;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar ul li:hover ul.dropdown {
+        display: block;
+    }
+
+    /* Login & Hero responsive */
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .login-options {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .login-card {
+        height: auto;
+    }
+
+    /* Center text image if needed */
+    #text-img {
+        width: 200px;
+        height: auto;
+    }
+}
+
+.hamburger {
+    display: none;
+}
