@@ -7,9 +7,9 @@ export default function AdminNav() {
 
     const isActive = (paths) => {
         if (Array.isArray(paths)) {
-            return paths.some(p => url.includes(p)) ? 'active' : '';
+            return paths.some(p => p === '/' ? url === '/' : url.includes(p)) ? 'active' : '';
         }
-        return url.includes(paths) ? 'active' : '';
+        return paths === '/' ? (url === '/' ? 'active' : '') : (url.includes(paths) ? 'active' : '');
     };
 
     const handleLogout = (e) => {
