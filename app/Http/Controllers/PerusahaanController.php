@@ -11,7 +11,7 @@ class PerusahaanController extends Controller
     // Public
     public function index()
     {
-        $perusahaan = Perusahaan::orderBy('nama')->get();
+        $perusahaan = Perusahaan::orderBy('nama_perusahaan')->get();
         return Inertia::render('Perusahaan/Index', [
             'perusahaan' => $perusahaan,
         ]);
@@ -20,7 +20,7 @@ class PerusahaanController extends Controller
     // Admin CRUD
     public function crudIndex()
     {
-        $perusahaan = Perusahaan::orderBy('nama')->get();
+        $perusahaan = Perusahaan::orderBy('nama_perusahaan')->get();
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
         ]);
@@ -52,7 +52,7 @@ class PerusahaanController extends Controller
     {
         $perusahaan = Perusahaan::findOrFail($id);
         $perusahaan->update($request->only([
-            'nama', 'alamat', 'deskripsi_perusahaan', 'logo', 'website',
+            'nama_perusahaan', 'alamat', 'deskripsi_perusahaan', 'logo', 'website',
             'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
         ]));
 
