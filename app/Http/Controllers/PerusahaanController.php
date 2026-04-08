@@ -29,11 +29,13 @@ class PerusahaanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_perusahaan' => 'required|string|max:255',
+            'jenis_perusahaan' => 'nullable|in:UMKM,MOU,Perseroan,Startup',
+            'skala' => 'nullable|in:Lokal,Provinsi,Nasional,Internasional',
         ]);
 
         Perusahaan::create($request->only([
-            'nama', 'alamat', 'deskripsi_perusahaan', 'logo', 'website',
+            'nama_perusahaan', 'alamat', 'deskripsi', 'logo', 'website',
             'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
         ]));
 
@@ -52,7 +54,7 @@ class PerusahaanController extends Controller
     {
         $perusahaan = Perusahaan::findOrFail($id);
         $perusahaan->update($request->only([
-            'nama_perusahaan', 'alamat', 'deskripsi_perusahaan', 'logo', 'website',
+            'nama_perusahaan', 'alamat', 'deskripsi', 'logo', 'website',
             'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
         ]));
 
