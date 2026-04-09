@@ -1,4 +1,4 @@
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage, router } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
 
 export default function ProfilIndex({ alumni }) {
@@ -21,6 +21,13 @@ export default function ProfilIndex({ alumni }) {
     const submit = (e) => {
         e.preventDefault();
         post('/profil', { forceFormData: true });
+    };
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        if (confirm('Apakah Anda yakin ingin keluar?')) {
+            router.post('/logout');
+        }
     };
 
     return (
@@ -71,7 +78,10 @@ export default function ProfilIndex({ alumni }) {
                             <label>Foto Profil</label>
                             <input type="file" accept="image/*" onChange={e => setData('gambar', e.target.files[0])} />
                         </div>
-                        <button type="submit" className="btn-save" disabled={processing}>Simpan Perubahan</button>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <button type="submit" className="btn-save" disabled={processing}>Simpan Perubahan</button>
+                            <button type="button" className="btn-logout" onClick={handleLogout} style={{ backgroundColor: '#dc3545', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px' }}>Keluar</button>
+                        </div>
                     </form>
                 </div>
             </div>

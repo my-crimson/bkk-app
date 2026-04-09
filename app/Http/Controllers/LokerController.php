@@ -44,8 +44,8 @@ class LokerController extends Controller
         ]);
     }
 
-    // Public: kualifikasi
-    public function kualifikasi($id)
+    // Public: persyaratan
+    public function persyaratan($id)
     {
         $lowker = Lowker::with(['perusahaan', 'jurusan'])->findOrFail($id);
         return Inertia::render('Loker/Persyaratan', [
@@ -96,19 +96,25 @@ class LokerController extends Controller
             'judul_lowker' => 'required|string|max:255',
             'id_perusahaan' => 'required|exists:perusahaan,id_perusahaan',
             'id_jurusan' => 'required|exists:jurusan,id_jurusan',
+            'email' => 'required|email',
         ]);
 
         Lowker::create([
             'judul_lowker' => $request->judul_lowker,
-            'deskripsi_lowker' => $request->deskripsi_lowker,
-            'kualifikasi' => $request->kualifikasi,
+            'deskripsi_lowker' => $request->deskripsi_lowker ?? $request->deskripsi,
+            'kualifikasi' => $request->kualifikasi ?? $request->persyaratan,
             'gaji' => $request->gaji,
             'lokasi' => $request->lokasi,
             'tgl_posting' => $request->tgl_posting ?? now()->toDateString(),
             'tgl_ditutup' => $request->tgl_ditutup,
             'id_perusahaan' => $request->id_perusahaan,
             'id_jurusan' => $request->id_jurusan,
-            'status' => $request->status ?? 'aktif',
+            'email' => $request->email,
+            'pendidikan' => $request->pendidikan,
+            'tipe_pekerjaan' => $request->tipe_pekerjaan,
+            'keahlian' => $request->keahlian,
+            'waktu_bekerja' => $request->waktu_bekerja,
+            'tunjangan' => $request->tunjangan,
         ]);
 
         return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil ditambahkan!');
@@ -130,11 +136,31 @@ class LokerController extends Controller
     // Admin: update
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'judul_lowker' => 'required|string|max:255',
+            'id_perusahaan' => 'required|exists:perusahaan,id_perusahaan',
+            'id_jurusan' => 'required|exists:jurusan,id_jurusan',
+            'email' => 'required|email',
+        ]);
+
         $lowker = Lowker::findOrFail($id);
-        $lowker->update($request->only([
-            'judul_lowker', 'deskripsi_lowker', 'kualifikasi', 'gaji', 'lokasi',
-            'tgl_posting', 'tgl_ditutup', 'id_perusahaan', 'id_jurusan', 'status',
-        ]));
+        $lowker->update([
+            'judul_lowker' => $request->judul_lowker,
+            'deskripsi_lowker' => $request->deskripsi_lowker ?? $request->deskripsi,
+            'kualifikasi' => $request->kualifikasi ?? $request->persyaratan,
+            'gaji' => $request->gaji,
+            'lokasi' => $request->lokasi,
+            'tgl_posting' => $request->tgl_posting,
+            'tgl_ditutup' => $request->tgl_ditutup,
+            'id_perusahaan' => $request->id_perusahaan,
+            'id_jurusan' => $request->id_jurusan,
+            'email' => $request->email,
+            'pendidikan' => $request->pendidikan,
+            'tipe_pekerjaan' => $request->tipe_pekerjaan,
+            'keahlian' => $request->keahlian,
+            'waktu_bekerja' => $request->waktu_bekerja,
+            'tunjangan' => $request->tunjangan,
+        ]);
 
         return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil diperbarui!');
     }

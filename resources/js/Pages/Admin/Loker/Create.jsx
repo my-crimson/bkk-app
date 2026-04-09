@@ -5,6 +5,7 @@ export default function AdminLokerCreate({ perusahaan, jurusan }) {
     const { data, setData, post, processing } = useForm({
         judul_lowker: '', deskripsi_lowker: '', kualifikasi: '', gaji: '', lokasi: '',
         tgl_posting: '', tgl_ditutup: '', id_perusahaan: '', id_jurusan: '', status: 'aktif',
+        email: '', pendidikan: '', tipe_pekerjaan: '', keahlian: '', waktu_bekerja: '', tunjangan: '',
     });
 
     const submit = (e) => { e.preventDefault(); post('/admin/loker'); };
@@ -25,6 +26,12 @@ export default function AdminLokerCreate({ perusahaan, jurusan }) {
                     <div className="form-group"><label>Lokasi</label><input value={data.lokasi} onChange={e => setData('lokasi', e.target.value)} /></div>
                     <div className="form-group"><label>Tanggal Posting</label><input type="date" value={data.tgl_posting} onChange={e => setData('tgl_posting', e.target.value)} /></div>
                     <div className="form-group"><label>Tanggal Ditutup</label><input type="date" value={data.tgl_ditutup} onChange={e => setData('tgl_ditutup', e.target.value)} /></div>
+                    <div className="form-group"><label>Email Kontak</label><input type="email" value={data.email} onChange={e => setData('email', e.target.value)} required /></div>
+                    <div className="form-group"><label>Pendidikan</label><input value={data.pendidikan} onChange={e => setData('pendidikan', e.target.value)} /></div>
+                    <div className="form-group"><label>Tipe Pekerjaan</label><input value={data.tipe_pekerjaan} onChange={e => setData('tipe_pekerjaan', e.target.value)} /></div>
+                    <div className="form-group"><label>Keahlian yang Dibutuhkan</label><textarea value={data.keahlian} onChange={e => setData('keahlian', e.target.value)}></textarea></div>
+                    <div className="form-group"><label>Waktu Bekerja</label><input value={data.waktu_bekerja} onChange={e => setData('waktu_bekerja', e.target.value)} /></div>
+                    <div className="form-group"><label>Tunjangan</label><textarea value={data.tunjangan} onChange={e => setData('tunjangan', e.target.value)}></textarea></div>
                     <button type="submit" className="btn-submit" disabled={processing}>Simpan</button>
                 </form>
             </div>

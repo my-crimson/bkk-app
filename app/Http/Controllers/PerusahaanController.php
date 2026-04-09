@@ -32,10 +32,15 @@ class PerusahaanController extends Controller
             'nama' => 'required|string|max:255',
         ]);
 
-        Perusahaan::create($request->only([
-            'nama', 'alamat', 'deskripsi_perusahaan', 'logo', 'website',
-            'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
-        ]));
+        $data = $request->only([
+            'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
+            'email', 'logo', 'gambar', 'standar', 'kategori',
+        ]);
+        
+        // Set default value for kerja_sama (required field)
+        $data['kerja_sama'] = $request->kerja_sama ?? '-';
+        
+        Perusahaan::create($data);
 
         return redirect()->route('admin.perusahaan.index')->with('success', 'Perusahaan berhasil ditambahkan!');
     }
@@ -51,10 +56,18 @@ class PerusahaanController extends Controller
     public function update(Request $request, $id)
     {
         $perusahaan = Perusahaan::findOrFail($id);
-        $perusahaan->update($request->only([
-            'nama', 'alamat', 'deskripsi_perusahaan', 'logo', 'website',
-            'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
-        ]));
+        
+        $data = $request->only([
+            'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
+            'email', 'logo', 'gambar', 'standar', 'kategori',
+        ]);
+        
+        // Set default value for kerja_sama if provided
+        if ($request->kerja_sama) {
+            $data['kerja_sama'] = $request->kerja_sama;
+        }
+        
+        $perusahaan->update($data);
 
         return redirect()->route('admin.perusahaan.index')->with('success', 'Perusahaan berhasil diperbarui!');
     }
