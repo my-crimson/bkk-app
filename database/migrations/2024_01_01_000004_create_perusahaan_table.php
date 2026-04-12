@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('logo', 255)->nullable();
             $table->string('website', 255)->nullable();
             $table->string('email', 255)->nullable();
-            $table->string('telepon', 20)->nullable();
+            $table->string('telepon', 50)->nullable();
             $table->string('jenis_perusahaan', 100)->nullable();
             $table->string('skala', 50)->nullable();
             $table->string('jumlah_karyawan', 100)->nullable();

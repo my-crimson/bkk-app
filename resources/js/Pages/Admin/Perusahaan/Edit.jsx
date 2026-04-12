@@ -1,8 +1,11 @@
 import { Head, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
+import { validateImage } from '@/Helpers/fileHelper';
 
 export default function AdminPerusahaanEdit({ perusahaan }) {
-    const { data, setData, put, processing } = useForm({
+
+    const { data, setData, post, processing, errors } = useForm({
         nama_perusahaan: perusahaan.nama_perusahaan || '',
         alamat: perusahaan.alamat || '',
         deskripsi: perusahaan.deskripsi || '',
@@ -12,11 +15,48 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         jenis_perusahaan: perusahaan.jenis_perusahaan || '',
         skala: perusahaan.skala || '',
         jumlah_karyawan: perusahaan.jumlah_karyawan || '',
+        logo: null,
+        gambar: null,
     });
 
+    const [fileErrors, setFileErrors] = useState({
+        logo: null,
+        gambar: null,
+    });
+
+    const [previewLogo, setPreviewLogo] = useState(null);
+    const [previewGambar, setPreviewGambar] = useState(null);
+
+    // ================= PREVIEW =================
+    useEffect(() => {
+        if (data.logo) {
+            const url = URL.createObjectURL(data.logo);
+            setPreviewLogo(url);
+            return () => URL.revokeObjectURL(url);
+        }
+    }, [data.logo]);
+
+    useEffect(() => {
+        if (data.gambar) {
+            const url = URL.createObjectURL(data.gambar);
+            setPreviewGambar(url);
+            return () => URL.revokeObjectURL(url);
+        }
+    }, [data.gambar]);
+
+    // ================= SUBMIT =================
     const submit = (e) => {
         e.preventDefault();
-        put(`/admin/perusahaan/${perusahaan.id_perusahaan}`);
+
+        if (fileErrors.logo || fileErrors.gambar) {
+            alert('Perbaiki error pada file terlebih dahulu!');
+            return;
+        }
+
+        post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, {
+            _method: 'put',
+            forceFormData: true
+        });
     };
 
     const jenisOptions = ['UMKM', 'MOU', 'Perseroan', 'Startup'];
@@ -26,16 +66,13 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         <MainLayout>
             <Head title="Edit Perusahaan" />
 
-            <div className="header-bar">
-                <a href="#">CRUD / Edit Perusahaan</a>
-            </div>
-
             <div className="crud-form">
                 <h2 style={{ marginBottom: '20px', color: '#134CBC' }}>
                     Edit Perusahaan
                 </h2>
 
                 <form onSubmit={submit}>
+
                     {/* NAMA */}
                     <div className="form-group">
                         <label>Nama</label>
@@ -44,6 +81,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                             onChange={e => setData('nama_perusahaan', e.target.value)}
                             required
                         />
+                        {errors.nama_perusahaan && (
+                            <div style={{ color: 'red' }}>{errors.nama_perusahaan}</div>
+                        )}
                     </div>
 
                     {/* ALAMAT */}
@@ -84,7 +124,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* JENIS */}
                     <div className="form-group">
-                        <label>Jenis Perusahaan</label>
+                        <label>Jenis</label>
                         <select
                             value={data.jenis_perusahaan}
                             onChange={e => setData('jenis_perusahaan', e.target.value)}
@@ -98,7 +138,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* SKALA */}
                     <div className="form-group">
-                        <label>Skala Perusahaan</label>
+                        <label>Skala</label>
                         <select
                             value={data.skala}
                             onChange={e => setData('skala', e.target.value)}
@@ -110,15 +150,6 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                         </select>
                     </div>
 
-                    {/* JUMLAH KARYAWAN */}
-                    <div className="form-group">
-                        <label>Jumlah Karyawan</label>
-                        <input
-                            value={data.jumlah_karyawan}
-                            onChange={e => setData('jumlah_karyawan', e.target.value)}
-                        />
-                    </div>
-
                     {/* DESKRIPSI */}
                     <div className="form-group">
                         <label>Deskripsi</label>
@@ -128,9 +159,100 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                         />
                     </div>
 
-                    <button type="submit" className="btn-submit" disabled={processing}>
-                        Update
+                    {/* LOGO */}
+                    <div className="form-group">
+                        <label>Logo</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={e => {
+                                const file = e.target.files[0];
+                                if (!file) return;
+
+                                const error = validateImage(file, 'Logo');
+
+                                if (error) {
+                                    setFileErrors(prev => ({ ...prev, logo: error }));
+                                    setData('logo', null);
+                                    e.target.value = null;
+                                    return;
+                                }
+
+                                setFileErrors(prev => ({ ...prev, logo: null }));
+                                setData('logo', file);
+                            }}
+                        />
+
+                        {fileErrors.logo && (
+                            <div style={{ color: 'red' }}>{fileErrors.logo}</div>
+                        )}
+
+                        {!previewLogo && perusahaan.logo && (
+                            <img
+                                src={`/storage/logo_perusahaan/${perusahaan.logo}`}
+                                width="80"
+                                style={{ marginTop: '10px' }}
+                            />
+                        )}
+
+                        {previewLogo && (
+                            <img src={previewLogo} width="80" style={{ marginTop: '10px' }} />
+                        )}
+                    </div>
+
+                    {/* GAMBAR */}
+                    <div className="form-group">
+                        <label>Gambar</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={e => {
+                                const file = e.target.files[0];
+                                if (!file) return;
+
+                                const error = validateImage(file, 'Gambar');
+
+                                if (error) {
+                                    setFileErrors(prev => ({ ...prev, gambar: error }));
+                                    setData('gambar', null);
+                                    e.target.value = null;
+                                    return;
+                                }
+
+                                setFileErrors(prev => ({ ...prev, gambar: null }));
+                                setData('gambar', file);
+                            }}
+                        />
+
+                        {fileErrors.gambar && (
+                            <div style={{ color: 'red' }}>{fileErrors.gambar}</div>
+                        )}
+
+                        {!previewGambar && perusahaan.gambar && (
+                            <img
+                                src={`/storage/gambar_perusahaan/${perusahaan.gambar}`}
+                                width="100"
+                                style={{ marginTop: '10px' }}
+                            />
+                        )}
+
+                        {previewGambar && (
+                            <img src={previewGambar} width="100" style={{ marginTop: '10px' }} />
+                        )}
+                    </div>
+
+                    <button type="submit" disabled={processing}
+                            style={{
+                                padding: '5px 10px',
+                                fontSize: '12px',
+                                background: '#134CBC',
+                                color: '#fff',
+                                borderRadius: '4px',
+                                border: 'none'
+                            }}>
+                        {processing ? 'Mengupdate...' : 'Update'}
                     </button>
+
                 </form>
             </div>
         </MainLayout>

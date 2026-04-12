@@ -10,12 +10,8 @@ class Perusahaan extends Model
     protected $primaryKey = 'id_perusahaan';
     public $timestamps = false;
 
-    protected $hidden = [
-        'logo', 'gambar',
-    ];
-
     protected $fillable = [
-        'nama_perusahaan', 'alamat', 'deskripsi', 'logo', 'website',
+        'nama_perusahaan', 'alamat', 'deskripsi', 'logo', 'gambar', 'website',
         'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
     ];
 

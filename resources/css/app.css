@@ -1225,6 +1225,10 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.input-error {
+    border: 1px solid red;
+}
+
 .header-bar {
   background-color: #d1f0ff;
   padding: 10px 20px;

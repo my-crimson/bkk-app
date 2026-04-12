@@ -60,7 +60,8 @@ Route::middleware('role:admin')->prefix('admin')->group(function () {
     Route::get('/perusahaan', [PerusahaanController::class, 'crudIndex'])->name('admin.perusahaan.index');
     Route::post('/perusahaan', [PerusahaanController::class, 'store'])->name('admin.perusahaan.store');
     Route::get('/perusahaan/{id}/edit', [PerusahaanController::class, 'edit'])->name('admin.perusahaan.edit');
-    Route::put('/perusahaan/{id}', [PerusahaanController::class, 'update'])->name('admin.perusahaan.update');
+    Route::match(['put', 'post'], '/perusahaan/{id}', [PerusahaanController::class, 'update'])
+        ->name('admin.perusahaan.update');
     Route::delete('/perusahaan/{id}', [PerusahaanController::class, 'destroy'])->name('admin.perusahaan.destroy');
 
     // CRUD Berita/Kegiatan
