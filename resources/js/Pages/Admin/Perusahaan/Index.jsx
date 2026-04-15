@@ -6,7 +6,10 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
     // ================= DELETE =================
     const handleDelete = (id) => {
         if (confirm('Yakin ingin menghapus?')) {
-            router.delete(`/admin/perusahaan/${id}`);
+            router.delete(`/admin/perusahaan/${id}`, {
+                preserveScroll: true,
+                preserveState: false, 
+            });
         }
     };
 
@@ -15,7 +18,7 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
         const formData = new FormData(e.target);
         router.get('/admin/perusahaan', {
             search: formData.get('search') || '',
-            kategori: formData.get('kategori') || '',
+            skala: formData.get('skala') || '',
         }, { preserveState: true, replace: true });
     };
 
@@ -42,18 +45,18 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
                         className="search-input"
                         defaultValue={filters?.search || ''}
                     />
-                    <label htmlFor="kategori-perusahaan">Kategori:</label>
+                    <label htmlFor="skala-perusahaan">Skala Perusahaan:</label>
                     <select
-                        id="kategori-perusahaan"
-                        name="kategori"
+                        id="skala-perusahaan"
+                        name="skala"
                         className="search-select"
-                        defaultValue={filters?.kategori || ''}
+                        defaultValue={filters?.skala || ''}
                     >
-                        <option value="">-- Semua Kategori --</option>
-                        <option value="lokal">lokal</option>
-                        <option value="Provinsi">provinsi</option>
-                        <option value="Nasional">nasional</option>
-                        <option value="Internasional">internasional</option>
+                        <option value="">-- Semua Jenis --</option>
+                        <option value="lokal">Lokal</option>
+                        <option value="Provinsi">Provinsi</option>
+                        <option value="Nasional">Nasional</option>
+                        <option value="Internasional">Internasional</option>
                     </select>
                     <button className="search-button" type="submit">Cari</button>
                 </form>
@@ -76,8 +79,8 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
                         </div>
                         <div className="perusahaan-card-info">
                             <h3>{p.nama}</h3>
-                            <p><i className="fa-solid fa-location-dot"></i>{p.alamat || p.kota || '-'}</p>
-                            <p><i className="fa-solid fa-briefcase"></i>{p.kategori || '-'}</p>
+                            <p><i className="fa-solid fa-location-dot"></i>{p.alamat || '-'}</p>
+                            <p><i className="fa-solid fa-briefcase"></i>{p.jenis || '-'}</p>
                             <p><i className="fa-solid fa-envelope"></i>{p.email || '-'}</p>
                         </div>
                         <div className="perusahaan-card-actions">

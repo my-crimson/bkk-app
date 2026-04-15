@@ -12,7 +12,7 @@ class PerusahaanController extends Controller
     // Public
     public function index()
     {
-        $perusahaan = Perusahaan::orderBy('nama')->get();
+        $perusahaan = Perusahaan::orderBy('id_perusahaan')->get();
         return Inertia::render('Perusahaan/Index', [
             'perusahaan' => $perusahaan,
         ]);
@@ -28,21 +28,20 @@ class PerusahaanController extends Controller
             $query->where(function ($q) use ($term) {
                 $q->where('nama', 'like', "%{$term}%")
                     ->orWhere('alamat', 'like', "%{$term}%")
-                    ->orWhere('kota', 'like', "%{$term}%")
                     ->orWhere('email', 'like', "%{$term}%");
             });
         }
 
-        if ($request->filled('kategori')) {
-            $query->where('kategori', $request->kategori);
+        if ($request->filled('skala')) {
+            $query->where('skala', $request->skala);
         }
 
-        $perusahaan = $query->orderBy('nama')->paginate(10)->withQueryString();
+        $perusahaan = $query->orderBy('id_perusahaan')->paginate(10)->withQueryString();
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
             'filters' => [
                 'search' => $request->search,
-                'kategori' => $request->kategori,
+                'skala' => $request->skala,
             ],
         ]);
     }
@@ -60,8 +59,8 @@ class PerusahaanController extends Controller
         ]);
 
         $data = $request->only([
-            'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
-            'email', 'logo', 'gambar', 'standar', 'kategori',
+            'nama', 'alamat', 'deskripsi', 'kontak',
+            'email', 'logo', 'gambar', 'jenis', 'skala',
         ]);
         
         // Set default value for kerja_sama (required field)
@@ -114,8 +113,8 @@ class PerusahaanController extends Controller
         $perusahaan = Perusahaan::findOrFail($id);
         
         $data = $request->only([
-            'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
-            'email', 'logo', 'gambar', 'standar', 'kategori',
+            'nama', 'alamat', 'deskripsi', 'kontak',
+            'email', 'logo', 'gambar', 'jenis', 'skala',
         ]);
         
         // Set default value for kerja_sama if provided

@@ -5,8 +5,8 @@ import { validateImage } from '@/Helpers/fileHelper';
 
 export default function AdminPerusahaanCreate() {
     const { data, setData, post, processing, reset, errors } = useForm({
-        nama: '', alamat: '', kota: '', deskripsi_perusahaan: '', email: '', kontak: '',
-        logo: null, gambar: null, standar: '', kategori: '', kerja_sama: '',
+        nama: '', alamat: '', deskripsi: '', email: '', kontak: '',
+        logo: null, gambar: null, jenis: '', skala: '', kerja_sama: '',
     });
 
     const [fileErrors, setFileErrors] = useState({ logo: null, gambar: null });
@@ -57,11 +57,10 @@ export default function AdminPerusahaanCreate() {
                     <div className="form-group"><label>Alamat</label><input value={data.alamat} onChange={e => setData('alamat', e.target.value)} /></div>
                     <div className="form-group"><label>Email</label><input value={data.email} onChange={e => setData('email', e.target.value)} /></div>
                     <div className="form-group"><label>Kontak</label><input value={data.kontak} onChange={e => setData('kontak', e.target.value)} /></div>
-                    <div className="form-group"><label>Kota</label><input value={data.kota} onChange={e => setData('kota', e.target.value)} /></div>
                     <div className="form-group">
-                        <label>Standar</label>
-                        <select value={data.standar} onChange={e => setData('standar', e.target.value)}>
-                            <option value="">-- Pilih Standar --</option>
+                        <label>Jenis Perusahaan</label>
+                        <select value={data.jenis} onChange={e => setData('jenis', e.target.value)}>
+                            <option value="">-- Pilih Jenis --</option>
                             <option value="UMKM">UMKM</option>
                             <option value="MOU">MOU</option>
                             <option value="perseroan">Perseroan</option>
@@ -69,16 +68,16 @@ export default function AdminPerusahaanCreate() {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Kategori</label>
-                        <select value={data.kategori} onChange={e => setData('kategori', e.target.value)}>
-                            <option value="">-- Pilih Kategori --</option>
+                        <label>Skala</label>
+                        <select value={data.Skala} onChange={e => setData('Skala', e.target.value)}>
+                            <option value="">-- Pilih Skala --</option>
                             <option value="lokal">Lokal</option>
                             <option value="Provinsi">Provinsi</option>
                             <option value="Nasional">Nasional</option>
                             <option value="Internasional">Internasional</option>
                         </select>
                     </div>
-                    <div className="form-group"><label>Deskripsi</label><textarea value={data.deskripsi_perusahaan} onChange={e => setData('deskripsi_perusahaan', e.target.value)} /></div>
+                    <div className="form-group"><label>Deskripsi</label><textarea value={data.deskripsi} onChange={e => setData('deskripsi', e.target.value)} /></div>
                     <div className="form-group"><label>Kerja Sama</label><input value={data.kerja_sama} onChange={e => setData('kerja_sama', e.target.value)} /></div>
                     <div className="form-group">
                         <label>Logo</label>
@@ -97,6 +96,11 @@ export default function AdminPerusahaanCreate() {
                                 setData('logo', file || null);
                             }}
                         />
+                        {!previewLogo && (
+                            <small style={{ color: '#888' }}>
+                                Format: JPG / PNG, maksimal 2MB
+                            </small>
+                        )}
                         {fileErrors.logo && <div style={{ color: 'red' }}>{fileErrors.logo}</div>}
                         {previewLogo && <img src={previewLogo} width="80" style={{ marginTop: '10px' }} />}
                     </div>
@@ -117,6 +121,11 @@ export default function AdminPerusahaanCreate() {
                                 setData('gambar', file || null);
                             }}
                         />
+                        {!previewGambar && (
+                            <small style={{ color: '#888' }}>
+                                Format: JPG / PNG, maksimal 2MB
+                            </small>
+                        )}
                         {fileErrors.gambar && <div style={{ color: 'red' }}>{fileErrors.gambar}</div>}
                         {previewGambar && <img src={previewGambar} width="80" style={{ marginTop: '10px' }} />}
                     </div>

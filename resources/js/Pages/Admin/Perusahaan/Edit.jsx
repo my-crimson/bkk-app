@@ -4,16 +4,15 @@ import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
 
 export default function AdminPerusahaanEdit({ perusahaan }) {
-    const { data, setData, processing, errors } = useForm({
+    const { data, setData, post,  processing, errors } = useForm({
         _method: 'PUT',
         nama: perusahaan.nama || '',
         alamat: perusahaan.alamat || '',
-        kota: perusahaan.kota || '',
-        deskripsi_perusahaan: perusahaan.deskripsi_perusahaan || '',
+        deskripsi: perusahaan.deskripsi || '',
         email: perusahaan.email || '',
         kontak: perusahaan.kontak || '',
-        standar: perusahaan.standar || '',
-        kategori: perusahaan.kategori || '',
+        jenis: perusahaan.jenis || '',
+        skala: perusahaan.skala || '',
         kerja_sama: perusahaan.kerja_sama || '',
     });
 
@@ -53,17 +52,13 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
             return;
         }
 
-        const formData = { ...data };
-        if (logoFile) formData.logo = logoFile;
-        if (gambarFile) formData.gambar = gambarFile;
-
-        router.post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, formData, {
+        post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, {
             forceFormData: true,
         });
     };
 
-    const standarOptions = ['UMKM', 'MOU', 'perseroan', 'Startup'];
-    const kategoriOptions = ['lokal', 'Provinsi', 'Nasional', 'Internasional'];
+    const jenisOptions = ['UMKM', 'MOU', 'perseroan', 'Startup'];
+    const skalaOptions = ['lokal', 'Provinsi', 'Nasional', 'Internasional'];
 
     return (
         <MainLayout>
@@ -116,38 +111,29 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                         />
                     </div>
 
-                    {/* KOTA */}
+                    {/* JENIS PERUSAHAAN */}
                     <div className="form-group">
-                        <label>Kota</label>
-                        <input
-                            value={data.kota}
-                            onChange={e => setData('kota', e.target.value)}
-                        />
-                    </div>
-
-                    {/* STANDAR */}
-                    <div className="form-group">
-                        <label>Standar</label>
+                        <label>jenis Perusahaan</label>
                         <select
-                            value={data.standar}
-                            onChange={e => setData('standar', e.target.value)}
+                            value={data.jenis}
+                            onChange={e => setData('jenis', e.target.value)}
                         >
-                            <option value="">-- Pilih Standar --</option>
-                            {standarOptions.map(j => (
+                            <option value="">-- Pilih Jenis --</option>
+                            {jenisOptions.map(j => (
                                 <option key={j} value={j}>{j}</option>
                             ))}
                         </select>
                     </div>
 
-                    {/* KATEGORI */}
+                    {/* SKALA */}
                     <div className="form-group">
-                        <label>Kategori</label>
+                        <label>Skala</label>
                         <select
-                            value={data.kategori}
-                            onChange={e => setData('kategori', e.target.value)}
+                            value={data.skala}
+                            onChange={e => setData('skala', e.target.value)}
                         >
-                            <option value="">-- Pilih Kategori --</option>
-                            {kategoriOptions.map(s => (
+                            <option value="">-- Pilih Skala --</option>
+                            {skalaOptions.map(s => (
                                 <option key={s} value={s}>{s}</option>
                             ))}
                         </select>
@@ -157,8 +143,8 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                     <div className="form-group">
                         <label>Deskripsi</label>
                         <textarea
-                            value={data.deskripsi_perusahaan}
-                            onChange={e => setData('deskripsi_perusahaan', e.target.value)}
+                            value={data.deskripsi}
+                            onChange={e => setData('deskripsi', e.target.value)}
                         />
                     </div>
 
@@ -194,6 +180,11 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                                 setLogoFile(file);
                             }}
                         />
+                        {!previewLogo && (
+                            <small style={{ color: '#888' }}>
+                                Format: JPG / PNG, maksimal 2MB
+                            </small>
+                        )}
 
                         {fileErrors.logo && (
                             <div style={{ color: 'red' }}>{fileErrors.logo}</div>
@@ -235,6 +226,11 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                                 setGambarFile(file);
                             }}
                         />
+                        {!previewGambar && (
+                            <small style={{ color: '#888' }}>
+                                Format: JPG / PNG, maksimal 2MB
+                            </small>
+                        )}
 
                         {fileErrors.gambar && (
                             <div style={{ color: 'red' }}>{fileErrors.gambar}</div>
@@ -253,15 +249,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                         )}
                     </div>
 
-                    <button type="submit" disabled={processing}
-                            style={{
-                                padding: '5px 10px',
-                                fontSize: '12px',
-                                background: '#134CBC',
-                                color: '#fff',
-                                borderRadius: '4px',
-                                border: 'none'
-                            }}>
+                    <button type="submit" className="btn-submit" disabled={processing}>
                         {processing ? 'Mengupdate...' : 'Update'}
                     </button>
                 </form>

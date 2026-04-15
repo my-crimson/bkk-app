@@ -14,9 +14,8 @@ export default function PerusahaanIndex({ perusahaan }) {
                             <p><i className="fa-solid fa-location-dot" style={{ marginRight: '8px' }}></i>{p.alamat || '-'}</p>
                             <p><i className="fa-solid fa-envelope" style={{ marginRight: '8px' }}></i>{p.email || '-'}</p>
                             <p><i className="fa-solid fa-phone" style={{ marginRight: '8px' }}></i>{p.kontak || '-'}</p>
-                            {p.kota && <p><i className="fa-solid fa-city" style={{ marginRight: '8px' }}></i>{p.kota}</p>}
-                            <p style={{ marginTop: '10px', color: '#888', fontSize: '13px' }}>{p.standar || '-'} | {p.kategori || '-'}</p>
-                            {p.deskripsi_perusahaan && <p style={{ marginTop: '10px' }}>{p.deskripsi_perusahaan}</p>}
+                            <p style={{ marginTop: '10px', color: '#888', fontSize: '13px' }}>{p.skala || '-'} | {p.jenis || '-'}</p>
+                            {p.deskripsi && <p style={{ marginTop: '10px' }}>{p.deskripsi_perusahaan}</p>}
                         </div>
                     )) : (
                         <p className="no-data">Belum ada data perusahaan.</p>
