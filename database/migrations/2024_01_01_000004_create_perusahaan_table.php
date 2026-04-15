@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('perusahaan', function (Blueprint $table) {
             $table->increments('id_perusahaan');
-            $table->string('nama_perusahaan', 255)->nullable();
+            $table->string('nama', 255)->nullable();
             $table->text('alamat')->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('logo', 255)->nullable();
