@@ -19,12 +19,37 @@ class PerusahaanController extends Controller
     }
 
     // Admin CRUD
-    public function crudIndex()
+    public function crudIndex(Request $request)
     {
-        $perusahaan = Perusahaan::orderBy('nama')->paginate(10);
+        $query = Perusahaan::query();
+
+        if ($request->filled('search')) {
+            $term = $request->search;
+            $query->where(function ($q) use ($term) {
+                $q->where('nama', 'like', "%{$term}%")
+                    ->orWhere('alamat', 'like', "%{$term}%")
+                    ->orWhere('kota', 'like', "%{$term}%")
+                    ->orWhere('email', 'like', "%{$term}%");
+            });
+        }
+
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $perusahaan = $query->orderBy('nama')->paginate(10)->withQueryString();
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
+            'filters' => [
+                'search' => $request->search,
+                'kategori' => $request->kategori,
+            ],
         ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Perusahaan/Create');
     }
 
 

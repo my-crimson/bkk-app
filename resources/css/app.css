@@ -690,6 +690,160 @@ footer {
     color: #888;
 }
 
+/* ========== KEGIATAN CARDS ========== */
+.kegiatan-card.has-footer {
+    height: 330px; /* samakan tinggi card (yang ada footer tombol) */
+}
+
+.kegiatan-card .job-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+}
+
+.kegiatan-image {
+    width: 100%;
+    flex: 1;
+    padding: 14px 16px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kegiatan-image img {
+    width: 140px;       /* gambar kecil di tengah */
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    background: #eee;
+}
+
+.kegiatan-image--placeholder {
+    width: 140px;
+    height: 140px;
+    border-radius: 8px;
+    background: #f1f1f1;
+    border: 1px dashed #c8c8c8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    gap: 8px;
+    user-select: none;
+}
+
+.kegiatan-image--placeholder i {
+    font-size: 22px;
+    color: #9aa5b1;
+}
+
+.kegiatan-desc {
+    padding: 10px 16px 12px;
+    text-align: left;
+    color: #555;
+    border-top: 1px solid #cfcfcf;
+    font-size: 13px;
+    line-height: 1.35;
+    min-height: 62px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ========== POPUP INFORMASI KEGIATAN ========== */
+.kegiatan-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.kegiatan-popup-card {
+    width: 100%;
+    max-width: 820px;
+    max-height: 90vh;
+    background: #fff;
+    border-radius: 10px;
+    overflow: auto;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.kegiatan-popup-title {
+    background: #d9d9d9;
+    color: #333;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 12px 16px;
+    text-transform: uppercase;
+}
+
+.kegiatan-popup-content {
+    padding: 14px 20px 24px;
+}
+
+.kegiatan-popup-image-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0 16px;
+}
+
+.kegiatan-popup-image {
+    width: 135px;
+    height: 165px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.kegiatan-popup-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.kegiatan-popup-meta > div {
+    display: grid;
+    grid-template-columns: 22px 140px 1fr;
+    align-items: start;
+    gap: 8px;
+}
+
+.kegiatan-popup-meta i {
+    margin-top: 2px;
+    color: #444;
+}
+
+.kegiatan-popup-meta strong {
+    font-size: 14px;
+}
+
+.kegiatan-popup-meta span {
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.kegiatan-popup-description strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.kegiatan-popup-description p {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.35;
+}
+
 /* Tambah Loker Card */
 #tambah-loker {
     display: flex;
@@ -697,7 +851,18 @@ footer {
     align-items: center;
 }
 
+#tambah-kegiatan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d9d9d9;
+}
+
 #tambah-loker .tambah-btn {
+    text-align: center;
+}
+
+#tambah-kegiatan .tambah-btn {
     text-align: center;
 }
 
@@ -707,6 +872,10 @@ footer {
 }
 
 #tambah-loker i {
+    color: #007bff;
+}
+
+#tambah-kegiatan i {
     color: #007bff;
 }
 
@@ -983,6 +1152,143 @@ footer {
     margin-bottom: 5px;
 }
 
+/* ========== ADMIN CRUD PERUSAHAAN CARD LAYOUT ========== */
+.perusahaan-admin-wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 10px 20px 30px;
+}
+
+.perusahaan-add-card {
+    background: #d9d9d9;
+    border-radius: 8px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #555;
+    text-decoration: none;
+    margin: 16px 0 22px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.perusahaan-add-card i {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.perusahaan-add-card p {
+    font-size: 34px;
+    font-weight: 600;
+}
+
+.perusahaan-admin-card {
+    display: grid;
+    grid-template-columns: 220px 1fr 120px;
+    align-items: stretch;
+    background: #f7f7f7;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    margin-bottom: 20px;
+}
+
+.perusahaan-card-image {
+    background: linear-gradient(130deg, #5e5e5e, #b6b6b6);
+    position: relative;
+}
+
+.perusahaan-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.perusahaan-card-image-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 130px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    color: #111;
+    font-size: 32px;
+    padding: 4px 8px;
+}
+
+.perusahaan-card-info {
+    padding: 18px 24px;
+}
+
+.perusahaan-card-info h3 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #2f3f4e;
+}
+
+.perusahaan-card-info p {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 18px;
+    color: #4b5c6a;
+    margin-bottom: 8px;
+}
+
+.perusahaan-card-info p i {
+    color: #35a2de;
+    font-size: 20px;
+}
+
+.perusahaan-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.perusahaan-btn {
+    width: 98px;
+    height: 38px;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
+}
+
+.perusahaan-btn i {
+    font-size: 12px;
+}
+
+.perusahaan-btn-edit {
+    background-color: #1487f7;
+}
+
+.perusahaan-btn-edit:hover {
+    background-color: #0f6fd0;
+}
+
+.perusahaan-btn-delete {
+    background-color: #e53945;
+}
+
+.perusahaan-btn-delete:hover {
+    background-color: #ca2f3a;
+}
+
 /* ========== REKAP ========== */
 .rekap-container {
     padding: 20px;
@@ -1011,9 +1317,199 @@ footer {
     background-color: #f2f2f2;
 }
 
+/* ========== REKAP LOKER GRID ========== */
+.rekap-loker-wrap {
+    padding: 16px 14px 22px;
+}
+
+.rekap-loker-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e1e1e;
+    margin-bottom: 12px;
+}
+
+.rekap-loker-filter {
+    background: #1c4fa6;
+    border-radius: 8px;
+    padding: 16px 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.rekap-loker-filter select {
+    min-width: 150px;
+    height: 40px;
+    border: 1px solid #9eb4db;
+    border-radius: 5px;
+    padding: 0 10px;
+    background: #1a4a9f;
+    color: #fff;
+    font-size: 14px;
+}
+
+.rekap-loker-filter button {
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    padding: 0 16px;
+    background: #efefef;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rekap-loker-subtitle {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1e1e1e;
+    margin: 10px 0 14px;
+}
+
+.rekap-loker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+}
+
+.rekap-loker-card {
+    background: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    min-height: 118px;
+    padding: 14px;
+    text-align: center;
+}
+
+.rekap-loker-card h4 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #1883d5;
+    margin-bottom: 10px;
+}
+
+.rekap-loker-card p {
+    font-size: 13px;
+    color: #3c3c3c;
+}
+
+.rekap-loker-summary {
+    margin-top: 14px;
+}
+
+.rekap-loker-summary p {
+    font-size: 16px;
+    color: #2a2a2a;
+    margin: 4px 0;
+}
+
 /* ========== TRACER STUDY ========== */
 .tracer-container {
     padding: 20px;
+}
+
+.tracer-title {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 24px 0 12px;
+}
+
+.tracer-generated-at {
+    text-align: center;
+    color: #4d5b6a;
+    font-size: 16px;
+    margin-bottom: 14px;
+}
+
+.tracer-pill-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+.tracer-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    height: 36px;
+    border-radius: 18px;
+    border: 1px solid #39a6e6;
+    background: #39a6e6;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 14px;
+}
+
+.tracer-pill.active,
+.tracer-pill:hover {
+    background: #1487f7;
+    border-color: #1487f7;
+}
+
+.tracer-year {
+    margin: 8px 0 10px;
+    font-size: 34px;
+    font-weight: 700;
+    color: #1d2a3a;
+}
+
+.tracer-table th {
+    background: #11336b;
+    color: #fff;
+}
+
+.tracer-status {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.tracer-status::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.tracer-status.success {
+    color: #2b7e3d;
+}
+
+.tracer-status.success::before {
+    background: #2b7e3d;
+}
+
+.tracer-status.danger {
+    color: #d63d32;
+}
+
+.tracer-status.danger::before {
+    background: #d63d32;
+}
+
+.tracer-relative-time {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #6d7780;
+}
+
+.tracer-total-row td {
+    background: #11336b;
+    color: #fff;
+    font-weight: 700;
 }
 
 /* ========== PROFIL ========== */

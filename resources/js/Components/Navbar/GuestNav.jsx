@@ -55,7 +55,8 @@ export default function GuestNav() {
                 <li>
                     <a href="#">LOGIN</a>
                     <ul className="dropdown">
-                        <li><Link href="/login/admin">Management</Link></li>
+                        <li><Link href="/login/admin">Admin</Link></li>
+                        <li><Link href="/login/management">Management</Link></li>
                         <li><Link href="/login/siswa">Siswa / Alumni</Link></li>
                     </ul>
                 </li>

@@ -58,6 +58,7 @@ Route::middleware('role:admin')->prefix('admin')->group(function () {
 
     // CRUD Perusahaan
     Route::get('/perusahaan', [PerusahaanController::class, 'crudIndex'])->name('admin.perusahaan.index');
+    Route::get('/perusahaan/create', [PerusahaanController::class, 'create'])->name('admin.perusahaan.create');
     Route::post('/perusahaan', [PerusahaanController::class, 'store'])->name('admin.perusahaan.store');
     Route::get('/perusahaan/{id}/edit', [PerusahaanController::class, 'edit'])->name('admin.perusahaan.edit');
     Route::match(['put', 'post'], '/perusahaan/{id}', [PerusahaanController::class, 'update'])
@@ -66,6 +67,7 @@ Route::middleware('role:admin')->prefix('admin')->group(function () {
 
     // CRUD Berita/Kegiatan
     Route::get('/berita', [BeritaController::class, 'index'])->name('admin.berita.index');
+    Route::get('/berita/create', [BeritaController::class, 'create'])->name('admin.berita.create');
     Route::post('/berita', [BeritaController::class, 'store'])->name('admin.berita.store');
     Route::get('/berita/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
     Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');

@@ -19,7 +19,8 @@ class HomeController extends Controller
 
     public function informasiKegiatan()
     {
-        $berita = Berita::orderBy('tanggal', 'desc')->get();
+        // Halaman publik view-only: 1 halaman tampil 6 card
+        $berita = Berita::orderBy('tanggal', 'desc')->paginate(6)->withQueryString();
         return Inertia::render('Home/InformasiKegiatan', [
             'berita' => $berita,
         ]);
@@ -27,7 +28,7 @@ class HomeController extends Controller
 
     public function infoKeg()
     {
-        $berita = Berita::orderBy('tanggal', 'desc')->get();
+        $berita = Berita::orderBy('tanggal', 'desc')->paginate(6)->withQueryString();
         return Inertia::render('Home/InfoKeg', [
             'berita' => $berita,
         ]);

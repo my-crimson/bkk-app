@@ -10,10 +10,15 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $berita = Berita::orderBy('tanggal', 'desc')->get();
+        $berita = Berita::orderBy('tanggal', 'desc')->paginate(5)->withQueryString();
         return Inertia::render('Admin/Berita/Index', [
             'berita' => $berita,
         ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Berita/Create');
     }
 
     public function store(Request $request)

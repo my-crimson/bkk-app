@@ -1,69 +1,29 @@
-import { Head, router, useForm, usePage, Link } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Head, router, Link } from '@inertiajs/react';
+import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
-import { validateImage } from '@/Helpers/fileHelper';
 
-export default function AdminPerusahaanIndex({ perusahaan }) {
-    const { flash } = usePage().props;
-
-    const { data, setData, post, processing, reset, errors } = useForm({
-        nama: '', alamat: '', kota: '', deskripsi_perusahaan: '', email: '', kontak: '',
-        gambar: null, standar: '', kategori: '', kerja_sama: '',
-    });
-
-    const [fileErrors, setFileErrors] = useState({
-        logo: null,
-        gambar: null,
-    });
-
-    const [previewLogo, setPreviewLogo] = useState(null);
-    const [previewGambar, setPreviewGambar] = useState(null);
-
-    // ================= PREVIEW =================
-    useEffect(() => {
-        if (data.logo) {
-            const url = URL.createObjectURL(data.logo);
-            setPreviewLogo(url);
-            return () => URL.revokeObjectURL(url);
-        }
-    }, [data.logo]);
-
-    useEffect(() => {
-        if (data.gambar) {
-            const url = URL.createObjectURL(data.gambar);
-            setPreviewGambar(url);
-            return () => URL.revokeObjectURL(url);
-        }
-    }, [data.gambar]);
-
-    // ================= SUBMIT =================
-    const submit = (e) => {
-        e.preventDefault();
-
-        if (fileErrors.logo || fileErrors.gambar) {
-            alert('Perbaiki error pada file terlebih dahulu!');
-            return;
-        }
-
-        post('/admin/perusahaan', {
-            forceFormData: true,
-            onSuccess: () => {
-                reset();
-                setData('logo', null);
-                setData('gambar', null);
-                setPreviewLogo(null);
-                setPreviewGambar(null);
-                setFileErrors({ logo: null, gambar: null });
-            },
-        });
-    };
-
+export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
     // ================= DELETE =================
     const handleDelete = (id) => {
         if (confirm('Yakin ingin menghapus?')) {
             router.delete(`/admin/perusahaan/${id}`);
         }
     };
+
+    const handleFilter = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        router.get('/admin/perusahaan', {
+            search: formData.get('search') || '',
+            kategori: formData.get('kategori') || '',
+        }, { preserveState: true, replace: true });
+    };
+
+    const rows = useMemo(() => perusahaan?.data || [], [perusahaan]);
+    const links = perusahaan?.links || [];
+    const from = perusahaan?.from || 0;
+    const to = perusahaan?.to || 0;
+    const total = perusahaan?.total || 0;
 
     return (
         <MainLayout>
@@ -73,280 +33,81 @@ export default function AdminPerusahaanIndex({ perusahaan }) {
                 <a href="#">CRUD / Perusahaan</a>
             </div>
 
-            {/* ================= FORM ================= */}
-            <div className="crud-form">
-                <h3 style={{ marginBottom: '15px', color: '#134CBC' }}>
-                    Tambah Perusahaan
-                </h3>
-
-                <form onSubmit={submit}>
-                    <div className="form-group">
-                        <label>Nama Perusahaan</label>
-                        <input
-                            value={data.nama}
-                            onChange={e => setData('nama', e.target.value)}
-                            required
-                        />
-                        {errors.nama && (
-                            <div style={{ color: 'red', fontSize: '12px' }}>{errors.nama}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label>Alamat</label>
-                        <input
-                            value={data.alamat}
-                            onChange={e => setData('alamat', e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input
-                            value={data.email}
-                            onChange={e => setData('email', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Kontak</label>
-                        <input
-                            value={data.kontak}
-                            onChange={e => setData('kontak', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Kota</label>
-                        <input
-                            value={data.kota}
-                            onChange={e => setData('kota', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Standar</label>
-                        <select
-                            value={data.standar}
-                            onChange={e => setData('standar', e.target.value)}
-                        >
-                            <option value="">-- Pilih Standar --</option>
-                            <option value="UMKM">UMKM</option>
-                            <option value="MOU">MOU</option>
-                            <option value="perseroan">Perseroan</option>
-                            <option value="Startup">Startup</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Kategori</label>
-                        <select
-                            value={data.kategori}
-                            onChange={e => setData('kategori', e.target.value)}
-                        >
-                            <option value="">-- Pilih Kategori --</option>
-                            <option value="lokal">Lokal</option>
-                            <option value="Provinsi">Provinsi</option>
-                            <option value="Nasional">Nasional</option>
-                            <option value="Internasional">Internasional</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Deskripsi</label>
-                        <textarea
-                            value={data.deskripsi_perusahaan}
-                            onChange={e => setData('deskripsi_perusahaan', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Kerja Sama</label>
-                        <input
-                            value={data.kerja_sama}
-                            onChange={e => setData('kerja_sama', e.target.value)}
-                        />
-                    </div>
-
-                    {/* LOGO */}
-                    <div className="form-group">
-                        <label>Logo</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={e => {
-                                const file = e.target.files[0];
-                                const error = validateImage(file, 'Logo');
-
-                                if (error) {
-                                    setFileErrors(prev => ({ ...prev, logo: error }));
-                                    setData('logo', null);
-                                    return;
-                                }
-
-                                setFileErrors(prev => ({ ...prev, logo: null }));
-                                setData('logo', file);
-                            }}
-                        />
-                        {fileErrors.logo && (
-                            <div style={{ color: 'red' }}>{fileErrors.logo}</div>
-                        )}
-
-                        {!previewLogo && (
-                            <small style={{ color: '#888' }}>
-                                Max 2MB (jpg, jpeg, png)
-                            </small>
-                        )}
-
-                        {previewLogo && (
-                            <img src={previewLogo} width="80" style={{ marginTop: '10px' }} />
-                        )}
-                    </div>
-
-                    {/* GAMBAR */}
-                    <div className="form-group">
-                        <label>Gambar</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={e => {
-                                const file = e.target.files[0];
-                                const error = validateImage(file, 'Gambar');
-
-                                if (error) {
-                                    setFileErrors(prev => ({ ...prev, gambar: error }));
-                                    setData('gambar', null);
-                                    return;
-                                }
-
-                                setFileErrors(prev => ({ ...prev, gambar: null }));
-                                setData('gambar', file);
-                            }}
-                        />
-                        {fileErrors.gambar && (
-                            <div style={{ color: 'red' }}>{fileErrors.gambar}</div>
-                        )}
-
-                        {!previewGambar && (
-                            <small style={{ color: '#888' }}>
-                                Max 2MB (jpg, jpeg, png)
-                            </small>
-                        )}
-
-                        {previewGambar && (
-                            <img src={previewGambar} width="80" style={{ marginTop: '10px' }} />
-                        )}
-                    </div>
-
-                    <button type="submit" disabled={processing}
-                            style={{
-                                padding: '5px 10px',
-                                fontSize: '12px',
-                                background: '#134CBC',
-                                color: '#fff',
-                                borderRadius: '4px',
-                                border: 'none'
-                            }}>
-                        {processing ? 'Menyimpan...' : 'Simpan'}
-                    </button>
+            <div className="search-container">
+                <form className="search" onSubmit={handleFilter}>
+                    <label htmlFor="search-perusahaan">Pencarian:</label>
+                    <input
+                        id="search-perusahaan"
+                        name="search"
+                        className="search-input"
+                        defaultValue={filters?.search || ''}
+                    />
+                    <label htmlFor="kategori-perusahaan">Kategori:</label>
+                    <select
+                        id="kategori-perusahaan"
+                        name="kategori"
+                        className="search-select"
+                        defaultValue={filters?.kategori || ''}
+                    >
+                        <option value="">-- Semua Kategori --</option>
+                        <option value="lokal">lokal</option>
+                        <option value="Provinsi">provinsi</option>
+                        <option value="Nasional">nasional</option>
+                        <option value="Internasional">internasional</option>
+                    </select>
+                    <button className="search-button" type="submit">Cari</button>
                 </form>
             </div>
 
-            {/* ================= TABLE ================= */}
-            <div className="rekap-container">
-                <table className="rekap-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Alamat</th>
-                            <th>Email</th>
-                            <th>Kontak</th>
-                            <th>Logo</th>
-                            <th>Gambar</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {perusahaan.data.map((p, i) => (
-                            <tr key={p.id_perusahaan}>
-                                <td>{(perusahaan.current_page - 1) * perusahaan.per_page + i + 1}</td>
-                                <td>{p.nama}</td>
-                                <td>{p.alamat || '-'}</td>
-                                <td>{p.email || '-'}</td>
-                                <td>{p.kontak || '-'}</td>
+            <div className="perusahaan-admin-wrap">
+                <Link className="perusahaan-add-card" href="/admin/perusahaan/create">
+                    <i className="fa-solid fa-plus"></i>
+                    <p>Tambahkan Perusahaan</p>
+                </Link>
 
-                                <td>
-                                    <img
-                                        src={p.logo
-                                            ? `/storage/logo_perusahaan/${p.logo}`
-                                            : '/default-logo.png'}
-                                        width="50"
-                                    />
-                                </td>
+                {rows.length > 0 ? rows.map((p) => (
+                    <div className="perusahaan-admin-card" key={p.id_perusahaan}>
+                        <div className="perusahaan-card-image">
+                            {p.gambar ? (
+                                <img src={`/storage/gambar_perusahaan/${p.gambar}`} alt={p.nama} />
+                            ) : (
+                                <div className="perusahaan-card-image-fallback">tidak tersedia</div>
+                            )}
+                        </div>
+                        <div className="perusahaan-card-info">
+                            <h3>{p.nama}</h3>
+                            <p><i className="fa-solid fa-location-dot"></i>{p.alamat || p.kota || '-'}</p>
+                            <p><i className="fa-solid fa-briefcase"></i>{p.kategori || '-'}</p>
+                            <p><i className="fa-solid fa-envelope"></i>{p.email || '-'}</p>
+                        </div>
+                        <div className="perusahaan-card-actions">
+                            <Link href={`/admin/perusahaan/${p.id_perusahaan}/edit`} className="perusahaan-btn perusahaan-btn-edit">
+                                <i className="fa-solid fa-pen-to-square"></i> Edit
+                            </Link>
+                            <button onClick={() => handleDelete(p.id_perusahaan)} className="perusahaan-btn perusahaan-btn-delete">
+                                <i className="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                )) : (
+                    <p className="no-data">Belum ada data perusahaan.</p>
+                )}
 
-                                <td>
-                                    <img
-                                        src={p.gambar
-                                            ? `/storage/gambar_perusahaan/${p.gambar}`
-                                            : '/default-gambar.png'}
-                                        width="70"
-                                    />
-                                </td>
-
-                                <td>
-                                    <Link href={`/admin/perusahaan/${p.id_perusahaan}/edit`}
-                                        className="edit-button"
-                                        style={{
-                                            padding: '5px 10px',
-                                            fontSize: '12px',
-                                            marginRight: '5px',
-                                            background: '#4CAF50',
-                                            color: '#fff',
-                                            borderRadius: '4px',
-                                            textDecoration: 'none',
-                                            border: 'none'
-                                        }}>
-                                        Edit
-                                    </Link>
-
-                                    <button onClick={() => handleDelete(p.id_perusahaan)}
-                                        style={{
-                                            padding: '5px 10px',
-                                            fontSize: '12px',
-                                            background: '#dc3545',
-                                            color: '#fff',
-                                            borderRadius: '4px',
-                                            border: 'none'
-                                        }}>
-                                        Hapus
-                                    </button>
-                                </td>
-                            </tr>
+                <div className="pagination-container">
+                    <div className="pagination-info">
+                        <p>Ditampilkan <strong>{from}</strong> sampai <strong>{to}</strong> dari total <strong>{total}</strong> perusahaan</p>
+                    </div>
+                    <div className="pagination">
+                        {links.map((link, i) => (
+                            <Link
+                                key={i}
+                                href={link.url || '#'}
+                                className={`${link.active ? 'active' : ''} ${String(link.label).includes('Previous') || String(link.label).includes('Next') ? 'navigate' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                                preserveScroll
+                            />
                         ))}
-                    </tbody>
-                </table>
-
-                {/* ================= PAGINATION ================= */}
-                <div style={{ marginTop: '20px' }}>
-                    {perusahaan.links.map((link, index) => (
-                        <button
-                            key={index}
-                            disabled={!link.url}
-                            onClick={() => link.url && router.visit(link.url)}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            style={{
-                                marginRight: '5px',
-                                padding: '5px 10px',
-                                background: link.active ? '#134CBC' : '#eee',
-                                color: link.active ? '#fff' : '#000',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: link.url ? 'pointer' : 'not-allowed'
-                            }}
-                        />
-                    ))}
+                    </div>
                 </div>
             </div>
         </MainLayout>
