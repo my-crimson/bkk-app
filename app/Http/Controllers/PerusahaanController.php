@@ -86,8 +86,6 @@ class PerusahaanController extends Controller
 
     public function update(Request $request, $id)
     {
-<<<<<<< HEAD
-=======
         $perusahaan = Perusahaan::findOrFail($id);
         
         $data = $request->only([
@@ -101,57 +99,8 @@ class PerusahaanController extends Controller
         }
         
         $perusahaan->update($data);
->>>>>>> remotes/origin/main
 
-        $perusahaan = Perusahaan::findOrFail($id);
-
-        $request->validate([
-            'nama_perusahaan' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $data = $request->only([
-            'nama_perusahaan', 'alamat', 'deskripsi', 'website',
-            'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
-        ]);
-
-        // ======================
-        // UPDATE LOGO
-        // ======================
-        if ($request->hasFile('logo')) {
-
-            if ($perusahaan->logo) {
-                Storage::delete('public/logo_perusahaan/' . $perusahaan->logo);
-            }
-
-            $fileLogo = $request->file('logo');
-            $namaLogo = 'logo_' . time() . '_' . $fileLogo->getClientOriginalName();
-            $fileLogo->storeAs('logo_perusahaan', $namaLogo, 'public');
-
-            $data['logo'] = $namaLogo;
-        }
-
-        // ======================
-        // UPDATE GAMBAR
-        // ======================
-        if ($request->hasFile('gambar')) {
-
-            if ($perusahaan->gambar) {
-                Storage::delete('public/gambar_perusahaan/' . $perusahaan->gambar);
-            }
-
-            $fileGambar = $request->file('gambar');
-            $namaGambar = 'gambar_' . time() . '_' . $fileGambar->getClientOriginalName();
-            $fileGambar->storeAs('gambar_perusahaan', $namaGambar, 'public');
-
-            $data['gambar'] = $namaGambar;
-        }
-
-        $perusahaan->update($data);
-
-        return redirect()->route('admin.perusahaan.index')
-            ->with('success', 'Perusahaan berhasil diperbarui!');
+        return redirect()->route('admin.perusahaan.index')->with('success', 'Perusahaan berhasil diperbarui!');
     }
 
 
