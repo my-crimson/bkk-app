@@ -1,13 +1,19 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
 
 export default function AdminPerusahaanEdit({ perusahaan }) {
-    const { data, setData, put, processing } = useForm({
-        nama: perusahaan.nama || '', alamat: perusahaan.alamat || '', kota: perusahaan.kota || '',
-        deskripsi_perusahaan: perusahaan.deskripsi_perusahaan || '', email: perusahaan.email || '', kontak: perusahaan.kontak || '',
-        standar: perusahaan.standar || '', kategori: perusahaan.kategori || '',
+    const { data, setData, processing, errors } = useForm({
+        _method: 'PUT',
+        nama: perusahaan.nama || '',
+        alamat: perusahaan.alamat || '',
+        kota: perusahaan.kota || '',
+        deskripsi_perusahaan: perusahaan.deskripsi_perusahaan || '',
+        email: perusahaan.email || '',
+        kontak: perusahaan.kontak || '',
+        standar: perusahaan.standar || '',
+        kategori: perusahaan.kategori || '',
         kerja_sama: perusahaan.kerja_sama || '',
     });
 
@@ -16,25 +22,27 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         gambar: null,
     });
 
+    const [logoFile, setLogoFile] = useState(null);
+    const [gambarFile, setGambarFile] = useState(null);
     const [previewLogo, setPreviewLogo] = useState(null);
     const [previewGambar, setPreviewGambar] = useState(null);
 
     // ================= PREVIEW =================
     useEffect(() => {
-        if (data.logo) {
-            const url = URL.createObjectURL(data.logo);
+        if (logoFile) {
+            const url = URL.createObjectURL(logoFile);
             setPreviewLogo(url);
             return () => URL.revokeObjectURL(url);
         }
-    }, [data.logo]);
+    }, [logoFile]);
 
     useEffect(() => {
-        if (data.gambar) {
-            const url = URL.createObjectURL(data.gambar);
+        if (gambarFile) {
+            const url = URL.createObjectURL(gambarFile);
             setPreviewGambar(url);
             return () => URL.revokeObjectURL(url);
         }
-    }, [data.gambar]);
+    }, [gambarFile]);
 
     // ================= SUBMIT =================
     const submit = (e) => {
@@ -45,14 +53,17 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
             return;
         }
 
-        post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, {
-            _method: 'put',
-            forceFormData: true
+        const formData = { ...data };
+        if (logoFile) formData.logo = logoFile;
+        if (gambarFile) formData.gambar = gambarFile;
+
+        router.post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, formData, {
+            forceFormData: true,
         });
     };
 
-    const jenisOptions = ['UMKM', 'MOU', 'Perseroan', 'Startup'];
-    const skalaOptions = ['Lokal', 'Provinsi', 'Nasional', 'Internasional'];
+    const standarOptions = ['UMKM', 'MOU', 'perseroan', 'Startup'];
+    const kategoriOptions = ['lokal', 'Provinsi', 'Nasional', 'Internasional'];
 
     return (
         <MainLayout>
@@ -64,18 +75,17 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                 </h2>
 
                 <form onSubmit={submit}>
-<<<<<<< HEAD
 
                     {/* NAMA */}
                     <div className="form-group">
                         <label>Nama</label>
                         <input
-                            value={data.nama_perusahaan}
-                            onChange={e => setData('nama_perusahaan', e.target.value)}
+                            value={data.nama}
+                            onChange={e => setData('nama', e.target.value)}
                             required
                         />
-                        {errors.nama_perusahaan && (
-                            <div style={{ color: 'red' }}>{errors.nama_perusahaan}</div>
+                        {errors.nama && (
+                            <div style={{ color: 'red', fontSize: '12px' }}>{errors.nama}</div>
                         )}
                     </div>
 
@@ -97,47 +107,47 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                         />
                     </div>
 
-                    {/* TELEPON */}
+                    {/* KONTAK */}
                     <div className="form-group">
-                        <label>Telepon</label>
+                        <label>Kontak</label>
                         <input
-                            value={data.telepon}
-                            onChange={e => setData('telepon', e.target.value)}
+                            value={data.kontak}
+                            onChange={e => setData('kontak', e.target.value)}
                         />
                     </div>
 
-                    {/* WEBSITE */}
+                    {/* KOTA */}
                     <div className="form-group">
-                        <label>Website</label>
+                        <label>Kota</label>
                         <input
-                            value={data.website}
-                            onChange={e => setData('website', e.target.value)}
+                            value={data.kota}
+                            onChange={e => setData('kota', e.target.value)}
                         />
                     </div>
 
-                    {/* JENIS */}
+                    {/* STANDAR */}
                     <div className="form-group">
-                        <label>Jenis</label>
+                        <label>Standar</label>
                         <select
-                            value={data.jenis_perusahaan}
-                            onChange={e => setData('jenis_perusahaan', e.target.value)}
+                            value={data.standar}
+                            onChange={e => setData('standar', e.target.value)}
                         >
-                            <option value="">-- Pilih Jenis --</option>
-                            {jenisOptions.map(j => (
+                            <option value="">-- Pilih Standar --</option>
+                            {standarOptions.map(j => (
                                 <option key={j} value={j}>{j}</option>
                             ))}
                         </select>
                     </div>
 
-                    {/* SKALA */}
+                    {/* KATEGORI */}
                     <div className="form-group">
-                        <label>Skala</label>
+                        <label>Kategori</label>
                         <select
-                            value={data.skala}
-                            onChange={e => setData('skala', e.target.value)}
+                            value={data.kategori}
+                            onChange={e => setData('kategori', e.target.value)}
                         >
-                            <option value="">-- Pilih Skala --</option>
-                            {skalaOptions.map(s => (
+                            <option value="">-- Pilih Kategori --</option>
+                            {kategoriOptions.map(s => (
                                 <option key={s} value={s}>{s}</option>
                             ))}
                         </select>
@@ -147,8 +157,17 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                     <div className="form-group">
                         <label>Deskripsi</label>
                         <textarea
-                            value={data.deskripsi}
-                            onChange={e => setData('deskripsi', e.target.value)}
+                            value={data.deskripsi_perusahaan}
+                            onChange={e => setData('deskripsi_perusahaan', e.target.value)}
+                        />
+                    </div>
+
+                    {/* KERJA SAMA */}
+                    <div className="form-group">
+                        <label>Kerja Sama</label>
+                        <input
+                            value={data.kerja_sama}
+                            onChange={e => setData('kerja_sama', e.target.value)}
                         />
                     </div>
 
@@ -166,13 +185,13 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                                 if (error) {
                                     setFileErrors(prev => ({ ...prev, logo: error }));
-                                    setData('logo', null);
+                                    setLogoFile(null);
                                     e.target.value = null;
                                     return;
                                 }
 
                                 setFileErrors(prev => ({ ...prev, logo: null }));
-                                setData('logo', file);
+                                setLogoFile(file);
                             }}
                         />
 
@@ -207,13 +226,13 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                                 if (error) {
                                     setFileErrors(prev => ({ ...prev, gambar: error }));
-                                    setData('gambar', null);
+                                    setGambarFile(null);
                                     e.target.value = null;
                                     return;
                                 }
 
                                 setFileErrors(prev => ({ ...prev, gambar: null }));
-                                setData('gambar', file);
+                                setGambarFile(file);
                             }}
                         />
 
@@ -245,35 +264,6 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                             }}>
                         {processing ? 'Mengupdate...' : 'Update'}
                     </button>
-
-=======
-                    <div className="form-group"><label>Nama</label><input value={data.nama} onChange={e => setData('nama', e.target.value)} required /></div>
-                    <div className="form-group"><label>Alamat</label><input value={data.alamat} onChange={e => setData('alamat', e.target.value)} /></div>
-                    <div className="form-group"><label>Kota</label><input value={data.kota} onChange={e => setData('kota', e.target.value)} /></div>
-                    <div className="form-group"><label>Email</label><input type="email" value={data.email} onChange={e => setData('email', e.target.value)} /></div>
-                    <div className="form-group"><label>Kontak</label><input value={data.kontak} onChange={e => setData('kontak', e.target.value)} /></div>
-                    <div className="form-group"><label>Standar</label>
-                        <select value={data.standar} onChange={e => setData('standar', e.target.value)}>
-                            <option value="">-- Pilih --</option>
-                            <option value="umkm">UMKM</option>
-                            <option value="mou">MOU</option>
-                            <option value="startup">Startup</option>
-                            <option value="perseroan">Perseroan</option>
-                        </select>
-                    </div>
-                    <div className="form-group"><label>Kategori</label>
-                        <select value={data.kategori} onChange={e => setData('kategori', e.target.value)}>
-                            <option value="">-- Pilih --</option>
-                            <option value="lokal">Lokal</option>
-                            <option value="provinsi">Provinsi</option>
-                            <option value="nasional">Nasional</option>
-                            <option value="internasional">Internasional</option>
-                        </select>
-                    </div>
-                    <div className="form-group"><label>Deskripsi</label><textarea value={data.deskripsi_perusahaan} onChange={e => setData('deskripsi_perusahaan', e.target.value)}></textarea></div>
-                    <div className="form-group"><label>Kerjasama</label><textarea value={data.kerja_sama} onChange={e => setData('kerja_sama', e.target.value)}></textarea></div>
-                    <button type="submit" className="btn-submit" disabled={processing}>Update</button>
->>>>>>> remotes/origin/main
                 </form>
             </div>
         </MainLayout>

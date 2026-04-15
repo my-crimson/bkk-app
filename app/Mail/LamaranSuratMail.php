@@ -61,10 +61,20 @@ class LamaranSuratMail extends Mailable implements ShouldQueue
         $filePath = storage_path('app/public/uploads/lamaran/' . $this->namaFile);
         
         if (file_exists($filePath)) {
+            // Detect file extension for correct MIME type
+            $extension = strtolower(pathinfo($this->namaFile, PATHINFO_EXTENSION));
+            $mimeTypes = [
+                'pdf'  => 'application/pdf',
+                'doc'  => 'application/msword',
+                'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            ];
+            $mime = $mimeTypes[$extension] ?? 'application/octet-stream';
+            $displayName = 'Surat-Lamaran-' . $this->alumni->nama . '.' . $extension;
+
             return [
                 \Illuminate\Mail\Mailables\Attachment::fromPath($filePath)
-                    ->as('Surat-Lamaran.pdf')
-                    ->withMime('application/pdf'),
+                    ->as($displayName)
+                    ->withMime($mime),
             ];
         }
 

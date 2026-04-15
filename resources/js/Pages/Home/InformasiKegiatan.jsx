@@ -22,7 +22,7 @@ export default function InformasiKegiatan({ berita }) {
                                     <li><i className="fa-solid fa-users"></i>{item.jml_peserta || '-'} peserta</li>
                                 </ul>
                                 <p style={{ padding: '0 20px 20px', textAlign: 'left', color: '#555' }}>
-                                    {item.deskripsi_lowker}
+                                    {item.deskripsi}
                                 </p>
                             </div>
                             {item.gambar && (

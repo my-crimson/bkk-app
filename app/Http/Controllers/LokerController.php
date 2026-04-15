@@ -81,7 +81,7 @@ class LokerController extends Controller
     // Admin: create form
     public function create()
     {
-        $perusahaan = Perusahaan::orderBy('nama_perusahaan')->get();
+        $perusahaan = Perusahaan::orderBy('nama')->get();
         $jurusan = Jurusan::orderBy('jurusan')->get();
         return Inertia::render('Admin/Loker/Create', [
             'perusahaan' => $perusahaan,
@@ -124,7 +124,7 @@ class LokerController extends Controller
     public function edit($id)
     {
         $lowker = Lowker::findOrFail($id);
-        $perusahaan = Perusahaan::orderBy('nama_perusahaan')->get();
+        $perusahaan = Perusahaan::orderBy('nama')->get();
         $jurusan = Jurusan::orderBy('jurusan')->get();
         return Inertia::render('Admin/Loker/Edit', [
             'lowker' => $lowker,

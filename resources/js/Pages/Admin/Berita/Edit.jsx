@@ -4,7 +4,7 @@ import MainLayout from '../../../Layouts/MainLayout';
 export default function AdminBeritaEdit({ berita }) {
     const { data, setData, post, processing } = useForm({
         _method: 'PUT', judul: berita.judul || '', tanggal: berita.tanggal || '',
-        jml_peserta: berita.jml_peserta || '', lokasi: berita.lokasi || '', deskripsi_lowker: berita.deskripsi_lowker || '',
+        jml_peserta: berita.jml_peserta || '', lokasi: berita.lokasi || '', deskripsi: berita.deskripsi || '',
         gambar: null,
     });
 
@@ -21,7 +21,7 @@ export default function AdminBeritaEdit({ berita }) {
                     <div className="form-group"><label>Tanggal</label><input type="date" value={data.tanggal} onChange={e => setData('tanggal', e.target.value)} /></div>
                     <div className="form-group"><label>Jumlah Peserta</label><input value={data.jml_peserta} onChange={e => setData('jml_peserta', e.target.value)} /></div>
                     <div className="form-group"><label>Lokasi</label><input value={data.lokasi} onChange={e => setData('lokasi', e.target.value)} /></div>
-                    <div className="form-group"><label>Deskripsi</label><textarea value={data.deskripsi_lowker} onChange={e => setData('deskripsi_lowker', e.target.value)}></textarea></div>
+                    <div className="form-group"><label>Deskripsi</label><textarea value={data.deskripsi} onChange={e => setData('deskripsi', e.target.value)}></textarea></div>
                     <div className="form-group"><label>Gambar</label><input type="file" accept="image/*" onChange={e => setData('gambar', e.target.files[0])} /></div>
                     <button type="submit" className="btn-submit" disabled={processing}>Update</button>
                 </form>

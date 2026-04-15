@@ -13,7 +13,7 @@ export default function InfoKeg({ berita }) {
                     <div key={item.id_berita} style={{ marginBottom: '20px', padding: '20px', background: 'white', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
                         <h3 style={{ color: '#134CBC' }}>{item.judul}</h3>
                         <p style={{ color: '#888', fontSize: '14px' }}>{item.tanggal} | {item.lokasi}</p>
-                        <p style={{ marginTop: '10px', color: '#555' }}>{item.deskripsi_lowker}</p>
+                        <p style={{ marginTop: '10px', color: '#555' }}>{item.deskripsi}</p>
                     </div>
                 )) : (
                     <p className="no-data">Belum ada info kegiatan.</p>

@@ -6,9 +6,9 @@ import { validateImage } from '@/Helpers/fileHelper';
 export default function AdminPerusahaanIndex({ perusahaan }) {
     const { flash } = usePage().props;
 
-    const { data, setData, post, processing, reset } = useForm({
+    const { data, setData, post, processing, reset, errors } = useForm({
         nama: '', alamat: '', kota: '', deskripsi_perusahaan: '', email: '', kontak: '',
-        gambar: '', standar: '', kategori: '', kerja_sama: '',
+        gambar: null, standar: '', kategori: '', kerja_sama: '',
     });
 
     const [fileErrors, setFileErrors] = useState({
@@ -80,14 +80,16 @@ export default function AdminPerusahaanIndex({ perusahaan }) {
                 </h3>
 
                 <form onSubmit={submit}>
-<<<<<<< HEAD
                     <div className="form-group">
                         <label>Nama Perusahaan</label>
                         <input
-                            value={data.nama_perusahaan}
-                            onChange={e => setData('nama_perusahaan', e.target.value)}
+                            value={data.nama}
+                            onChange={e => setData('nama', e.target.value)}
                             required
                         />
+                        {errors.nama && (
+                            <div style={{ color: 'red', fontSize: '12px' }}>{errors.nama}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -108,43 +110,43 @@ export default function AdminPerusahaanIndex({ perusahaan }) {
                     </div>
 
                     <div className="form-group">
-                        <label>Telepon</label>
+                        <label>Kontak</label>
                         <input
-                            value={data.telepon}
-                            onChange={e => setData('telepon', e.target.value)}
+                            value={data.kontak}
+                            onChange={e => setData('kontak', e.target.value)}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>Website</label>
+                        <label>Kota</label>
                         <input
-                            value={data.website}
-                            onChange={e => setData('website', e.target.value)}
+                            value={data.kota}
+                            onChange={e => setData('kota', e.target.value)}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>Jenis</label>
+                        <label>Standar</label>
                         <select
-                            value={data.jenis_perusahaan}
-                            onChange={e => setData('jenis_perusahaan', e.target.value)}
+                            value={data.standar}
+                            onChange={e => setData('standar', e.target.value)}
                         >
-                            <option value="">-- Pilih Jenis --</option>
+                            <option value="">-- Pilih Standar --</option>
                             <option value="UMKM">UMKM</option>
                             <option value="MOU">MOU</option>
-                            <option value="Perseroan">Perseroan</option>
+                            <option value="perseroan">Perseroan</option>
                             <option value="Startup">Startup</option>
                         </select>
                     </div>
 
                     <div className="form-group">
-                        <label>Skala</label>
+                        <label>Kategori</label>
                         <select
-                            value={data.skala}
-                            onChange={e => setData('skala', e.target.value)}
+                            value={data.kategori}
+                            onChange={e => setData('kategori', e.target.value)}
                         >
-                            <option value="">-- Pilih Skala --</option>
-                            <option value="Lokal">Lokal</option>
+                            <option value="">-- Pilih Kategori --</option>
+                            <option value="lokal">Lokal</option>
                             <option value="Provinsi">Provinsi</option>
                             <option value="Nasional">Nasional</option>
                             <option value="Internasional">Internasional</option>
@@ -154,8 +156,16 @@ export default function AdminPerusahaanIndex({ perusahaan }) {
                     <div className="form-group">
                         <label>Deskripsi</label>
                         <textarea
-                            value={data.deskripsi}
-                            onChange={e => setData('deskripsi', e.target.value)}
+                            value={data.deskripsi_perusahaan}
+                            onChange={e => setData('deskripsi_perusahaan', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Kerja Sama</label>
+                        <input
+                            value={data.kerja_sama}
+                            onChange={e => setData('kerja_sama', e.target.value)}
                         />
                     </div>
 
@@ -240,71 +250,33 @@ export default function AdminPerusahaanIndex({ perusahaan }) {
                             }}>
                         {processing ? 'Menyimpan...' : 'Simpan'}
                     </button>
-
-=======
-                    <div className="form-group"><label>Nama Perusahaan*</label><input value={data.nama} onChange={e => setData('nama', e.target.value)} required /></div>
-                    <div className="form-group"><label>Alamat</label><input value={data.alamat} onChange={e => setData('alamat', e.target.value)} /></div>
-                    <div className="form-group"><label>Kota</label><input value={data.kota} onChange={e => setData('kota', e.target.value)} /></div>
-                    <div className="form-group"><label>Email</label><input type="email" value={data.email} onChange={e => setData('email', e.target.value)} /></div>
-                    <div className="form-group"><label>Kontak (No. Telepon)</label><input value={data.kontak} onChange={e => setData('kontak', e.target.value)} /></div>
-                    <div className="form-group"><label>Standar</label>
-                        <select value={data.standar} onChange={e => setData('standar', e.target.value)}>
-                            <option value="">-- Pilih --</option>
-                            <option value="umkm">UMKM</option>
-                            <option value="mou">MOU</option>
-                            <option value="startup">Startup</option>
-                            <option value="perseroan">Perseroan</option>
-                        </select>
-                    </div>
-                    <div className="form-group"><label>Kategori</label>
-                        <select value={data.kategori} onChange={e => setData('kategori', e.target.value)}>
-                            <option value="">-- Pilih --</option>
-                            <option value="lokal">Lokal</option>
-                            <option value="provinsi">Provinsi</option>
-                            <option value="nasional">Nasional</option>
-                            <option value="internasional">Internasional</option>
-                        </select>
-                    </div>
-                    <div className="form-group"><label>Deskripsi</label><textarea value={data.deskripsi_perusahaan} onChange={e => setData('deskripsi_perusahaan', e.target.value)}></textarea></div>
-                    <div className="form-group"><label>Kerjasama</label><textarea value={data.kerja_sama} onChange={e => setData('kerja_sama', e.target.value)}></textarea></div>
-                    <button type="submit" className="btn-submit" disabled={processing}>Simpan</button>
->>>>>>> remotes/origin/main
                 </form>
             </div>
 
             {/* ================= TABLE ================= */}
             <div className="rekap-container">
                 <table className="rekap-table">
-<<<<<<< HEAD
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Email</th>
-                            <th>Telepon</th>
+                            <th>Kontak</th>
                             <th>Logo</th>
                             <th>Gambar</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-
-=======
-                    <thead><tr><th>No</th><th>Nama</th><th>Alamat</th><th>Email</th><th>Kontak</th><th>Standar</th><th>Aksi</th></tr></thead>
->>>>>>> remotes/origin/main
                     <tbody>
                         {perusahaan.data.map((p, i) => (
                             <tr key={p.id_perusahaan}>
-<<<<<<< HEAD
                                 <td>{(perusahaan.current_page - 1) * perusahaan.per_page + i + 1}</td>
-                                <td>{p.nama_perusahaan}</td>
+                                <td>{p.nama}</td>
                                 <td>{p.alamat || '-'}</td>
                                 <td>{p.email || '-'}</td>
-                                <td>{p.telepon || '-'}</td>
+                                <td>{p.kontak || '-'}</td>
 
-=======
-                                <td>{i + 1}</td><td>{p.nama}</td><td>{p.alamat || '-'}</td><td>{p.email || '-'}</td><td>{p.kontak || '-'}</td><td>{p.standar || '-'}</td>
->>>>>>> remotes/origin/main
                                 <td>
                                     <img
                                         src={p.logo

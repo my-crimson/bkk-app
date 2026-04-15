@@ -21,7 +21,7 @@ class PerusahaanController extends Controller
     // Admin CRUD
     public function crudIndex()
     {
-        $perusahaan = Perusahaan::orderBy('nama')->get();
+        $perusahaan = Perusahaan::orderBy('nama')->paginate(10);
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
         ]);

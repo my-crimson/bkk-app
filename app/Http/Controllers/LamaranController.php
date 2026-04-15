@@ -35,6 +35,12 @@ class LamaranController extends Controller
             'file_lamaran' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB max
         ]);
 
+        // Check if lowongan has expired
+        $lowker = Lowker::with('perusahaan')->findOrFail($request->id_lowker);
+        if ($lowker->tgl_ditutup && \Carbon\Carbon::parse($lowker->tgl_ditutup)->lt(now()->startOfDay())) {
+            return back()->with('error', 'Lowongan ini sudah ditutup dan tidak dapat dilamar lagi.');
+        }
+
         // Check if already applied
         $existing = Lamaran::where('id_alumni', $alumni_id)
             ->where('id_lowker', $request->id_lowker)
@@ -44,9 +50,8 @@ class LamaranController extends Controller
             return back()->with('error', 'Anda sudah pernah melamar ke lowongan ini.');
         }
 
-        // Get lowker, alumni, and perusahaan data
-        $lowker = Lowker::with('perusahaan')->findOrFail($request->id_lowker);
-        $alumni = Alumni::findOrFail($alumni_id);
+        // Get alumni data with jurusan relation
+        $alumni = Alumni::with('jurusan')->findOrFail($alumni_id);
 
         // Upload file
         $file = $request->file('file_lamaran');
