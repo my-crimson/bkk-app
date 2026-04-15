@@ -7,6 +7,8 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
         gaji: lowker.gaji || '', lokasi: lowker.lokasi || '', tgl_posting: lowker.tgl_posting || '',
         tgl_ditutup: lowker.tgl_ditutup || '', id_perusahaan: lowker.id_perusahaan || '', id_jurusan: lowker.id_jurusan || '',
         status: lowker.status || 'aktif',
+        email: lowker.email || '', pendidikan: lowker.pendidikan || '', tipe_pekerjaan: lowker.tipe_pekerjaan || '',
+        keahlian: lowker.keahlian || '', waktu_bekerja: lowker.waktu_bekerja || '', tunjangan: lowker.tunjangan || '',
     });
 
     const submit = (e) => { e.preventDefault(); put(`/admin/loker/${lowker.id_lowker}`); };
@@ -27,6 +29,12 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
                     <div className="form-group"><label>Lokasi</label><input value={data.lokasi} onChange={e => setData('lokasi', e.target.value)} /></div>
                     <div className="form-group"><label>Tanggal Posting</label><input type="date" value={data.tgl_posting} onChange={e => setData('tgl_posting', e.target.value)} /></div>
                     <div className="form-group"><label>Tanggal Ditutup</label><input type="date" value={data.tgl_ditutup} onChange={e => setData('tgl_ditutup', e.target.value)} /></div>
+                    <div className="form-group"><label>Email Kontak</label><input type="email" value={data.email} onChange={e => setData('email', e.target.value)} required /></div>
+                    <div className="form-group"><label>Pendidikan</label><input value={data.pendidikan} onChange={e => setData('pendidikan', e.target.value)} /></div>
+                    <div className="form-group"><label>Tipe Pekerjaan</label><input value={data.tipe_pekerjaan} onChange={e => setData('tipe_pekerjaan', e.target.value)} /></div>
+                    <div className="form-group"><label>Keahlian yang Dibutuhkan</label><textarea value={data.keahlian} onChange={e => setData('keahlian', e.target.value)}></textarea></div>
+                    <div className="form-group"><label>Waktu Bekerja</label><input value={data.waktu_bekerja} onChange={e => setData('waktu_bekerja', e.target.value)} /></div>
+                    <div className="form-group"><label>Tunjangan</label><textarea value={data.tunjangan} onChange={e => setData('tunjangan', e.target.value)}></textarea></div>
                     <div className="form-group"><label>Status</label><select value={data.status} onChange={e => setData('status', e.target.value)}><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option></select></div>
                     <button type="submit" className="btn-submit" disabled={processing}>Update</button>
                 </form>

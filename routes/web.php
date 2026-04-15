@@ -87,5 +87,10 @@ Route::middleware('role:alumni')->group(function () {
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
 });
 
+// Lamaran routes
+Route::middleware('role:alumni')->group(function () {
+    Route::post('/lamaran', [LamaranController::class, 'store'])->name('lamaran.store');
+});
+
 // Lamaran download
 Route::get('/lamaran/download/{id}', [LamaranController::class, 'download'])->name('lamaran.download');

@@ -22,7 +22,7 @@ export default function Detail({ lowker }) {
                     <h3>Persyaratan</h3>
                     <p style={{ whiteSpace: 'pre-wrap' }}>{lowker.kualifikasi}</p>
                     <div style={{ marginTop: '20px' }}>
-                        <Link href={`/loker/${lowker.id_lowker}/kualifikasi`}>
+                        <Link href={`/loker/${lowker.id_lowker}/persyaratan`}>
                             <button className="detail-button">LAMAR SEKARANG</button>
                         </Link>
                         <Link href="/loker" style={{ marginLeft: '10px' }}>

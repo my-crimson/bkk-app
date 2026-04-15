@@ -11,8 +11,8 @@ class Perusahaan extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nama_perusahaan', 'alamat', 'deskripsi', 'logo', 'gambar', 'website',
-        'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
+        'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
+        'email', 'logo', 'gambar', 'standar', 'kategori', 'kerja_sama',
     ];
 
     public function lowker()

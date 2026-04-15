@@ -10,7 +10,7 @@ class Lamaran extends Model
     protected $primaryKey = 'id_lamaran';
     public $timestamps = false;
 
-    protected $fillable = ['id_alumni', 'id_lowker', 'tanggal_lamar', 'status', 'file_lamaran'];
+    protected $fillable = ['id_alumni', 'id_lowker', 'tanggal_lamaran', 'pass_foto', 'ijazah', 'portofolio', 'sertifikat', 'ktp_kk', 'cv', 'skck', 'surat_lamaran'];
 
     public function alumni()
     {

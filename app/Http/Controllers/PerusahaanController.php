@@ -12,7 +12,7 @@ class PerusahaanController extends Controller
     // Public
     public function index()
     {
-        $perusahaan = Perusahaan::orderBy('nama_perusahaan')->get();
+        $perusahaan = Perusahaan::orderBy('nama')->get();
         return Inertia::render('Perusahaan/Index', [
             'perusahaan' => $perusahaan,
         ]);
@@ -21,8 +21,7 @@ class PerusahaanController extends Controller
     // Admin CRUD
     public function crudIndex()
     {
-        $perusahaan = Perusahaan::orderBy('id_perusahaan', 'asc')->paginate(10);
-
+        $perusahaan = Perusahaan::orderBy('nama')->get();
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
         ]);
@@ -31,19 +30,17 @@ class PerusahaanController extends Controller
 
     public function store(Request $request)
     {
-    
         $request->validate([
-            'nama_perusahaan' => 'required|string|max:255',
-            'jenis_perusahaan' => 'nullable|in:UMKM,MOU,Perseroan,Startup',
-            'skala' => 'nullable|in:Lokal,Provinsi,Nasional,Internasional',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'nama' => 'required|string|max:255',
         ]);
 
         $data = $request->only([
-            'nama_perusahaan', 'alamat', 'deskripsi', 'website',
-            'email', 'telepon', 'jenis_perusahaan', 'skala', 'jumlah_karyawan',
+            'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
+            'email', 'logo', 'gambar', 'standar', 'kategori',
         ]);
+        
+        // Set default value for kerja_sama (required field)
+        $data['kerja_sama'] = $request->kerja_sama ?? '-';
 
         // ======================
         // UPLOAD LOGO
@@ -89,6 +86,22 @@ class PerusahaanController extends Controller
 
     public function update(Request $request, $id)
     {
+<<<<<<< HEAD
+=======
+        $perusahaan = Perusahaan::findOrFail($id);
+        
+        $data = $request->only([
+            'nama', 'alamat', 'kota', 'deskripsi_perusahaan', 'kontak',
+            'email', 'logo', 'gambar', 'standar', 'kategori',
+        ]);
+        
+        // Set default value for kerja_sama if provided
+        if ($request->kerja_sama) {
+            $data['kerja_sama'] = $request->kerja_sama;
+        }
+        
+        $perusahaan->update($data);
+>>>>>>> remotes/origin/main
 
         $perusahaan = Perusahaan::findOrFail($id);
 
