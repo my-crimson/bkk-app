@@ -5,7 +5,7 @@ import { validateImage } from '@/Helpers/fileHelper';
 
 export default function AdminPerusahaanCreate() {
     const { data, setData, post, processing, reset, errors } = useForm({
-        nama: '', alamat: '', deskripsi: '', email: '', kontak: '',
+        nama: '', alamat: '', deskripsi: '', website: '', email: '', kontak: '',
         logo: null, gambar: null, jenis: '', skala: '', kerja_sama: '',
     });
 
@@ -55,6 +55,7 @@ export default function AdminPerusahaanCreate() {
                         {errors.nama && <div style={{ color: 'red', fontSize: '12px' }}>{errors.nama}</div>}
                     </div>
                     <div className="form-group"><label>Alamat</label><input value={data.alamat} onChange={e => setData('alamat', e.target.value)} /></div>
+                    <div className="form-group"><label>Website</label><input value={data.website} onChange={e => setData('website', e.target.value)} /></div>
                     <div className="form-group"><label>Email</label><input value={data.email} onChange={e => setData('email', e.target.value)} /></div>
                     <div className="form-group"><label>Kontak</label><input value={data.kontak} onChange={e => setData('kontak', e.target.value)} /></div>
                     <div className="form-group">

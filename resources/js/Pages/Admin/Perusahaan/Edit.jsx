@@ -9,6 +9,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         nama: perusahaan.nama || '',
         alamat: perusahaan.alamat || '',
         deskripsi: perusahaan.deskripsi || '',
+        website: perusahaan.website || '',
         email: perusahaan.email || '',
         kontak: perusahaan.kontak || '',
         jenis: perusahaan.jenis || '',
@@ -90,6 +91,15 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
                         <input
                             value={data.alamat}
                             onChange={e => setData('alamat', e.target.value)}
+                        />
+                    </div>
+
+                    {/* WEBSITE */}
+                    <div className="form-group">
+                        <label>Website</label>
+                        <input
+                            value={data.website}
+                            onChange={e => setData('website', e.target.value)}
                         />
                     </div>
 
