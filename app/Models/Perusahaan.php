@@ -11,7 +11,7 @@ class Perusahaan extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nama', 'alamat', 'deskripsi', 'kontak',
+        'nama', 'alamat', 'deskripsi', 'kontak', 'website',
         'email', 'logo', 'gambar', 'jenis', 'skala', 'kerja_sama',
     ];
 

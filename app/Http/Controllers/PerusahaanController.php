@@ -59,7 +59,7 @@ class PerusahaanController extends Controller
         ]);
 
         $data = $request->only([
-            'nama', 'alamat', 'deskripsi', 'kontak',
+            'nama', 'alamat', 'deskripsi', 'kontak', 'website',
             'email', 'logo', 'gambar', 'jenis', 'skala',
         ]);
         
@@ -113,7 +113,7 @@ class PerusahaanController extends Controller
         $perusahaan = Perusahaan::findOrFail($id);
         
         $data = $request->only([
-            'nama', 'alamat', 'deskripsi', 'kontak',
+            'nama', 'alamat', 'deskripsi', 'kontak', 'website',
             'email', 'logo', 'gambar', 'jenis', 'skala',
         ]);
         
