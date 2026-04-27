@@ -10,11 +10,32 @@ use Illuminate\Support\Facades\Storage;
 class PerusahaanController extends Controller
 {
     // Public
-    public function index()
+    public function index(Request $request)
     {
-        $perusahaan = Perusahaan::orderBy('id_perusahaan')->get();
+        // 1. Ambil SEMUA data untuk Carousel (Tanpa Filter)
+        $carouselData = Perusahaan::orderBy('id_perusahaan')->get();
+
+        // 2. Logika Query untuk Pencarian (Data yang akan berubah saat dicari)
+        $query = Perusahaan::query();
+
+        if ($request->filled('search')) {
+            $term = $request->search;
+            $query->where(function ($q) use ($term) {
+                $q->where('nama', 'like', "%{$term}%")
+                    ->orWhere('alamat', 'like', "%{$term}%");
+            });
+        }
+
+        if ($request->filled('skala')) {
+            $query->where('skala', $request->skala);
+        }
+
+        $filteredData = $query->orderBy('id_perusahaan')->get();
+
         return Inertia::render('Perusahaan/Index', [
-            'perusahaan' => $perusahaan,
+            'carouselPerusahaan' => $carouselData, // Tetap utuh
+            'perusahaan' => $filteredData,         // Berubah sesuai search
+            'filters' => $request->only(['search', 'skala']),
         ]);
     }
 
@@ -27,8 +48,8 @@ class PerusahaanController extends Controller
             $term = $request->search;
             $query->where(function ($q) use ($term) {
                 $q->where('nama', 'like', "%{$term}%")
-                    ->orWhere('alamat', 'like', "%{$term}%")
-                    ->orWhere('email', 'like', "%{$term}%");
+                ->orWhere('alamat', 'like', "%{$term}%")
+                ->orWhere('email', 'like', "%{$term}%");
             });
         }
 
@@ -36,13 +57,12 @@ class PerusahaanController extends Controller
             $query->where('skala', $request->skala);
         }
 
+        // Admin menggunakan pagination
         $perusahaan = $query->orderBy('id_perusahaan')->paginate(10)->withQueryString();
+
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
-            'filters' => [
-                'search' => $request->search,
-                'skala' => $request->skala,
-            ],
+            'filters' => $request->only(['search', 'skala']),
         ]);
     }
 

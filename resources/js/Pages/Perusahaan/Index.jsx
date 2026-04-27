@@ -223,22 +223,45 @@ const CarouselStyles = () => (
         .company-detail-popup .company-detail-right {
             width: 65%;
         }
+
+        .results-grid { 
+                    display: grid; 
+                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+                    gap: 25px; 
+                    padding: 20px 5%; 
+                    margin-bottom: 50px;
+                }
+                .card-perusahaan {
+                    background: white;
+                    border-radius: 15px;
+                    overflow: hidden;
+                    border: 1px solid #eef2f6;
+                    transition: 0.3s;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+                }
+                .card-perusahaan:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+                .card-img { width: 100%; height: 160px; object-fit: cover; }
+                .card-body { padding: 15px; }
+                .card-body h3 { font-size: 16px; margin: 0 0 10px; color: #1e293b; }
     `}</style>
 );
 
-export default function PerusahaanIndex({ perusahaan = [], filters = {} }) {
+export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = [], filters = {} }) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [activePopup, setActivePopup] = useState(null);
     const [isPaused, setIsPaused] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(false); 
 
-    const total = perusahaan.length;
+    const total = carouselPerusahaan.length;
     const useCarousel = total >= 7;
 
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        router.get('/admin/perusahaan', {
+        
+        // Gunakan window.location.pathname agar otomatis menyesuaikan 
+        // apakah sedang di /admin/perusahaan atau di /perusahaan
+        router.get(window.location.pathname, {
             search: formData.get('search') || '',
             skala: formData.get('skala') || '',
         }, { 
@@ -298,7 +321,7 @@ export default function PerusahaanIndex({ perusahaan = [], filters = {} }) {
                     onMouseLeave={() => setIsPaused(false)}
                 >
                     <div className="company-list">
-                        {perusahaan.map((p, index) => {
+                        {carouselPerusahaan.map((p, index) => {
                             const slotClass = getSlotClass(index);
                             const isFocus = slotClass === 'slot-3';
 
@@ -391,6 +414,36 @@ export default function PerusahaanIndex({ perusahaan = [], filters = {} }) {
 
                     <button className="search-button" type="submit">Cari</button>
                 </form>
+            </div>
+
+{/* --- SECTION 3: HASIL PENCARIAN (MENGGUNAKAN perusahaan) --- */}
+            <div className="results-grid">
+                {perusahaan.length > 0 ? (
+                    perusahaan.map(p => (
+                        <div key={`grid-${p.id_perusahaan}`} className="card-perusahaan">
+                            {p.gambar ? (
+                                <img className="card-img" src={`/storage/gambar_perusahaan/${p.gambar}`} alt={p.nama} />
+                            ) : (
+                                <div className="card-img" style={{background: '#f1f5f9'}}></div>
+                            )}
+                            <div className="card-body">
+                                <h3>{p.nama}</h3>
+                                <p style={{fontSize: '12px', color: '#64748b'}}>{p.skala} | {p.jenis}</p>
+                                <button 
+                                    onClick={() => setActivePopup(p)} 
+                                    className="detail-btn" 
+                                    style={{marginTop: '15px', width: '100%'}}
+                                >
+                                    Lihat Detail
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div style={{gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: '#64748b'}}>
+                        Data tidak ditemukan untuk pencarian ini.
+                    </div>
+                )}
             </div>
 
             {/* --- BAGIAN POPUP DETAIL --- */}
