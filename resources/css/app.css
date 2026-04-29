@@ -2024,6 +2024,320 @@ footer {
     }
 }
 
+/* ========== PASSWORD WARNING POPUP ========== */
+.pw-warning-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13, 24, 55, 0.75), rgba(15, 63, 143, 0.65));
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: pwOverlayIn 0.3s ease-out;
+}
+
+@keyframes pwOverlayIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pwModalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.pw-warning-modal {
+    width: min(420px, 92%);
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 28px 28px;
+    box-shadow: 0 20px 60px rgba(11, 35, 76, 0.4);
+    text-align: center;
+    animation: pwModalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-top: 4px solid #e6a817;
+}
+
+.pw-warning-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(230, 168, 23, 0.3);
+}
+
+.pw-warning-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #d4850a;
+}
+
+.pw-warning-title {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a2744;
+}
+
+.pw-warning-text {
+    margin: 0 0 24px;
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.pw-warning-text strong {
+    color: #c0392b;
+}
+
+.pw-warning-btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #0f3f8f, #1a5cc8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(15, 63, 143, 0.35);
+}
+
+.pw-warning-btn:hover {
+    background: linear-gradient(135deg, #0c3170, #1550b5);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(15, 63, 143, 0.45);
+}
+
+/* ========== CHANGE PASSWORD SECTION ========== */
+.change-pw-section {
+    margin-top: 14px;
+    background: #fff;
+    border: 1px solid #d6e2f5;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(15, 63, 143, 0.1);
+    border-left: 4px solid #0f3f8f;
+    animation: pwModalIn 0.3s ease-out;
+}
+
+.change-pw-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.change-pw-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: linear-gradient(135deg, #e8f0fe, #d0e1fd);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change-pw-icon svg {
+    width: 22px;
+    height: 22px;
+    color: #0f3f8f;
+}
+
+.change-pw-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: #11336b;
+}
+
+.change-pw-header p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #6b7c93;
+}
+
+.change-pw-form .form-group {
+    margin-bottom: 14px;
+}
+
+.change-pw-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2d42;
+    margin-bottom: 5px;
+}
+
+.change-pw-form input {
+    width: 100%;
+    border: 1px solid #cfd9e8;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.change-pw-form input:focus {
+    outline: none;
+    border-color: #0f3f8f;
+    box-shadow: 0 0 0 3px rgba(15, 63, 143, 0.12);
+}
+
+.change-pw-form input.input-error {
+    border-color: #e74c3c;
+}
+
+.field-error {
+    display: block;
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+.change-pw-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-save-pw {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #0f3f8f, #1a5cc8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(15, 63, 143, 0.25);
+}
+
+.btn-save-pw:hover {
+    background: linear-gradient(135deg, #0c3170, #1550b5);
+    transform: translateY(-1px);
+}
+
+.btn-save-pw:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-cancel-pw {
+    border: 1px solid #cfd9e8;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a5568;
+    background: #f7f9fc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-pw:hover {
+    background: #edf1f7;
+    border-color: #b0bdd0;
+}
+
+.btn-change-pw {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #e8f0fe, #d0e1fd);
+    color: #0f3f8f;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-change-pw:hover {
+    background: linear-gradient(135deg, #d0e1fd, #b8d1fa);
+    transform: translateY(-1px);
+}
+
+/* ========== LOGIN HINT ========== */
+.login-hint {
+    font-size: 12px;
+    color: #888;
+    margin: 8px 0 12px;
+    text-align: left;
+    font-style: italic;
+}
+
+/* ========== PASSWORD INPUT WITH EYE ICON ========== */
+.password-input-wrap {
+    position: relative;
+    width: 100%;
+    margin-top: 5px; /* Move margin-top from input to wrapper for perfect centering */
+}
+
+.password-input-wrap input {
+    width: 100%;
+    padding-right: 40px !important;
+    margin-top: 0 !important; /* Reset margin so wrapper handles it and button centers correctly */
+}
+
+/* Sembunyikan icon mata default bawaan browser (terutama Edge) */
+.password-input-wrap input::-ms-reveal,
+.password-input-wrap input::-ms-clear {
+    display: none;
+}
+
+.password-input-wrap input::-webkit-contacts-auto-fill-button,
+.password-input-wrap input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6b7c93;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    width: 24px;
+    height: 24px;
+    transition: color 0.2s;
+    margin-top: 2.5px; /* slight adjustment for typical label/input height differences, though translateY usually handles it. Will rely on translateY */
+}
+
+.password-toggle-btn:hover,
+.password-toggle-btn:focus {
+    color: #11336b;
+    outline: none;
+}
+
+.password-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
     .beranda-page .container {

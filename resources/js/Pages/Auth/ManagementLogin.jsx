@@ -1,4 +1,5 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
+import PasswordInput from '../../Components/PasswordInput';
 
 export default function ManagementLogin() {
     const { flash } = usePage().props;
@@ -33,8 +34,14 @@ export default function ManagementLogin() {
                         </div>
                         <div className="input-group">
                             <label htmlFor="password">Password</label>
-                            <input type="password" name="password" id="password" placeholder="Masukkan Password..."
-                                value={data.password} onChange={e => setData('password', e.target.value)} required />
+                            <PasswordInput
+                                name="password"
+                                id="password"
+                                placeholder="Masukkan Password..."
+                                value={data.password}
+                                onChange={e => setData('password', e.target.value)}
+                                required
+                            />
                         </div>
                         <button type="submit" className="login-button" disabled={processing}>MASUK</button>
                     </form>

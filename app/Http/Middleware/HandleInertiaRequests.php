@@ -30,6 +30,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
             ],
+            'mustChangePassword' => (bool) $request->session()->get('must_change_password', false),
         ];
     }
 }

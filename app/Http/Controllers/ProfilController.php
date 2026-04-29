@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumni;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class ProfilController extends Controller
@@ -13,6 +14,7 @@ class ProfilController extends Controller
         $alumni = Alumni::with('jurusan')->findOrFail(session('user_id'));
         return Inertia::render('Profil/Index', [
             'alumni' => $alumni,
+            'mustChangePassword' => session('must_change_password', false),
         ]);
     }
 
@@ -34,5 +36,28 @@ class ProfilController extends Controller
         $alumni->update($data);
 
         return back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:6|confirmed',
+        ], [
+            'password.required' => 'Password baru harus diisi.',
+            'password.min' => 'Password minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]);
+
+        $alumni = Alumni::findOrFail(session('user_id'));
+
+        $alumni->update([
+            'password' => Hash::make($request->password),
+            'password_changed' => true,
+        ]);
+
+        // Hapus flag must_change_password dari session
+        session()->forget('must_change_password');
+
+        return back()->with('success', 'Password berhasil diubah! Selanjutnya gunakan password baru untuk login.');
     }
 }

@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { usePage } from '@inertiajs/react';
+import { usePage, router } from '@inertiajs/react';
 import Header from '../Components/Navbar/Header';
 import GuestNav from '../Components/Navbar/GuestNav';
 import AdminNav from '../Components/Navbar/AdminNav';
 import AlumniNav from '../Components/Navbar/AlumniNav';
 
 export default function MainLayout({ children, className = '' }) {
-    const { auth, flash } = usePage().props;
+    const { auth, flash, mustChangePassword } = usePage().props;
     const [confirmState, setConfirmState] = useState({ open: false, message: '', resolver: null });
     const [toast, setToast] = useState({ show: false, type: 'success', message: '' });
+    const [showPasswordWarning, setShowPasswordWarning] = useState(false);
     const toastTimeoutRef = useRef(null);
 
     const renderNavbar = () => {
@@ -27,6 +28,23 @@ export default function MainLayout({ children, className = '' }) {
         toastTimeoutRef.current = setTimeout(() => {
             setToast((prev) => ({ ...prev, show: false }));
         }, 3000);
+    };
+
+    // Pop-up peringatan ubah password
+    useEffect(() => {
+        if (
+            mustChangePassword &&
+            auth?.user?.role === 'alumni' &&
+            !sessionStorage.getItem('pw_warning_dismissed')
+        ) {
+            setShowPasswordWarning(true);
+        }
+    }, []);
+
+    const handlePasswordWarningOk = () => {
+        sessionStorage.setItem('pw_warning_dismissed', '1');
+        setShowPasswordWarning(false);
+        router.visit('/profil');
     };
 
     useEffect(() => {
@@ -64,6 +82,33 @@ export default function MainLayout({ children, className = '' }) {
         <div className={className}>
             {toast.show && (
                 <div className={`floating-notif ${toast.type}`}>{toast.message}</div>
+            )}
+
+            {/* Pop-up Peringatan Ubah Password */}
+            {showPasswordWarning && (
+                <div className="pw-warning-overlay">
+                    <div className="pw-warning-modal">
+                        <div className="pw-warning-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                        </div>
+                        <h3 className="pw-warning-title">Peringatan Keamanan</h3>
+                        <p className="pw-warning-text">
+                            Anda masih menggunakan <strong>NISN</strong> sebagai password.
+                            Demi keamanan akun Anda, segera ubah password melalui halaman profil.
+                        </p>
+                        <button
+                            type="button"
+                            className="pw-warning-btn"
+                            onClick={handlePasswordWarningOk}
+                        >
+                            OK, Ubah Password
+                        </button>
+                    </div>
+                </div>
             )}
 
             {confirmState.open && (

@@ -1,10 +1,14 @@
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router, usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import MainLayout from '../../Layouts/MainLayout';
+import PasswordInput from '../../Components/PasswordInput';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function ProfilIndex({ alumni }) {
+export default function ProfilIndex({ alumni, mustChangePassword }) {
+    const { errors } = usePage().props;
     const [isEditing, setIsEditing] = useState(false);
+    const [showChangePassword, setShowChangePassword] = useState(mustChangePassword || false);
+
     const { data, setData, post, processing } = useForm({
         _method: 'PUT',
         nama: alumni.nama || '',
@@ -26,6 +30,11 @@ export default function ProfilIndex({ alumni }) {
         gambar: null,
     });
 
+    const passwordForm = useForm({
+        password: '',
+        password_confirmation: '',
+    });
+
     const profileImage = useMemo(() => {
         if (!alumni.gambar) return null;
         if (alumni.gambar.startsWith('http')) return alumni.gambar;
@@ -44,9 +53,23 @@ export default function ProfilIndex({ alumni }) {
         });
     };
 
+    const submitPassword = async (e) => {
+        e.preventDefault();
+        if (!(await confirmAction('ubah password'))) return;
+        passwordForm.post('/profil/change-password', {
+            onSuccess: () => {
+                sessionStorage.removeItem('pw_warning_dismissed');
+                setShowChangePassword(false);
+                notifyActionSuccess('ubah password');
+                passwordForm.reset();
+            },
+        });
+    };
+
     const handleLogout = async (e) => {
         e.preventDefault();
         if (!(await confirmAction('logout'))) return;
+        sessionStorage.removeItem('pw_warning_dismissed');
         router.post('/logout', {
             onSuccess: () => notifyActionSuccess('logout'),
         });
@@ -74,6 +97,58 @@ export default function ProfilIndex({ alumni }) {
                         </p>
                     </div>
                 </div>
+
+                {/* ========== SECTION UBAH PASSWORD ========== */}
+                {showChangePassword && (
+                    <div className="change-pw-section">
+                        <div className="change-pw-header">
+                            <div className="change-pw-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Ubah Password</h3>
+                                <p>Buat password baru untuk keamanan akun Anda</p>
+                            </div>
+                        </div>
+                        <form onSubmit={submitPassword} className="change-pw-form">
+                            <div className="form-group">
+                                <label>Password Baru</label>
+                                <PasswordInput
+                                    placeholder="Minimal 6 karakter..."
+                                    value={passwordForm.data.password}
+                                    onChange={(e) => passwordForm.setData('password', e.target.value)}
+                                    className={errors?.password ? 'input-error' : ''}
+                                />
+                                {errors?.password && <span className="field-error">{errors.password}</span>}
+                            </div>
+                            <div className="form-group">
+                                <label>Konfirmasi Password Baru</label>
+                                <PasswordInput
+                                    placeholder="Ulangi password baru..."
+                                    value={passwordForm.data.password_confirmation}
+                                    onChange={(e) => passwordForm.setData('password_confirmation', e.target.value)}
+                                />
+                            </div>
+                            <div className="change-pw-actions">
+                                <button type="submit" className="btn-save-pw" disabled={passwordForm.processing}>
+                                    Simpan Password
+                                </button>
+                                {!mustChangePassword && (
+                                    <button
+                                        type="button"
+                                        className="btn-cancel-pw"
+                                        onClick={() => setShowChangePassword(false)}
+                                    >
+                                        Batal
+                                    </button>
+                                )}
+                            </div>
+                        </form>
+                    </div>
+                )}
 
                 {!isEditing ? (
                     <>
@@ -104,6 +179,15 @@ export default function ProfilIndex({ alumni }) {
                             </div>
                         </div>
                         <div className="profil-modern-actions">
+                            {!showChangePassword && (
+                                <button
+                                    type="button"
+                                    className="btn-change-pw"
+                                    onClick={() => setShowChangePassword(true)}
+                                >
+                                    Ubah Password
+                                </button>
+                            )}
                             <button type="button" className="btn-logout" onClick={handleLogout}>Keluar</button>
                         </div>
                     </>

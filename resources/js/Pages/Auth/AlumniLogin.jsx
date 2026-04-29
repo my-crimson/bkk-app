@@ -1,9 +1,10 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
+import PasswordInput from '../../Components/PasswordInput';
 
 export default function AlumniLogin() {
     const { flash } = usePage().props;
     const { data, setData, post, processing } = useForm({
-        nama: '',
+        nisn: '',
         password: '',
     });
 
@@ -27,15 +28,22 @@ export default function AlumniLogin() {
                             <div className="error-message">{flash.error}</div>
                         )}
                         <div className="input-group">
-                            <label htmlFor="nama">Username</label>
-                            <input type="text" name="nama" id="username" placeholder="Masukkan Username..."
-                                value={data.nama} onChange={e => setData('nama', e.target.value)} required />
+                            <label htmlFor="nisn">NISN</label>
+                            <input type="text" name="nisn" id="nisn" placeholder="Masukkan NISN..."
+                                value={data.nisn} onChange={e => setData('nisn', e.target.value)} required />
                         </div>
                         <div className="input-group">
                             <label htmlFor="password">Password</label>
-                            <input type="password" name="password" id="password" placeholder="Masukkan Password..."
-                                value={data.password} onChange={e => setData('password', e.target.value)} required />
+                            <PasswordInput
+                                name="password"
+                                id="password"
+                                placeholder="Masukkan Password..."
+                                value={data.password}
+                                onChange={e => setData('password', e.target.value)}
+                                required
+                            />
                         </div>
+                        <p className="login-hint">* Login pertama: gunakan NISN sebagai password</p>
                         <button type="submit" className="login-button" disabled={processing}>MASUK</button>
                     </form>
                     <p className="footer-text">Bursa Kerja Khusus SMKN 1 Boyolangu</p>
