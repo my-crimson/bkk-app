@@ -13,7 +13,7 @@ class PerusahaanController extends Controller
     public function index(Request $request)
     {
         // 1. Ambil SEMUA data untuk Carousel (Tanpa Filter)
-        $carouselData = Perusahaan::orderBy('id_perusahaan')->get();
+        $carouselData = Perusahaan::orderBy('id_perusahaan', 'desc')->get();
 
         // 2. Logika Query untuk Pencarian (Data yang akan berubah saat dicari)
         $query = Perusahaan::query();
@@ -30,7 +30,7 @@ class PerusahaanController extends Controller
             $query->where('skala', $request->skala);
         }
 
-        $filteredData = $query->orderBy('id_perusahaan')->get();
+        $filteredData = $query->orderBy('id_perusahaan', 'desc')->get();
 
         return Inertia::render('Perusahaan/Index', [
             'carouselPerusahaan' => $carouselData, // Tetap utuh
@@ -58,7 +58,7 @@ class PerusahaanController extends Controller
         }
 
         // Admin menggunakan pagination
-        $perusahaan = $query->orderBy('id_perusahaan')->paginate(10)->withQueryString();
+        $perusahaan = $query->orderBy('id_perusahaan', 'desc')->paginate(10)->withQueryString();
 
         return Inertia::render('Admin/Perusahaan/Index', [
             'perusahaan' => $perusahaan,

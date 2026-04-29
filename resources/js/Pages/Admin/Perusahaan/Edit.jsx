@@ -77,7 +77,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* NAMA */}
                     <div className="form-group">
-                        <label>Nama</label>
+                        <label>
+                            Nama Perusahaan <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <input
                             value={data.nama}
                             onChange={e => setData('nama', e.target.value)}
@@ -90,7 +92,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* ALAMAT */}
                     <div className="form-group">
-                        <label>Alamat</label>
+                        <label>
+                            Alamat <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <input
                             value={data.alamat}
                             onChange={e => setData('alamat', e.target.value)}
@@ -108,7 +112,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* EMAIL */}
                     <div className="form-group">
-                        <label>Email</label>
+                        <label>
+                            Email <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <input
                             value={data.email}
                             onChange={e => setData('email', e.target.value)}
@@ -117,7 +123,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* KONTAK */}
                     <div className="form-group">
-                        <label>Kontak</label>
+                        <label>
+                            Kontak <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <input
                             value={data.kontak}
                             onChange={e => setData('kontak', e.target.value)}
@@ -126,7 +134,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* JENIS PERUSAHAAN */}
                     <div className="form-group">
-                        <label>jenis Perusahaan</label>
+                        <label>
+                            Jenis Perusahaan <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <select
                             value={data.jenis}
                             onChange={e => setData('jenis', e.target.value)}
@@ -140,7 +150,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* SKALA */}
                     <div className="form-group">
-                        <label>Skala</label>
+                        <label>
+                            Skala <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <select
                             value={data.skala}
                             onChange={e => setData('skala', e.target.value)}
@@ -154,7 +166,9 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
 
                     {/* DESKRIPSI */}
                     <div className="form-group">
-                        <label>Deskripsi</label>
+                        <label>
+                            Deskripsi <span style={{ color: 'red' }}>*</span>
+                        </label>
                         <textarea
                             value={data.deskripsi}
                             onChange={e => setData('deskripsi', e.target.value)}

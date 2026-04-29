@@ -2,6 +2,7 @@ import { Head, router } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
 import { useState, useEffect } from 'react';
 
+// --- STYLING TETAP (TIDAK DIUBAH) ---
 const CarouselStyles = () => (
     <style>{`
         .header-bar {
@@ -62,7 +63,6 @@ const CarouselStyles = () => (
         .slot-5 { height: 310px; width: 220px; left: 85%; filter: brightness(0.4) blur(1px); transform: translateX(-50%) scale(0.9); opacity: 1; z-index: 1; }
         .slot-6 { height: 310px; width: 220px; left: 100%; filter: brightness(0) blur(10px); opacity: 0; z-index: 0; pointer-events: none; }
 
-        /* Overlay Detail di Carousel */
         .company-detail {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
@@ -88,7 +88,6 @@ const CarouselStyles = () => (
         }
         .detail-btn:hover { background: #0056b3; }
 
-        /* Navigation Buttons */
         .company-controls {
             display: flex; position: absolute; top: 50%; width: 100%;
             transform: translateY(-50%); justify-content: space-between;
@@ -103,46 +102,41 @@ const CarouselStyles = () => (
         }
         .nav-btn:hover { background: #007bff; color: white; transform: scale(1.1); }
 
-        /* =========================================
-           CSS POPUP MODERN & RAPI (BARU)
-           ========================================= */
+        /* POPUP MODERN */
         .popup-overlay {
             display: none; 
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(4px); /* Efek blur pada background */
+            backdrop-filter: blur(4px);
             z-index: 100;
-            align-items: center; /* Menengahkan vertikal */
-            justify-content: center; /* Menengahkan horizontal */
+            align-items: center;
+            justify-content: center;
         }
-        .popup-overlay.active { 
-            display: flex; 
-        }
+        .popup-overlay.active { display: flex; }
 
         .company-popup {
             display: flex;
             flex-direction: column;
             width: 90vw;
-            max-width: 800px; /* Lebar maksimal agar tidak terlalu memanjang di PC */
+            max-width: 800px;
             max-height: 90vh;
             background: #ffffff;
-            border-radius: 16px; /* Sudut melengkung yang modern */
+            border-radius: 16px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
             z-index: 101;
             opacity: 0;
-            transform: scale(0.9); /* Skala awal untuk efek zoom-in */
+            transform: scale(0.9);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden; /* Memastikan isinya mengikuti lengkungan border */
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Trigger untuk memunculkan popup */
         .popup-overlay.active .company-popup {
             opacity: 1;
             transform: scale(1);
         }
 
-        /* Tombol Close Modern */
-        .company-popup .close-popup button {
+        .close-popup button {
             position: absolute;
             top: 20px;
             right: 25px;
@@ -160,13 +154,12 @@ const CarouselStyles = () => (
             transition: all 0.2s ease;
             z-index: 10;
         }
-        .company-popup .close-popup button:hover {
-            background: #ef4444; /* Warna merah saat di-hover */
+        .close-popup button:hover {
+            background: #ef4444;
             color: white;
-            transform: rotate(90deg); /* Efek putaran kecil */
+            transform: rotate(90deg);
         }
 
-        /* Header Popup */
         .company-header-popup {
             padding: 30px 40px 25px;
             background: #f8fafc;
@@ -177,23 +170,12 @@ const CarouselStyles = () => (
             margin: 0 0 8px 0;
             color: #0f172a;
             font-size: 24px;
-            font-family: 'Poppins', sans-serif;
             font-weight: 600;
         }
 
-        .company-desc-popup p {
-            margin: 0;
-            font-size: 14.5px;
-            color: #64748b;
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            font-weight: 400;
-        }
-
-        /* Konten Detail Popup */
         .company-detail-popup {
             padding: 25px 40px 35px;
-            overflow-y: auto; /* Bisa discroll jika konten terlalu panjang */
+            overflow-y: auto;
         }
 
         .company-detail-popup table {
@@ -204,45 +186,55 @@ const CarouselStyles = () => (
         .company-detail-popup td {
             padding: 14px 0;
             border-bottom: 1px dashed #cbd5e1;
-            font-family: 'Poppins', sans-serif;
             font-size: 15px;
             color: #334155;
         }
 
-        /* Menghilangkan garis di baris paling bawah */
-        .company-detail-popup tr:last-child td {
-            border-bottom: none;
-        }
-
-        .company-detail-popup .company-detail-left {
-            width: 35%;
-            font-weight: 600;
-            color: #475569;
-        }
-
-        .company-detail-popup .company-detail-right {
-            width: 65%;
-        }
+        .company-detail-left { width: 35%; font-weight: 600; color: #475569; }
 
         .results-grid { 
-                    display: grid; 
-                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-                    gap: 25px; 
-                    padding: 20px 5%; 
-                    margin-bottom: 50px;
-                }
-                .card-perusahaan {
-                    background: white;
-                    border-radius: 15px;
-                    overflow: hidden;
-                    border: 1px solid #eef2f6;
-                    transition: 0.3s;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-                }
-                .card-perusahaan:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-                .card-img { width: 100%; height: 160px; object-fit: cover; }
-                .card-body { padding: 15px; }
-                .card-body h3 { font-size: 16px; margin: 0 0 10px; color: #1e293b; }
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 25px; 
+            padding: 20px 5%; 
+            margin-bottom: 50px;
+        }
+        .card-perusahaan {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #eef2f6;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .card-perusahaan:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .card-img { width: 100%; height: 160px; object-fit: cover; }
+        .card-body { padding: 15px; }
+
+        .search-container {
+            padding: 20px 5%;
+            background: #f8fafc;
+            margin-bottom: 20px;
+        }
+        .search {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-input, .search-select {
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .search-button {
+            padding: 8px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     `}</style>
 );
 
@@ -253,14 +245,12 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
     const [isTransitioning, setIsTransitioning] = useState(false); 
 
     const total = carouselPerusahaan.length;
+    // Carousel aktif jika minimal ada 7 data
     const useCarousel = total >= 7;
 
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        
-        // Gunakan window.location.pathname agar otomatis menyesuaikan 
-        // apakah sedang di /admin/perusahaan atau di /perusahaan
         router.get(window.location.pathname, {
             search: formData.get('search') || '',
             skala: formData.get('skala') || '',
@@ -271,14 +261,14 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
     };
 
     const handleNext = () => {
-        if (isTransitioning) return;
+        if (isTransitioning || total === 0) return;
         setIsTransitioning(true);
         setActiveIndex((prev) => (prev + 1) % total);
         setTimeout(() => setIsTransitioning(false), 700);
     };
 
     const handlePrev = () => {
-        if (isTransitioning) return;
+        if (isTransitioning || total === 0) return;
         setIsTransitioning(true);
         setActiveIndex((prev) => (prev - 1 + total) % total);
         setTimeout(() => setIsTransitioning(false), 700);
@@ -312,9 +302,8 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                 <a href="#">Daftar Perusahaan</a>
             </div>
 
-            {total === 0 ? (
-                <p style={{ textAlign: 'center', padding: '50px' }}>Tidak ada data.</p>
-            ) : useCarousel ? (
+            {/* --- SECTION 1: CAROUSEL (Hanya muncul jika >= 7 data) --- */}
+            {useCarousel && total > 0 && (
                 <div 
                     className="company-container"
                     onMouseEnter={() => setIsPaused(true)}
@@ -327,7 +316,7 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
 
                             return (
                                 <div
-                                    key={p.id_perusahaan}
+                                    key={`carousel-${p.id_perusahaan}`}
                                     className={`company-item ${slotClass}`}
                                     onClick={() => {
                                         if (slotClass === 'slot-1' || slotClass === 'slot-2') handlePrev();
@@ -359,48 +348,25 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                     </div>
 
                     <div className="company-controls">
-                        <button 
-                            className="nav-btn" 
-                            onClick={handlePrev}
-                            disabled={isTransitioning}
-                        >
-                            ❮
-                        </button>
-                        <button 
-                            className="nav-btn" 
-                            onClick={handleNext}
-                            disabled={isTransitioning}
-                        >
-                            ❯
-                        </button>
+                        <button className="nav-btn" onClick={handlePrev} disabled={isTransitioning}>❮</button>
+                        <button className="nav-btn" onClick={handleNext} disabled={isTransitioning}>❯</button>
                     </div>
-                </div>
-            ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', padding: '40px' }}>
-                    {perusahaan.map(p => (
-                        <div key={p.id_perusahaan} style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
-                            <h3>{p.nama}</h3>
-                            <button onClick={() => setActivePopup(p)} className="detail-btn" style={{marginTop: '10px'}}>Detail</button>
-                        </div>
-                    ))}
                 </div>
             )}
 
-            {/* --- BAGIAN SEARCH --- */}
+            {/* --- SECTION 2: SEARCH FILTER --- */}
             <div className="search-container">
                 <form className="search" onSubmit={handleFilter}>
-                    <label htmlFor="search-perusahaan">Pencarian:</label>
+                    <label>Pencarian:</label>
                     <input
-                        id="search-perusahaan"
                         name="search"
                         className="search-input"
                         placeholder="Nama perusahaan..."
                         defaultValue={filters?.search || ''}
                     />
 
-                    <label htmlFor="skala-perusahaan">Skala:</label>
+                    <label>Skala:</label>
                     <select
-                        id="skala-perusahaan"
                         name="skala"
                         className="search-select"
                         defaultValue={filters?.skala || ''}
@@ -416,7 +382,7 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                 </form>
             </div>
 
-{/* --- SECTION 3: HASIL PENCARIAN (MENGGUNAKAN perusahaan) --- */}
+            {/* --- SECTION 3: HASIL GRID --- */}
             <div className="results-grid">
                 {perusahaan.length > 0 ? (
                     perusahaan.map(p => (
@@ -450,14 +416,13 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
             {activePopup && (
                 <div className="popup-overlay active" onClick={() => setActivePopup(null)}>
                     <div className="company-popup" onClick={e => e.stopPropagation()}>
-                        
                         <div className="close-popup">
                             <button onClick={() => setActivePopup(null)}>&times;</button>
                         </div>
                         
                         <div className="company-header-popup">
                             <div className="company-title-popup">
-                                <h1>{activePopup.nama || 'Nama Perusahaan'}</h1>
+                                <h1>{activePopup.nama}</h1>
                             </div>
                             <div className="company-desc-popup">
                                 <p>{activePopup.deskripsi || 'Deskripsi perusahaan belum tersedia.'}</p>
@@ -467,10 +432,6 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                         <div className="company-detail-popup">
                             <table>
                                 <tbody>
-                                    <tr>
-                                        <td className="company-detail-left">Nama Perusahaan</td>
-                                        <td className="company-detail-right">: {activePopup.nama || '-'}</td>
-                                    </tr>
                                     <tr>
                                         <td className="company-detail-left">Alamat</td>
                                         <td className="company-detail-right">: {activePopup.alamat || '-'}</td>
@@ -488,17 +449,16 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                                         <td className="company-detail-right">: {activePopup.website || '-'}</td>
                                     </tr>
                                     <tr>
-                                        <td className="company-detail-left">Jenis Perusahaan</td>
+                                        <td className="company-detail-left">Jenis</td>
                                         <td className="company-detail-right">: {activePopup.jenis || '-'}</td>
                                     </tr>
                                     <tr>
-                                        <td className="company-detail-left">Skala Perusahaan</td>
+                                        <td className="company-detail-left">Skala</td>
                                         <td className="company-detail-right">: {activePopup.skala || '-'}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             )}
