@@ -3,12 +3,30 @@ import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminBeritaIndex({ berita }) {
+export default function AdminBeritaIndex({ berita, filters }) {
     const handleDelete = async (id) => {
         if (!(await confirmAction('hapus kegiatan'))) return;
         router.delete(`/admin/berita/${id}`, {
             onSuccess: () => notifyActionSuccess('hapus kegiatan'),
         });
+    };
+
+    const handleFilter = (e) => {
+        e.preventDefault();
+
+        const form = new FormData(e.target);
+
+        router.get(
+            '/admin/berita',
+            {
+                search: form.get('search'),
+                tanggal: form.get('tanggal'),
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
     };
 
     const cards = useMemo(() => (berita?.data ? berita.data : (Array.isArray(berita) ? berita : [])), [berita]);
@@ -23,6 +41,42 @@ export default function AdminBeritaIndex({ berita }) {
             <div className="header-bar"><a href="#">CRUD / Kegiatan BKK</a></div>
 
             <div style={{ padding: '20px' }}>
+
+                {/* FILTER */}
+                <div className="search-container">
+                    <form className="search" onSubmit={handleFilter}>
+
+                        <label htmlFor="search-kegiatan">
+                            Pencarian:
+                        </label>
+
+                        <input
+                            id="search-kegiatan"
+                            name="search"
+                            className="search-input"
+                            placeholder="Cari judul kegiatan..."
+                            defaultValue={filters?.search || ''}
+                        />
+
+                        <label htmlFor="tanggal-kegiatan">
+                            Tanggal:
+                        </label>
+
+                        <input
+                            type="date"
+                            id="tanggal-kegiatan"
+                            name="tanggal"
+                            className="search-input"
+                            defaultValue={filters?.tanggal || ''}
+                        />
+
+                        <button className="search-button" type="submit">
+                            Cari
+                        </button>
+
+                    </form>
+                </div>
+
                 <div className="job-list">
                     <Link className="job-card show" id="tambah-kegiatan" href="/admin/berita/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
                         <div className="tambah-btn">

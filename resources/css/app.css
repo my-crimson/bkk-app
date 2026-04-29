@@ -691,161 +691,308 @@ footer {
 }
 
 /* ========== KEGIATAN CARDS ========== */
-.kegiatan-card.has-footer {
-    height: 330px; /* samakan tinggi card (yang ada footer tombol) */
+/* Layout Wrapper */
+.kegiatan-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.kegiatan-card .job-detail {
-    flex: 1;
+
+
+/* Card Style */
+.kegiatan-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 350px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding-bottom: 0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    opacity: 0;
+    transform: translateY(20px);
+
+    /* Tambahan padding agar card lebih lega */
+    padding: 12px;
+    box-sizing: border-box;
 }
 
-.kegiatan-image {
-    width: 100%;
-    flex: 1;
-    padding: 14px 16px 10px;
+.kegiatan-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.kegiatan-card.clickable {
+    cursor: pointer;
+}
+
+.kegiatan-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    border-color: #3590FA;
+}
+
+/* Card Header */
+.kegiatan-card .job-header {
+    background-color: #f8f9fa;
+    padding: 18px;
+    border-bottom: 1px solid #f0f0f0;
+    min-height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    /* Tambahan agar lebih rapi */
+    border-radius: 12px 12px 0 0;
+}
+
+.kegiatan-card .job-header h3 {
+    margin: 0 !important;
+    margin-left: 0 !important;
+
+    width: 100%;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #2c3e50;
+
+    text-align: center;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+/* Card Image */
+.kegiatan-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background-color: #eee;
+
+    /* Spasi antar elemen */
+    margin-top: 12px;
+    border-radius: 12px;
 }
 
 .kegiatan-image img {
-    width: 140px;       /* gambar kecil di tengah */
-    height: 140px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    display: block;
-    background: #eee;
+    transition: transform 0.5s ease;
 }
 
-.kegiatan-image--placeholder {
-    width: 140px;
-    height: 140px;
-    border-radius: 8px;
-    background: #f1f1f1;
-    border: 1px dashed #c8c8c8;
+.kegiatan-card:hover .kegiatan-image img {
+    transform: scale(1.1);
+}
+
+/* Content Preview */
+.kegiatan-content-preview {
+    padding: 18px 8px 8px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    gap: 8px;
-    user-select: none;
-}
-
-.kegiatan-image--placeholder i {
-    font-size: 22px;
-    color: #9aa5b1;
+    gap: 12px;
 }
 
 .kegiatan-desc {
-    padding: 10px 16px 12px;
-    text-align: left;
-    color: #555;
-    border-top: 1px solid #cfcfcf;
-    font-size: 13px;
-    line-height: 1.35;
-    min-height: 62px;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* ========== POPUP INFORMASI KEGIATAN ========== */
+.read-more-hint {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #3590FA;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Popup Overlay */
 .kegiatan-popup-overlay {
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 9999;
     padding: 20px;
+    animation: fadeIn 0.3s ease;
 }
 
+/* Popup Card */
 .kegiatan-popup-card {
+    background: white;
     width: 100%;
-    max-width: 820px;
+    max-width: 700px;
     max-height: 90vh;
-    background: #fff;
-    border-radius: 10px;
-    overflow: auto;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    border-radius: 20px;
+    position: relative;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    animation: slideUp 0.4s ease;
+}
+
+/* HEADER FIXED */
+.kegiatan-popup-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    background: #ffffff;
+
+    padding: 20px 70px 20px 25px;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 80px;
+
+    border-bottom: 1px solid #eee;
+
+    border-radius: 20px 20px 0 0;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .kegiatan-popup-title {
-    background: #d9d9d9;
+    margin: 0;
+    width: 100%;
+
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.4;
+
     color: #333;
-    font-size: 22px;
-    font-weight: 700;
-    padding: 12px 16px;
-    text-transform: uppercase;
 }
 
-.kegiatan-popup-content {
-    padding: 14px 20px 24px;
+.close-popup {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 30;
+}
+
+.kegiatan-popup-body {
+    padding: 30px;
 }
 
 .kegiatan-popup-image-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 8px 0 16px;
-    min-height: 180px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .kegiatan-popup-image {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 55vh;
-    object-fit: contain;
-    border-radius: 8px;
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
 }
 
-.kegiatan-popup-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #333;
+/* Meta Info Grid */
+.kegiatan-popup-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
     margin-bottom: 20px;
 }
 
-.kegiatan-popup-meta > div {
-    display: grid;
-    grid-template-columns: 22px 140px 1fr;
-    align-items: start;
-    gap: 8px;
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.kegiatan-popup-meta i {
-    margin-top: 2px;
+.info-item i {
+    font-size: 1.2rem;
+    color: #3590FA;
+}
+
+.info-text strong {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+}
+
+.info-text span {
+    font-size: 0.95rem;
+    font-weight: 600;
     color: #444;
 }
 
-.kegiatan-popup-meta strong {
-    font-size: 14px;
-}
-
-.kegiatan-popup-meta span {
-    font-size: 16px;
-    line-height: 1.2;
-}
-
-.kegiatan-popup-description strong {
-    display: block;
-    font-size: 15px;
-    margin-bottom: 4px;
+.kegiatan-popup-description h3 {
+    font-size: 1.1rem;
+    border-left: 4px solid #3590FA;
+    padding-left: 10px;
+    margin-bottom: 10px;
 }
 
 .kegiatan-popup-description p {
-    font-size: 15px;
-    color: #333;
-    line-height: 1.35;
+    line-height: 1.8;
+    color: #555;
+    white-space: pre-line;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .kegiatan-popup-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kegiatan-popup-body {
+        padding: 20px;
+    }
+
+    .kegiatan-card {
+        padding: 10px;
+    }
 }
 
 /* Tambah Loker Card */
