@@ -64,22 +64,44 @@ class AuthController extends Controller
         }
 
         if ($type === 'alumni') {
-            $nama = trim($request->input('nama', ''));
+            $nisn = trim($request->input('nisn', ''));
             $password = trim($request->input('password', ''));
 
-            if (empty($nama) || empty($password)) {
-                return back()->with('error', 'Username dan password harus diisi');
+            if (empty($nisn) || empty($password)) {
+                return back()->with('error', 'NISN dan password harus diisi');
             }
 
-            $alumni = Alumni::where('nama', $nama)->first();
+            // Cari alumni berdasarkan NISN
+            $alumni = Alumni::where('nisn', $nisn)->first();
 
-            if ($alumni && $this->verifyPassword($password, $alumni->password)) {
+            if (!$alumni) {
+                // Alumni tidak ditemukan
+                session([
+                    'login_attempts' => $attempts + 1,
+                    'last_login_attempt' => time(),
+                ]);
+                return back()->with('error', 'NISN atau password salah');
+            }
+
+            $authenticated = false;
+
+            if ($alumni->password_changed) {
+                // Alumni sudah ubah password → hanya bisa login pakai password baru
+                $authenticated = $this->verifyPassword($password, $alumni->password);
+            } else {
+                // Alumni belum ubah password → login pakai NISN sebagai password
+                // (password yang dimasukkan harus sama dengan NISN)
+                $authenticated = ($password === $alumni->nisn);
+            }
+
+            if ($authenticated) {
                 session()->regenerate();
                 session([
                     'user_id' => $alumni->id,
                     'nama' => $alumni->nama,
                     'role' => 'alumni',
                     'last_login' => time(),
+                    'must_change_password' => !$alumni->password_changed,
                 ]);
                 session()->forget(['login_attempts', 'last_login_attempt']);
                 return redirect()->route('beranda');
@@ -115,7 +137,7 @@ class AuthController extends Controller
             'login_attempts' => $attempts + 1,
             'last_login_attempt' => time(),
         ]);
-        return back()->with('error', 'Username atau password salah');
+        return back()->with('error', 'NISN/Username atau password salah');
     }
 
     private function verifyPassword(string $input, string $stored): bool

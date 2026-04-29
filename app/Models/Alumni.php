@@ -14,10 +14,14 @@ class Alumni extends Model
         'nama', 'jenis_kelamin', 'nisn', 'tempat_lahir', 'tanggal_lahir',
         'nik', 'agama', 'alamat', 'rt', 'rw', 'dusun', 'kelurahan',
         'kecamatan', 'kode_pos', 'email', 'no_wa', 'id_jurusan',
-        'password', 'gambar',
+        'password', 'password_changed', 'gambar',
     ];
 
     protected $hidden = ['password'];
+
+    protected $casts = [
+        'password_changed' => 'boolean',
+    ];
 
     public function jurusan()
     {

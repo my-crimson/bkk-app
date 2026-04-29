@@ -95,6 +95,7 @@ Route::middleware('role:alumni')->group(function () {
     Route::post('/survey', [SurveyController::class, 'store'])->name('survey.store');
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/change-password', [ProfilController::class, 'changePassword'])->name('profil.change-password');
 });
 
 // Lamaran routes
