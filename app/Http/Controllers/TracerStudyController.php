@@ -20,6 +20,8 @@ class TracerStudyController extends Controller
         $periodEndYear = $periodStartYear + 1;
 
         $selectedCode = strtoupper((string) $request->query('jurusan', ''));
+        $searchQuery = trim((string) $request->query('search', ''));
+        $statusFilter = strtolower(trim((string) $request->query('status', '')));
         $codeAliases = [
             'RPL' => ['Rekayasa Perangkat Lunak (RPL)'],
             'TKI' => ['Teknik Kimia Industri (TKI)'],
@@ -39,6 +41,10 @@ class TracerStudyController extends Controller
             $alumniQuery->whereHas('jurusan', function ($q) use ($aliases) {
                 $q->whereIn('jurusan', $aliases);
             });
+        }
+
+        if ($searchQuery !== '') {
+            $alumniQuery->where('nama', 'like', '%' . $searchQuery . '%');
         }
 
         $alumni = $alumniQuery->orderBy('nama')->get();
@@ -108,11 +114,26 @@ class TracerStudyController extends Controller
             ];
         });
 
+        // Apply status filter after building rows
+        if ($statusFilter === 'sudah') {
+            $rows = $rows->filter(fn ($r) => $r['status_survey'] === 'Sudah Mengisi')->values();
+        } elseif ($statusFilter === 'belum') {
+            $rows = $rows->filter(fn ($r) => $r['status_survey'] === 'Belum Mengisi')->values();
+        }
+
+        // Re-number after filtering
+        $rows = $rows->values()->map(function ($r, $idx) {
+            $r['no'] = $idx + 1;
+            return $r;
+        });
+
         return Inertia::render('TracerStudy/Index', [
             'rows' => $rows,
             'jurusan' => $jurusan,
             'filters' => [
                 'jurusan' => $selectedCode,
+                'search' => $searchQuery,
+                'status' => $statusFilter,
             ],
             'summary' => [
                 'periode_label' => "{$periodStartYear}/{$periodEndYear}",

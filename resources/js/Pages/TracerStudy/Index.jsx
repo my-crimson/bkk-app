@@ -1,10 +1,20 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import MainLayout from '../../Layouts/MainLayout';
 
 export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}, summary = {} }) {
     const allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'BR', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
     const [selectedSurvey, setSelectedSurvey] = useState(null);
+
+    const handleFilter = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        router.get('/admin/tracer-study', {
+            search: formData.get('search') || '',
+            jurusan: filters.jurusan || '',
+            status: formData.get('status') || '',
+        }, { preserveState: true, replace: true });
+    };
 
     return (
         <MainLayout>
@@ -14,16 +24,47 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                 <h2 className="tracer-title">TRACER STUDY DATA ALUMNI SMKN 1 BOYOLANGU</h2>
 
                 <div className="tracer-pill-wrap">
-                    {allowedCodes.map((code) => (
-                        <Link
-                            key={code}
-                            href={`/admin/tracer-study?jurusan=${encodeURIComponent(code)}`}
-                            className={`tracer-pill ${filters.jurusan === code ? 'active' : ''}`}
-                            preserveScroll
+                    {allowedCodes.map((code) => {
+                        const params = new URLSearchParams();
+                        params.set('jurusan', code);
+                        if (filters.search) params.set('search', filters.search);
+                        if (filters.status) params.set('status', filters.status);
+                        return (
+                            <Link
+                                key={code}
+                                href={`/admin/tracer-study?${params.toString()}`}
+                                className={`tracer-pill ${filters.jurusan === code ? 'active' : ''}`}
+                                preserveScroll
+                            >
+                                {code}
+                            </Link>
+                        );
+                    })}
+                </div>
+
+                <div className="search-container">
+                    <form className="search" onSubmit={handleFilter}>
+                        <label htmlFor="search-tracer">Pencarian:</label>
+                        <input
+                            id="search-tracer"
+                            name="search"
+                            className="search-input"
+                            placeholder="Cari nama alumni..."
+                            defaultValue={filters?.search || ''}
+                        />
+                        <label htmlFor="status-tracer">Status:</label>
+                        <select
+                            id="status-tracer"
+                            name="status"
+                            className="search-select"
+                            defaultValue={filters?.status || ''}
                         >
-                            {code}
-                        </Link>
-                    ))}
+                            <option value="">-- Semua Status --</option>
+                            <option value="sudah">Sudah Mengisi</option>
+                            <option value="belum">Belum Mengisi</option>
+                        </select>
+                        <button className="search-button" type="submit">Cari</button>
+                    </form>
                 </div>
 
                 <h3 className="tracer-year">{summary.periode_label}</h3>
