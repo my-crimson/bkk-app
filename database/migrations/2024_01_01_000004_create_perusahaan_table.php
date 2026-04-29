@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('website', 255)->nullable();
             $table->string('email', 255)->nullable();
             $table->string('kontak', 50)->nullable();
-            $table->string('jenis_perusahaan', 100)->nullable();
+            $table->string('jenis', 100)->nullable();
             $table->string('skala', 50)->nullable();
             $table->string('kerja_sama', 255)->nullable();
         });
