@@ -69,8 +69,8 @@ class LamaranController extends Controller
             Lamaran::create([
                 'id_alumni' => $alumni_id,
                 'id_lowker' => $request->id_lowker,
-                'tanggal_lamaran' => now()->toDateString(),
-                'surat_lamaran' => $filename,
+                'tanggal_lamar' => now()->toDateString(),
+                'file_lamaran' => $filename,
             ]);
             \Log::info('Lamaran record created', ['id_alumni' => $alumni_id, 'id_lowker' => $request->id_lowker]);
         } catch (\Exception $e) {
@@ -84,10 +84,6 @@ class LamaranController extends Controller
             // Priority 1: Email dari perusahaan (yang paling penting!)
             if ($lowker->perusahaan && $lowker->perusahaan->email) {
                 $emailTo = $lowker->perusahaan->email;
-            }
-            // Priority 2: Email dari lowker table (jika perusahaan tidak punya)
-            elseif ($lowker->email) {
-                $emailTo = $lowker->email;
             }
             
             if ($emailTo) {
@@ -109,11 +105,11 @@ class LamaranController extends Controller
     {
         $lamaran = Lamaran::findOrFail($id);
 
-        if (!$lamaran->surat_lamaran) {
+        if (!$lamaran->file_lamaran) {
             abort(404, 'File tidak ditemukan.');
         }
 
-        $path = storage_path('app/public/uploads/lamaran/' . $lamaran->surat_lamaran);
+        $path = storage_path('app/public/uploads/lamaran/' . $lamaran->file_lamaran);
 
         if (!file_exists($path)) {
             abort(404, 'File tidak ditemukan.');

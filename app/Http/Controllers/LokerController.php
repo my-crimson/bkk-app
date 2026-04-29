@@ -5,14 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\Lowker;
 use App\Models\Perusahaan;
 use App\Models\Jurusan;
+use App\Models\Lamaran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LokerController extends Controller
 {
+    private function cleanupExpiredLowker(): void
+    {
+        $today = Carbon::now('Asia/Jakarta')->toDateString();
+        $expiredIds = Lowker::whereNotNull('tgl_ditutup')
+            ->whereDate('tgl_ditutup', '<', $today)
+            ->pluck('id_lowker');
+
+        if ($expiredIds->isEmpty()) {
+            return;
+        }
+
+        Lamaran::whereIn('id_lowker', $expiredIds)->delete();
+        Lowker::whereIn('id_lowker', $expiredIds)->delete();
+    }
+
+    private array $allowedJurusanNames = [
+        'Rekayasa Perangkat Lunak (RPL)',
+        'Teknik Kimia Industri (TKI)',
+        'Teknik Komputer dan Jaringan (TKJ)',
+        'Animasi',
+        'Broadcasting',
+        'Usaha Layanan Wisata (ULW)',
+        'Akuntansi & Keuangan Lembaga (AKL)',
+        'Manajemen Perkantoran dan Layanan Bisnis',
+        'Bisnis Digital (BD)',
+        'Desain Komunikasi Visual (DKV)',
+    ];
+
     // Public: list lowongan
     public function index(Request $request)
     {
+        $this->cleanupExpiredLowker();
         $query = Lowker::with(['perusahaan', 'jurusan']);
 
         if ($request->filled('jurusan')) {
@@ -26,7 +57,9 @@ class LokerController extends Controller
         }
 
         $lowker = $query->orderBy('tgl_posting', 'desc')->paginate(6)->withQueryString();
-        $jurusanList = Jurusan::orderBy('jurusan')->pluck('jurusan');
+        $jurusanList = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
+            ->orderBy('jurusan')
+            ->pluck('jurusan');
 
         return Inertia::render('Loker/Index', [
             'lowker' => $lowker,
@@ -38,6 +71,7 @@ class LokerController extends Controller
     // Public: detail lowongan
     public function detail($id)
     {
+        $this->cleanupExpiredLowker();
         $lowker = Lowker::with(['perusahaan', 'jurusan'])->findOrFail($id);
         return Inertia::render('Loker/Detail', [
             'lowker' => $lowker,
@@ -47,6 +81,7 @@ class LokerController extends Controller
     // Public: persyaratan
     public function persyaratan($id)
     {
+        $this->cleanupExpiredLowker();
         $lowker = Lowker::with(['perusahaan', 'jurusan'])->findOrFail($id);
         return Inertia::render('Loker/Persyaratan', [
             'lowker' => $lowker,
@@ -56,6 +91,7 @@ class LokerController extends Controller
     // Admin CRUD: list
     public function crudIndex(Request $request)
     {
+        $this->cleanupExpiredLowker();
         $query = Lowker::with(['perusahaan', 'jurusan']);
 
         if ($request->filled('jurusan')) {
@@ -69,7 +105,9 @@ class LokerController extends Controller
         }
 
         $lowker = $query->orderBy('tgl_posting', 'desc')->paginate(6)->withQueryString();
-        $jurusanList = Jurusan::orderBy('jurusan')->pluck('jurusan');
+        $jurusanList = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
+            ->orderBy('jurusan')
+            ->pluck('jurusan');
 
         return Inertia::render('Admin/Loker/Index', [
             'lowker' => $lowker,
@@ -82,7 +120,9 @@ class LokerController extends Controller
     public function create()
     {
         $perusahaan = Perusahaan::orderBy('nama')->get();
-        $jurusan = Jurusan::orderBy('jurusan')->get();
+        $jurusan = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
+            ->orderBy('jurusan')
+            ->get();
         return Inertia::render('Admin/Loker/Create', [
             'perusahaan' => $perusahaan,
             'jurusan' => $jurusan,
@@ -96,25 +136,19 @@ class LokerController extends Controller
             'judul_lowker' => 'required|string|max:255',
             'id_perusahaan' => 'required|exists:perusahaan,id_perusahaan',
             'id_jurusan' => 'required|exists:jurusan,id_jurusan',
-            'email' => 'required|email',
         ]);
 
         Lowker::create([
             'judul_lowker' => $request->judul_lowker,
-            'deskripsi_lowker' => $request->deskripsi_lowker ?? $request->deskripsi,
-            'kualifikasi' => $request->kualifikasi ?? $request->persyaratan,
+            'deskripsi' => $request->deskripsi,
+            'persyaratan' => $request->persyaratan,
             'gaji' => $request->gaji,
             'lokasi' => $request->lokasi,
             'tgl_posting' => $request->tgl_posting ?? now()->toDateString(),
             'tgl_ditutup' => $request->tgl_ditutup,
             'id_perusahaan' => $request->id_perusahaan,
             'id_jurusan' => $request->id_jurusan,
-            'email' => $request->email,
-            'pendidikan' => $request->pendidikan,
-            'tipe_pekerjaan' => $request->tipe_pekerjaan,
-            'keahlian' => $request->keahlian,
-            'waktu_bekerja' => $request->waktu_bekerja,
-            'tunjangan' => $request->tunjangan,
+            'status' => $request->status ?: 'aktif',
         ]);
 
         return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil ditambahkan!');
@@ -123,9 +157,12 @@ class LokerController extends Controller
     // Admin: edit form
     public function edit($id)
     {
+        $this->cleanupExpiredLowker();
         $lowker = Lowker::findOrFail($id);
         $perusahaan = Perusahaan::orderBy('nama')->get();
-        $jurusan = Jurusan::orderBy('jurusan')->get();
+        $jurusan = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
+            ->orderBy('jurusan')
+            ->get();
         return Inertia::render('Admin/Loker/Edit', [
             'lowker' => $lowker,
             'perusahaan' => $perusahaan,
@@ -140,26 +177,20 @@ class LokerController extends Controller
             'judul_lowker' => 'required|string|max:255',
             'id_perusahaan' => 'required|exists:perusahaan,id_perusahaan',
             'id_jurusan' => 'required|exists:jurusan,id_jurusan',
-            'email' => 'required|email',
         ]);
 
         $lowker = Lowker::findOrFail($id);
         $lowker->update([
             'judul_lowker' => $request->judul_lowker,
-            'deskripsi_lowker' => $request->deskripsi_lowker ?? $request->deskripsi,
-            'kualifikasi' => $request->kualifikasi ?? $request->persyaratan,
+            'deskripsi' => $request->deskripsi,
+            'persyaratan' => $request->persyaratan,
             'gaji' => $request->gaji,
             'lokasi' => $request->lokasi,
             'tgl_posting' => $request->tgl_posting,
             'tgl_ditutup' => $request->tgl_ditutup,
             'id_perusahaan' => $request->id_perusahaan,
             'id_jurusan' => $request->id_jurusan,
-            'email' => $request->email,
-            'pendidikan' => $request->pendidikan,
-            'tipe_pekerjaan' => $request->tipe_pekerjaan,
-            'keahlian' => $request->keahlian,
-            'waktu_bekerja' => $request->waktu_bekerja,
-            'tunjangan' => $request->tunjangan,
+            'status' => $request->status ?: 'aktif',
         ]);
 
         return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil diperbarui!');

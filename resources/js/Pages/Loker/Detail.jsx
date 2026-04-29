@@ -43,10 +43,10 @@ export default function Detail({ lowker }) {
                     </p>
                     <hr style={{ margin: '20px 0' }} />
                     <h3>Deskripsi</h3>
-                    <p style={{ whiteSpace: 'pre-wrap' }}>{lowker.deskripsi_lowker}</p>
+                    <p style={{ whiteSpace: 'pre-wrap' }}>{lowker.deskripsi}</p>
                     <hr style={{ margin: '20px 0' }} />
                     <h3>Persyaratan</h3>
-                    <p style={{ whiteSpace: 'pre-wrap' }}>{lowker.kualifikasi}</p>
+                    <p style={{ whiteSpace: 'pre-wrap' }}>{lowker.persyaratan}</p>
                     <div style={{ marginTop: '20px' }}>
                         {isExpired ? (
                             <button

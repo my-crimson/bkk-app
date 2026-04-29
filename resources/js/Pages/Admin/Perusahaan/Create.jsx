@@ -2,7 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
-
+import { confirmAction, notifyActionSuccess } from '@/helpers/actionPopup';
 export default function AdminPerusahaanCreate() {
     const { data, setData, post, processing, reset, errors } = useForm({
         nama: '', alamat: '', deskripsi: '', website: '', email: '', kontak: '',
@@ -27,19 +27,22 @@ export default function AdminPerusahaanCreate() {
         return () => URL.revokeObjectURL(url);
     }, [data.gambar]);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         if (fileErrors.logo || fileErrors.gambar) return;
 
-        post('/admin/perusahaan', {
-            forceFormData: true,
-            onSuccess: () => {
-                reset();
-                setPreviewLogo(null);
-                setPreviewGambar(null);
-                setFileErrors({ logo: null, gambar: null });
-            },
-        });
+        if (await confirmAction('menambahkan perusahaan ini')) {
+            post('/admin/perusahaan', {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    setPreviewLogo(null);
+                    setPreviewGambar(null);
+                    setFileErrors({ logo: null, gambar: null });
+                    notifyActionSuccess('menambahkan perusahaan');
+                },
+            });
+        }
     };
 
     return (

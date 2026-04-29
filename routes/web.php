@@ -47,7 +47,7 @@ Route::post('/login/management', [AuthController::class, 'loginManagement'])->na
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ========== ADMIN ROUTES ==========
-Route::middleware('role:admin')->prefix('admin')->group(function () {
+Route::middleware('role:management')->prefix('admin')->group(function () {
     // CRUD Loker
     Route::get('/loker', [LokerController::class, 'crudIndex'])->name('admin.loker.index');
     Route::get('/loker/create', [LokerController::class, 'create'])->name('admin.loker.create');
@@ -72,6 +72,14 @@ Route::middleware('role:admin')->prefix('admin')->group(function () {
     Route::get('/berita/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
     Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');
     Route::delete('/berita/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+
+    // CRUD Jurusan
+    Route::get('/jurusan', [InformasiJurusanController::class, 'crudIndex'])->name('admin.jurusan.index');
+    Route::get('/jurusan/create', [InformasiJurusanController::class, 'create'])->name('admin.jurusan.create');
+    Route::post('/jurusan', [InformasiJurusanController::class, 'store'])->name('admin.jurusan.store');
+    Route::get('/jurusan/{id}/edit', [InformasiJurusanController::class, 'edit'])->name('admin.jurusan.edit');
+    Route::match(['put', 'post'], '/jurusan/{id}', [InformasiJurusanController::class, 'update'])->name('admin.jurusan.update');
+    Route::delete('/jurusan/{id}', [InformasiJurusanController::class, 'destroy'])->name('admin.jurusan.destroy');
 
     // Rekap
     Route::get('/rekap-alumni', [RekapController::class, 'alumni'])->name('admin.rekap.alumni');

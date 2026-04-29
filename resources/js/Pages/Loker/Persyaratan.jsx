@@ -1,5 +1,6 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
+import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
 export default function Persyaratan({ lowker }) {
     const { flash, auth } = usePage().props;
@@ -11,7 +12,7 @@ export default function Persyaratan({ lowker }) {
     // Check if lowongan has expired
     const isExpired = lowker.tgl_ditutup && new Date(lowker.tgl_ditutup) < new Date(new Date().toDateString());
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
         if (isExpired) {
@@ -30,11 +31,13 @@ export default function Persyaratan({ lowker }) {
             alert('Hanya siswa/alumni yang dapat melamar lowongan ini.');
             return;
         }
+        if (!(await confirmAction('kirim lamaran'))) return;
         
         // Submit dengan Inertia
         post('/lamaran', {
             forceFormData: true,
             preserveScroll: true,
+            onSuccess: () => notifyActionSuccess('kirim lamaran'),
         });
     };
 
@@ -67,7 +70,7 @@ export default function Persyaratan({ lowker }) {
                     <hr style={{ margin: '20px 0' }} />
                     <h3>Persyaratan</h3>
                     <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.8, color: '#555' }}>
-                        {lowker.kualifikasi}
+                        {lowker.persyaratan}
                     </div>
                     
                     <hr style={{ margin: '20px 0' }} />

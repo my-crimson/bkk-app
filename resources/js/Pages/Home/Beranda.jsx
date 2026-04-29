@@ -34,7 +34,7 @@ export default function Beranda() {
 
                         {!auth?.user && (
                             <div className="login-options">
-                                <Link href="/login/admin" className="login-card">
+                                <Link href="/login/management" className="login-card">
                                     <img src="/images/managementlogin.png" alt="Management Icon" className="icon" />
                                     <span>Management</span>
                                 </Link>

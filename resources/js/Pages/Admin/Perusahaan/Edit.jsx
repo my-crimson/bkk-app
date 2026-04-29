@@ -2,7 +2,7 @@ import { Head, useForm, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
-
+import { confirmAction, notifyActionSuccess } from '@/helpers/actionPopup';
 export default function AdminPerusahaanEdit({ perusahaan }) {
     const { data, setData, post,  processing, errors } = useForm({
         _method: 'PUT',
@@ -45,7 +45,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
     }, [gambarFile]);
 
     // ================= SUBMIT =================
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
         if (fileErrors.logo || fileErrors.gambar) {
@@ -53,9 +53,12 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
             return;
         }
 
-        post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, {
-            forceFormData: true,
-        });
+        if (await confirmAction('mengubah perusahaan ini')) {
+            post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, {
+                forceFormData: true,
+                onSuccess: () => notifyActionSuccess('mengubah perusahaan'),
+            });
+        }
     };
 
     const jenisOptions = ['UMKM', 'MOU', 'perseroan', 'Startup'];

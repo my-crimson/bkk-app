@@ -1,6 +1,7 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { useEffect, useRef } from 'react';
+import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
 export default function AdminLokerIndex({ lowker, jurusanList, filters }) {
     const { flash } = usePage().props;
@@ -20,10 +21,11 @@ export default function AdminLokerIndex({ lowker, jurusanList, filters }) {
         router.get('/admin/loker', { jurusan: formData.get('jurusan'), lokasi: formData.get('lokasi') });
     };
 
-    const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus lowongan ini?')) {
-            router.delete(`/admin/loker/${id}`);
-        }
+    const handleDelete = async (id) => {
+        if (!(await confirmAction('hapus lowongan kerja'))) return;
+        router.delete(`/admin/loker/${id}`, {
+            onSuccess: () => notifyActionSuccess('hapus lowongan kerja'),
+        });
     };
 
     const data = lowker?.data || [];

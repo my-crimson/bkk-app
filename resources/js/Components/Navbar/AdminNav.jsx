@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
+import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
 export default function AdminNav() {
     const { url } = usePage();
@@ -27,9 +28,12 @@ export default function AdminNav() {
     };
 
     // ================= LOGOUT =================
-    const handleLogout = (e) => {
+    const handleLogout = async (e) => {
         e.preventDefault();
-        router.post('/logout');
+        if (!(await confirmAction('logout'))) return;
+        router.post('/logout', {
+            onSuccess: () => notifyActionSuccess('logout'),
+        });
     };
 
     return (
@@ -126,7 +130,7 @@ export default function AdminNav() {
 
                 {/* ================= CRUD ================= */}
                 <li className="crud-dropdown">
-                    <a className={isActive(['/admin/perusahaan', '/admin/loker', '/admin/berita'])} href="#">
+                    <a className={isActive(['/admin/perusahaan', '/admin/loker', '/admin/berita', '/admin/jurusan'])} href="#">
                         C.R.U.D <i className="fa-solid fa-chevron-down"></i>
                     </a>
                     <ul className="dropdown">
@@ -143,6 +147,11 @@ export default function AdminNav() {
                         <li>
                             <Link className={isActive('/admin/loker')} href="/admin/loker">
                                 CRUD Lowongan Kerja
+                            </Link>
+                        </li>
+                        <li>
+                            <Link className={isActive('/admin/jurusan')} href="/admin/jurusan">
+                                CRUD Informasi Jurusan
                             </Link>
                         </li>
                     </ul>

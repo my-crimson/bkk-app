@@ -1,13 +1,16 @@
 import { Head } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
 
-export default function RekapAlumni({ alumni, jurusan }) {
+export default function RekapAlumni({ alumni, summary = {} }) {
     return (
         <MainLayout>
             <Head title="Rekap Alumni" />
             <div className="header-bar"><a href="#">Rekap / Alumni</a></div>
             <div className="rekap-container">
                 <h2 style={{ margin: '20px 0', fontWeight: 800, color: '#333' }}>REKAP DATA ALUMNI</h2>
+
+                <p className="rekap-note">Total alumni terdaftar: <strong>{summary.total_alumni || 0}</strong></p>
+
                 <table className="rekap-table">
                     <thead>
                         <tr>

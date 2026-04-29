@@ -11,9 +11,8 @@ class Lowker extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'judul_lowker', 'deskripsi_lowker', 'kualifikasi', 'gaji', 'lokasi',
-        'tgl_posting', 'tgl_ditutup', 'id_perusahaan', 'id_jurusan',
-        'email', 'pendidikan', 'tipe_pekerjaan', 'keahlian', 'waktu_bekerja', 'tunjangan', 'jumlah_pelamar',
+        'judul_lowker', 'deskripsi', 'persyaratan', 'gaji', 'lokasi',
+        'tgl_posting', 'tgl_ditutup', 'id_perusahaan', 'id_jurusan', 'status',
     ];
 
     public function perusahaan()

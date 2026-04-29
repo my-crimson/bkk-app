@@ -1,14 +1,15 @@
 import { Head, router, Link } from '@inertiajs/react';
 import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
-
+import { confirmAction, notifyActionSuccess } from '@/helpers/actionPopup';
 export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
     // ================= DELETE =================
-    const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus?')) {
+    const handleDelete = async (id) => {
+        if (await confirmAction('menghapus perusahaan ini')) {
             router.delete(`/admin/perusahaan/${id}`, {
                 preserveScroll: true,
                 preserveState: false, 
+                onSuccess: () => notifyActionSuccess('menghapus perusahaan'),
             });
         }
     };

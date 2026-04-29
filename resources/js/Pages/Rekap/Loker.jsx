@@ -8,6 +8,11 @@ export default function RekapLoker({
     filters = {},
     summary = {},
 }) {
+    const chartPerusahaan = summary.chart_perusahaan || [];
+    const chartLokasi = summary.chart_lokasi || [];
+    const maxPerusahaan = Math.max(1, ...chartPerusahaan.map((d) => d.value || 0));
+    const maxLokasi = Math.max(1, ...chartLokasi.map((d) => d.value || 0));
+
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -64,6 +69,34 @@ export default function RekapLoker({
                             <p>{card.jumlah_lowongan} lowongan</p>
                         </div>
                     ))}
+                </div>
+
+                <div className="rekap-chart-grid">
+                    <div className="rekap-chart-card">
+                        <h3>Top Perusahaan</h3>
+                        {chartPerusahaan.map((item) => (
+                            <div className="chart-row" key={item.label}>
+                                <span>{item.label}</span>
+                                <div className="chart-bar-track">
+                                    <div className="chart-bar-fill" style={{ width: `${(item.value / maxPerusahaan) * 100}%` }}></div>
+                                </div>
+                                <strong>{item.value}</strong>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="rekap-chart-card">
+                        <h3>Top Lokasi</h3>
+                        {chartLokasi.map((item) => (
+                            <div className="chart-row" key={item.label}>
+                                <span>{item.label}</span>
+                                <div className="chart-bar-track">
+                                    <div className="chart-bar-fill alt" style={{ width: `${(item.value / maxLokasi) * 100}%` }}></div>
+                                </div>
+                                <strong>{item.value}</strong>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="rekap-loker-summary">

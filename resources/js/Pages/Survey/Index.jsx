@@ -1,7 +1,8 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
+import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function SurveyIndex({ alumni, alumniList }) {
+export default function SurveyIndex({ alumni, alumniList, surveyStatus }) {
     const { flash } = usePage().props;
     const { data, setData, post, processing } = useForm({
         survey_choice: '',
@@ -9,9 +10,15 @@ export default function SurveyIndex({ alumni, alumniList }) {
         alumni_id: alumni?.id || '',
     });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        post('/survey');
+        if (alumni && surveyStatus && !surveyStatus.can_submit) {
+            return;
+        }
+        if (!(await confirmAction('kirim survey'))) return;
+        post('/survey', {
+            onSuccess: () => notifyActionSuccess('kirim survey'),
+        });
     };
 
     return (
@@ -27,6 +34,12 @@ export default function SurveyIndex({ alumni, alumniList }) {
                 {flash?.error && (
                     <div className="alert alert-error">
                         <i className="fas fa-exclamation-triangle"></i> {flash.error}
+                    </div>
+                )}
+
+                {alumni && surveyStatus && !surveyStatus.can_submit && (
+                    <div className="alert alert-error">
+                        Anda sudah mengisi survey. Survey berikutnya dapat dikirim lagi pada {surveyStatus.next_submit_label}.
                     </div>
                 )}
 
@@ -82,7 +95,13 @@ export default function SurveyIndex({ alumni, alumniList }) {
                     </div>
 
                     <div className="survey-submit">
-                        <button type="submit" className="survey-submit-btn" disabled={processing}>SUBMIT</button>
+                        <button
+                            type="submit"
+                            className="survey-submit-btn"
+                            disabled={processing || (alumni && surveyStatus && !surveyStatus.can_submit)}
+                        >
+                            SUBMIT
+                        </button>
                     </div>
                 </form>
             </div>

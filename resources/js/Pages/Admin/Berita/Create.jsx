@@ -1,5 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
+import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
 export default function AdminBeritaCreate() {
     const { data, setData, post, processing, reset } = useForm({
@@ -11,11 +12,15 @@ export default function AdminBeritaCreate() {
         gambar: null,
     });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+        if (!(await confirmAction('tambah kegiatan'))) return;
         post('/admin/berita', {
             forceFormData: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                reset();
+                notifyActionSuccess('tambah kegiatan');
+            },
         });
     };
 

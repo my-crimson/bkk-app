@@ -10,7 +10,7 @@ class Jurusan extends Model
     protected $primaryKey = 'id_jurusan';
     public $timestamps = false;
 
-    protected $fillable = ['jurusan'];
+    protected $fillable = ['jurusan', 'deskripsi', 'prospek_kerja', 'gambar1', 'gambar2'];
 
     public function alumni()
     {

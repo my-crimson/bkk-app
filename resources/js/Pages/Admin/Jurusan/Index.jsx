@@ -3,77 +3,77 @@ import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminBeritaIndex({ berita }) {
+export default function AdminJurusanIndex({ jurusan }) {
     const handleDelete = async (id) => {
-        if (!(await confirmAction('hapus kegiatan'))) return;
-        router.delete(`/admin/berita/${id}`, {
-            onSuccess: () => notifyActionSuccess('hapus kegiatan'),
+        if (!(await confirmAction('hapus jurusan'))) return;
+        router.delete(`/admin/jurusan/${id}`, {
+            onSuccess: () => notifyActionSuccess('hapus jurusan'),
         });
     };
 
-    const cards = useMemo(() => (berita?.data ? berita.data : (Array.isArray(berita) ? berita : [])), [berita]);
-    const links = berita?.links || [];
-    const from = berita?.from || 0;
-    const to = berita?.to || 0;
-    const total = berita?.total || 0;
+    const items = useMemo(() => (jurusan?.data ? jurusan.data : (Array.isArray(jurusan) ? jurusan : [])), [jurusan]);
+    const links = jurusan?.links || [];
+    const from = jurusan?.from || 0;
+    const to = jurusan?.to || 0;
+    const total = jurusan?.total || 0;
 
     return (
         <MainLayout>
-            <Head title="CRUD Kegiatan BKK" />
-            <div className="header-bar"><a href="#">CRUD / Kegiatan BKK</a></div>
+            <Head title="CRUD Informasi Jurusan" />
+            <div className="header-bar"><a href="#">CRUD / Informasi Jurusan</a></div>
 
             <div style={{ padding: '20px' }}>
                 <div className="job-list">
-                    <Link className="job-card show" id="tambah-kegiatan" href="/admin/berita/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
+                    <Link className="job-card show" id="tambah-jurusan" href="/admin/jurusan/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
                         <div className="tambah-btn">
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                                 <i className="fa-solid fa-plus" style={{ fontSize: '34px' }}></i>
-                                <p style={{ fontWeight: 600 }}>Tambahkan Kegiatan</p>
+                                <p style={{ fontWeight: 600 }}>Tambahkan Jurusan</p>
                             </div>
                         </div>
                     </Link>
 
-                    {cards.length > 0 ? cards.map((item) => (
-                        <div className="job-card show kegiatan-card has-footer" key={item.id_berita} style={{ height: 'auto' }}>
+                    {items.length > 0 ? items.map((item) => (
+                        <div className="job-card show kegiatan-card has-footer" key={item.id_jurusan} style={{ height: 'auto' }}>
                             <div className="job-header">
-                                <h3 style={{ marginLeft: 0, width: '100%', textAlign: 'center' }}>{item.judul}</h3>
+                                <h3 style={{ marginLeft: 0, width: '100%', textAlign: 'center' }}>{item.jurusan}</h3>
                             </div>
 
                             <div className="job-detail" style={{ paddingBottom: '10px' }}>
                                 <div className="kegiatan-image">
-                                    {item.gambar ? (
+                                    {item.gambar1 ? (
                                         <img
-                                            src={`/storage/uploads/kegiatan/${item.gambar}`}
-                                            alt={item.judul}
+                                            src={`/storage/uploads/jurusan/${item.gambar1}`}
+                                            alt={item.jurusan}
                                             loading="lazy"
                                             decoding="async"
                                         />
                                     ) : (
                                         <div className="kegiatan-image--placeholder" aria-label="Gambar tidak tersedia">
-                                            <i className="fa-regular fa-image"></i>
-                                            <span>tidak tersedia</span>
+                                            <i className="fa-solid fa-graduation-cap" style={{ fontSize: '2em', color: '#aaa' }}></i>
+                                            <span>Belum ada gambar</span>
                                         </div>
                                     )}
                                 </div>
 
                                 <p className="kegiatan-desc">
-                                    {item.deskripsi || ''}
+                                    {item.deskripsi ? (item.deskripsi.length > 150 ? item.deskripsi.substring(0, 150) + '...' : item.deskripsi) : 'Belum ada deskripsi'}
                                 </p>
                             </div>
 
                             <div className="job-footer" style={{ height: 60 }}>
-                                <button onClick={() => handleDelete(item.id_berita)} className="delete-button">
+                                <button onClick={() => handleDelete(item.id_jurusan)} className="delete-button">
                                     <i className="fa-solid fa-trash"></i>
                                     Hapus
                                 </button>
-                                <Link href={`/admin/berita/${item.id_berita}/edit`} className="detail-button" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-                                    <i className="fa-solid fa-bars"></i>
-                                    Detail
+                                <Link href={`/admin/jurusan/${item.id_jurusan}/edit`} className="detail-button" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                                    <i className="fa-solid fa-pen-to-square"></i>
+                                    Edit
                                 </Link>
                             </div>
                         </div>
                     )) : (
-                        <p className="no-data">Belum ada kegiatan.</p>
+                        <p className="no-data">Belum ada data jurusan.</p>
                     )}
                 </div>
             </div>
@@ -81,7 +81,7 @@ export default function AdminBeritaIndex({ berita }) {
             {links.length > 0 && (
                 <div className="pagination-container">
                     <div className="pagination-info">
-                        <p>Ditampilkan <strong>{from}</strong> sampai <strong>{to}</strong> dari total <strong>{total}</strong> kegiatan</p>
+                        <p>Ditampilkan <strong>{from}</strong> sampai <strong>{to}</strong> dari total <strong>{total}</strong> jurusan</p>
                     </div>
                     <div className="pagination">
                         {links.map((link, i) => (

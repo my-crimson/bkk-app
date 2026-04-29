@@ -48,7 +48,7 @@ export default function AlumniNav() {
                 {/* ABOUT */}
                 <li>
                     <a className={isActive(['/visi-misi','/proker','/tujuan','/struktur-organisasi'])} href="#">
-                        TENTANG KAMI
+                        TENTANG KAMI <i className="fa-solid fa-chevron-down"></i>
                     </a>
                     <ul className="dropdown">
                         <li><Link className={isActive('/visi-misi')} href="/visi-misi">Visi Misi</Link></li>

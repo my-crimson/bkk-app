@@ -12,10 +12,8 @@ class AuthController extends Controller
 {
     public function showAdminLogin()
     {
-        if (session('user_id') && session('role') === 'admin') {
-            return redirect()->route('beranda');
-        }
-        return Inertia::render('Auth/AdminLogin');
+        // Legacy endpoint: admin login disatukan ke management login
+        return redirect()->route('login.management');
     }
 
     public function showAlumniLogin()
@@ -28,7 +26,7 @@ class AuthController extends Controller
 
     public function showManagementLogin()
     {
-        if (session('user_id') && session('role') === 'management') {
+        if (session('user_id') && in_array(session('role'), ['management', 'admin'], true)) {
             return redirect()->route('beranda');
         }
         return Inertia::render('Auth/ManagementLogin');
@@ -36,7 +34,8 @@ class AuthController extends Controller
 
     public function loginAdmin(Request $request)
     {
-        return $this->processLogin($request, 'admin');
+        // Legacy endpoint: admin login diperlakukan sebagai management login
+        return $this->processLogin($request, 'management');
     }
 
     public function loginAlumni(Request $request)
@@ -93,15 +92,17 @@ class AuthController extends Controller
                 return back()->with('error', 'Username dan password harus diisi');
             }
 
-            $role = $type === 'management' ? 'management' : 'admin';
-            $user = User::where('username', $username)->where('role', $role)->first();
+            $user = User::where('username', $username)
+                ->whereIn('role', ['management', 'admin'])
+                ->first();
 
             if ($user && $this->verifyPassword($password, $user->password)) {
                 session()->regenerate();
                 session([
                     'user_id' => $user->id,
                     'username' => $user->username,
-                    'role' => $user->role,
+                    // Canonical role: semua akses admin/management disamakan ke management
+                    'role' => 'management',
                     'last_login' => time(),
                 ]);
                 session()->forget(['login_attempts', 'last_login_attempt']);
@@ -119,11 +120,16 @@ class AuthController extends Controller
 
     private function verifyPassword(string $input, string $stored): bool
     {
-        // Support both hashed and plaintext passwords
-        if (Hash::check($input, $stored)) {
-            return true;
+        // Support both hashed (bcrypt) and legacy plaintext passwords.
+        // Laravel 12 can throw RuntimeException when non-bcrypt value is checked.
+        try {
+            if (Hash::check($input, $stored)) {
+                return true;
+            }
+        } catch (\RuntimeException $e) {
+            // Ignore and fallback to plaintext check below.
         }
-        
+
         return $input === $stored;
     }
 

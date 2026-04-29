@@ -14,27 +14,42 @@ class RekapController extends Controller
     public function alumni()
     {
         $alumni = Alumni::with('jurusan')->orderBy('nama')->get();
-        $jurusan = Jurusan::all();
+        $jurusan = Jurusan::whereIn('jurusan', [
+            'Rekayasa Perangkat Lunak (RPL)',
+            'Teknik Kimia Industri (TKI)',
+            'Teknik Komputer dan Jaringan (TKJ)',
+            'Animasi',
+            'Broadcasting',
+            'Usaha Layanan Wisata (ULW)',
+            'Akuntansi & Keuangan Lembaga (AKL)',
+            'Manajemen Perkantoran dan Layanan Bisnis',
+            'Bisnis Digital (BD)',
+            'Desain Komunikasi Visual (DKV)',
+        ])->get();
+
         return Inertia::render('Rekap/Alumni', [
             'alumni' => $alumni,
             'jurusan' => $jurusan,
+            'summary' => [
+                'total_alumni' => $alumni->count(),
+            ],
         ]);
     }
 
     public function loker(Request $request)
     {
-        $allowedCodes = ['RPL', 'TKJ', 'KI', 'DKV', 'ANM', 'AK', 'MP', 'BD', 'ULW', 'PSPT'];
+        $allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'BR', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
         $codeAliases = [
-            'RPL' => ['RPL', 'REKAYASA PERANGKAT LUNAK'],
-            'TKJ' => ['TKJ', 'TEKNIK KOMPUTER DAN JARINGAN'],
-            'KI' => ['KI', 'TKI', 'TEKNIK KIMIA INDUSTRI'],
-            'DKV' => ['DKV', 'DESAIN KOMUNIKASI VISUAL'],
-            'ANM' => ['ANM', 'ANIMASI'],
-            'AK' => ['AK', 'AKUNTANSI'],
-            'MP' => ['MP', 'MANAJEMEN PERKANTORAN'],
-            'BD' => ['BD', 'BISNIS DIGITAL'],
-            'ULW' => ['ULW', 'USAHA LAYANAN WISATA'],
-            'PSPT' => ['PSPT', 'PERHOTELAN DAN LAYANAN PARIWISATA'],
+            'RPL' => ['REKAYASA PERANGKAT LUNAK (RPL)'],
+            'TKI' => ['TEKNIK KIMIA INDUSTRI (TKI)'],
+            'TKJ' => ['TEKNIK KOMPUTER DAN JARINGAN (TKJ)'],
+            'ANM' => ['ANIMASI'],
+            'BR' => ['BROADCASTING'],
+            'ULW' => ['USAHA LAYANAN WISATA (ULW)'],
+            'AKL' => ['AKUNTANSI & KEUANGAN LEMBAGA (AKL)'],
+            'MPLB' => ['MANAJEMEN PERKANTORAN DAN LAYANAN BISNIS'],
+            'BD' => ['BISNIS DIGITAL (BD)'],
+            'DKV' => ['DESAIN KOMUNIKASI VISUAL (DKV)'],
         ];
 
         $selectedPerusahaan = $request->query('perusahaan');
@@ -98,6 +113,18 @@ class RekapController extends Controller
             'summary' => [
                 'total_lowongan' => $lowker->count(),
                 'total_perusahaan' => $lowker->pluck('perusahaan.id_perusahaan')->filter()->unique()->count(),
+                'chart_perusahaan' => $lowker
+                    ->groupBy(fn ($item) => $item->perusahaan->nama ?? '-')
+                    ->map(fn ($items, $name) => ['label' => $name, 'value' => $items->count()])
+                    ->sortByDesc('value')
+                    ->take(8)
+                    ->values(),
+                'chart_lokasi' => $lowker
+                    ->groupBy(fn ($item) => $item->lokasi ?? '-')
+                    ->map(fn ($items, $name) => ['label' => $name, 'value' => $items->count()])
+                    ->sortByDesc('value')
+                    ->take(8)
+                    ->values(),
             ],
         ]);
     }

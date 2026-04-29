@@ -1,53 +1,27 @@
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 import MainLayout from '../../Layouts/MainLayout';
 
 export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}, summary = {} }) {
-    const allowedCodes = ['RPL', 'TKJ', 'KI', 'DKV', 'ANM', 'AK', 'MP', 'BD', 'ULW', 'PSPT'];
-    const codeToNames = {
-        RPL: ['RPL', 'REKAYASA PERANGKAT LUNAK'],
-        TKJ: ['TKJ', 'TEKNIK KOMPUTER DAN JARINGAN'],
-        KI: ['KI', 'TKI', 'TEKNIK KIMIA INDUSTRI'],
-        DKV: ['DKV', 'DESAIN KOMUNIKASI VISUAL'],
-        ANM: ['ANM', 'ANIMASI'],
-        AK: ['AK', 'AKUNTANSI'],
-        MP: ['MP', 'MANAJEMEN PERKANTORAN'],
-        BD: ['BD', 'BISNIS DIGITAL'],
-        ULW: ['ULW', 'USAHA LAYANAN WISATA'],
-        PSPT: ['PSPT', 'PERHOTELAN DAN LAYANAN PARIWISATA'],
-    };
-
-    const jurusanMap = new Map((jurusan || []).map((j) => [String(j.jurusan || '').toUpperCase(), j]));
-    const jurusanPills = allowedCodes
-        .map((code) => {
-            const matched = (codeToNames[code] || [])
-                .map((name) => jurusanMap.get(name))
-                .find(Boolean);
-
-            return matched ? { code, jurusan: matched.jurusan } : null;
-        })
-        .filter(Boolean);
+    const allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'BR', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
+    const [selectedSurvey, setSelectedSurvey] = useState(null);
 
     return (
         <MainLayout>
             <Head title="Tracer Study" />
-            <div className="header-bar"><a href="#">Tracer Study</a></div>
+            <div className="header-bar"><a href="#">Tracer Study Alumni</a></div>
             <div className="tracer-container">
                 <h2 className="tracer-title">TRACER STUDY DATA ALUMNI SMKN 1 BOYOLANGU</h2>
 
-                <p className="tracer-generated-at">Sinkron waktu WIB: {summary.generated_at_wib}</p>
-
                 <div className="tracer-pill-wrap">
-                    <Link href="/admin/tracer-study" className={`tracer-pill ${!filters.jurusan ? 'active' : ''}`} preserveScroll>
-                        Semua
-                    </Link>
-                    {jurusanPills.map((j) => (
+                    {allowedCodes.map((code) => (
                         <Link
-                            key={j.code}
-                            href={`/admin/tracer-study?jurusan=${encodeURIComponent(j.jurusan)}`}
-                            className={`tracer-pill ${filters.jurusan === j.jurusan ? 'active' : ''}`}
+                            key={code}
+                            href={`/admin/tracer-study?jurusan=${encodeURIComponent(code)}`}
+                            className={`tracer-pill ${filters.jurusan === code ? 'active' : ''}`}
                             preserveScroll
                         >
-                            {j.code}
+                            {code}
                         </Link>
                     ))}
                 </div>
@@ -62,6 +36,7 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                             <th>Jurusan</th>
                             <th>Status Survey</th>
                             <th>Tanggal Survey</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,26 +50,53 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                                         {r.status_survey}
                                     </span>
                                 </td>
+                                <td>{r.tanggal_survey}</td>
                                 <td>
-                                    {r.tanggal_survey}
-                                    {r.tanggal_survey_relative && (
-                                        <div className="tracer-relative-time">{r.tanggal_survey_relative}</div>
+                                    {r.survey_detail ? (
+                                        <button
+                                            type="button"
+                                            className="tracer-detail-btn"
+                                            onClick={() => setSelectedSurvey(r)}
+                                        >
+                                            Lihat Isi Survey
+                                        </button>
+                                    ) : (
+                                        <span style={{ color: '#8f9aa8', fontSize: '13px' }}>-</span>
                                     )}
                                 </td>
                             </tr>
                         )) : (
-                            <tr><td colSpan="5" style={{ textAlign: 'center' }}>Belum ada data.</td></tr>
+                            <tr><td colSpan="6" style={{ textAlign: 'center' }}>Belum ada data.</td></tr>
                         )}
                         <tr className="tracer-total-row">
                             <td colSpan="2">Jumlah Alumni :</td>
                             <td>{summary.total_alumni || 0}</td>
-                            <td colSpan="2">
+                            <td colSpan="3">
                                 Sudah Mengisi: {summary.sudah_mengisi || 0} | Belum Mengisi: {summary.belum_mengisi || 0}
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            {selectedSurvey && (
+                <div className="tracer-survey-overlay" onClick={() => setSelectedSurvey(null)}>
+                    <div className="tracer-survey-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="tracer-survey-header">
+                            <h3>Detail Survey Alumni</h3>
+                            <button type="button" onClick={() => setSelectedSurvey(null)}>x</button>
+                        </div>
+                        <p><strong>Nama:</strong> {selectedSurvey.nama}</p>
+                        <p><strong>Jurusan:</strong> {selectedSurvey.jurusan}</p>
+                        <p><strong>Tanggal Isi:</strong> {selectedSurvey.tanggal_survey}</p>
+                        <p><strong>Pilihan Survey:</strong> {selectedSurvey.survey_detail?.pilihan || '-'}</p>
+                        <div className="tracer-survey-box">
+                            <strong>Kritik / Saran:</strong>
+                            <p>{selectedSurvey.survey_detail?.kritiksaran || '-'}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
         </MainLayout>
     );
 }

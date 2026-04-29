@@ -1,5 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
+import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
 export default function AdminBeritaEdit({ berita }) {
     const { data, setData, post, processing } = useForm({
@@ -8,7 +9,14 @@ export default function AdminBeritaEdit({ berita }) {
         gambar: null,
     });
 
-    const submit = (e) => { e.preventDefault(); post(`/admin/berita/${berita.id_berita}`, { forceFormData: true }); };
+    const submit = async (e) => {
+        e.preventDefault();
+        if (!(await confirmAction('update kegiatan'))) return;
+        post(`/admin/berita/${berita.id_berita}`, {
+            forceFormData: true,
+            onSuccess: () => notifyActionSuccess('update kegiatan'),
+        });
+    };
 
     return (
         <MainLayout>
