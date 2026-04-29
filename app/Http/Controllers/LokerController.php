@@ -57,8 +57,7 @@ class LokerController extends Controller
         }
 
         $lowker = $query->orderBy('tgl_posting', 'desc')->paginate(6)->withQueryString();
-        $jurusanList = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
-            ->orderBy('jurusan')
+        $jurusanList = Jurusan::orderBy('jurusan')
             ->pluck('jurusan');
 
         return Inertia::render('Loker/Index', [
@@ -105,8 +104,7 @@ class LokerController extends Controller
         }
 
         $lowker = $query->orderBy('tgl_posting', 'desc')->paginate(6)->withQueryString();
-        $jurusanList = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
-            ->orderBy('jurusan')
+        $jurusanList = Jurusan::orderBy('jurusan')
             ->pluck('jurusan');
 
         return Inertia::render('Admin/Loker/Index', [
@@ -120,9 +118,7 @@ class LokerController extends Controller
     public function create()
     {
         $perusahaan = Perusahaan::orderBy('nama')->get();
-        $jurusan = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
-            ->orderBy('jurusan')
-            ->get();
+        $jurusan = Jurusan::orderBy('jurusan')->get();
         return Inertia::render('Admin/Loker/Create', [
             'perusahaan' => $perusahaan,
             'jurusan' => $jurusan,
@@ -160,9 +156,7 @@ class LokerController extends Controller
         $this->cleanupExpiredLowker();
         $lowker = Lowker::findOrFail($id);
         $perusahaan = Perusahaan::orderBy('nama')->get();
-        $jurusan = Jurusan::whereIn('jurusan', $this->allowedJurusanNames)
-            ->orderBy('jurusan')
-            ->get();
+        $jurusan = Jurusan::orderBy('jurusan')->get();
         return Inertia::render('Admin/Loker/Edit', [
             'lowker' => $lowker,
             'perusahaan' => $perusahaan,
