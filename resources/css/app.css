@@ -2294,6 +2294,19 @@ footer {
     margin-top: 0 !important; /* Reset margin so wrapper handles it and button centers correctly */
 }
 
+/* Sembunyikan icon mata default bawaan browser (terutama Edge) */
+.password-input-wrap input::-ms-reveal,
+.password-input-wrap input::-ms-clear {
+    display: none;
+}
+
+.password-input-wrap input::-webkit-contacts-auto-fill-button,
+.password-input-wrap input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+}
+
 .password-toggle-btn {
     position: absolute;
     right: 10px;
