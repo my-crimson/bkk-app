@@ -237,29 +237,45 @@ header .rectangle {
 
 /* ========== BERANDA / HERO ========== */
 
-
-.beranda-page .container {
-    background-image: url('/images/bg-utama.png');
+.container {
+    background-image: url('/public/images/bg-utama.png');
     background-size: cover;
     background-position: 75% center;
+    background-repeat: no-repeat;
+
+    min-height: 100vh;
     width: 100%;
+
     overflow-x: hidden;
+
+    display: flex;
+    flex-direction: column;
 }
 
+/* ========== HERO ========== */
 .hero {
+    flex: 1;
+
     background-size: cover;
     background-position: center;
+
     color: white;
     padding: 50px 20px;
 }
 
+/* ========== HERO CONTENT ========== */
 .hero-content {
     margin-top: 10px;
     max-width: 100%;
+
     text-align: left;
+
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.9s ease-out, transform 0.6s ease-out;
+
+    transition:
+        opacity 0.9s ease-out,
+        transform 0.6s ease-out;
 }
 
 .hero-content.show {
@@ -271,7 +287,9 @@ header .rectangle {
     font-family: 'Franklin Gothic Medium', sans-serif;
     font-size: 6rem;
     line-height: 1.3;
+
     margin-bottom: 10px;
+
     text-transform: uppercase;
     user-select: none;
 }
@@ -281,26 +299,37 @@ header .rectangle {
     max-width: 500px;
 }
 
+/* ========== TAGLINE ========== */
 .tagline {
     font-size: 2rem;
     margin-bottom: 30px;
+
     font-family: 'Ponnala';
     user-select: none;
 }
 
+/* ========== VIDEO BUTTON ========== */
 .video-button {
     background-color: #e56911;
     color: white;
+
     padding: 10px 20px;
+
     border: none;
+    border-radius: 7px;
+
     text-decoration: none;
     font-weight: 600;
+
     margin-bottom: 30px;
+
     display: flex;
     align-items: center;
     width: max-content;
-    border-radius: 7px;
+
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+
+    transition: background-color 0.3s ease;
 }
 
 .video-button i {
@@ -312,30 +341,46 @@ header .rectangle {
     background-color: #eba911;
 }
 
+/* ========== LOGIN OPTIONS ========== */
 .login-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 20px;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 20px;
+
     justify-content: center;
+
     width: 100%;
     max-width: 800px;
+
     margin-top: 20px;
 }
 
+/* ========== LOGIN CARD ========== */
 .login-card {
     display: flex;
     align-items: center;
+
     background-color: #4e4e50;
     color: white;
+
     padding: 15px;
+
     text-align: left;
-    border-radius: 10px;
     text-decoration: none;
+
     font-weight: bold;
+
     width: 100%;
     max-width: 300px;
     height: 15vh;
+
+    border-radius: 10px;
+
     transition: background-color 0.3s;
+
     box-shadow: 2px 12px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -346,7 +391,9 @@ header .rectangle {
 .login-card .icon {
     width: 80px;
     height: 80px;
+
     margin-right: 15px;
+
     flex-shrink: 0;
 }
 
@@ -354,9 +401,12 @@ header .rectangle {
 footer {
     background-color: #1b1b2f;
     color: white;
+
     text-align: center;
+
     padding: 10px 0;
-    margin-top: 30px;
+
+    margin-top: auto;
 }
 
 /* ========== LOGIN PAGES ========== */
@@ -2014,9 +2064,246 @@ footer {
 
 /* ========== INFORMASI JURUSAN ========== */
 .jurusan-container {
+    padding: 40px 5%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Grid Layout */
+.jurusan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Card Styling */
+.jurusan-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(30px);
+    display: flex;
+    flex-direction: column;
+}
+
+.jurusan-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.jurusan-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(19, 76, 188, 0.15);
+}
+
+.jurusan-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.jurusan-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.jurusan-card:hover .jurusan-image img {
+    transform: scale(1.1);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(19, 76, 188, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.image-overlay span {
+    color: white;
+    border: 2px solid white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.jurusan-card:hover .image-overlay {
+    opacity: 1;
+}
+
+.jurusan-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.jurusan-info h3 {
+    color: #002366;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+}
+
+.jurusan-info p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.btn-selengkapnya {
+    margin-top: auto;
+    background: none;
+    border: none;
+    color: #134CBC;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 0;
+    transition: 0.2s;
+}
+
+.btn-selengkapnya:hover {
+    gap: 12px;
+    color: #002366;
+}
+
+/* ========== MODAL POPUP ========== */
+.jurusan-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
 }
 
+.modal-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    border-radius: 20px;
+    position: relative;
+    overflow-y: auto;
+    z-index: 2;
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f0f0f0;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+.modal-close:hover {
+    background: #e53945;
+    color: white;
+}
+
+.modal-header {
+    padding: 30px 30px 10px;
+}
+
+.modal-header h2 {
+    color: #134CBC;
+    font-size: 2rem;
+}
+
+.modal-body {
+    padding: 0 30px 40px;
+}
+
+.modal-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.modal-gallery img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.modal-text h3 {
+    margin: 25px 0 10px;
+    color: #002366;
+    border-left: 4px solid #134CBC;
+    padding-left: 15px;
+}
+
+.prospek-section ul {
+    list-style: none;
+    padding-left: 15px;
+}
+
+.prospek-section li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.prospek-section li::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    color: #28a745;
+}
+
+@media (max-width: 768px) {
+    .modal-gallery {
+        grid-template-columns: 1fr;
+    }
+}
 /* ========== CRUD FORM ========== */
 .crud-form {
     max-width: 800px;
