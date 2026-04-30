@@ -27,19 +27,6 @@ class LokerController extends Controller
         Lowker::whereIn('id_lowker', $expiredIds)->delete();
     }
 
-    private array $allowedJurusanNames = [
-        'Rekayasa Perangkat Lunak (RPL)',
-        'Teknik Kimia Industri (TKI)',
-        'Teknik Komputer dan Jaringan (TKJ)',
-        'Animasi',
-        'Broadcasting',
-        'Usaha Layanan Wisata (ULW)',
-        'Akuntansi & Keuangan Lembaga (AKL)',
-        'Manajemen Perkantoran dan Layanan Bisnis',
-        'Bisnis Digital (BD)',
-        'Desain Komunikasi Visual (DKV)',
-    ];
-
     // Public: list lowongan
     public function index(Request $request)
     {
