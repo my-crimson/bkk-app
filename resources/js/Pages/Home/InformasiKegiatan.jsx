@@ -175,37 +175,27 @@ export default function InformasiKegiatan({ berita, filters }) {
             </div>
 
             {/* =========================
-               PAGINATION
+            PAGINATION
             ========================= */}
-            {links.length > 0 && (
-                <div className="pagination-container">
-
-                    <div className="pagination-info">
-                        <p>
-                            Ditampilkan <strong>{from}</strong> sampai <strong>{to}</strong> dari total <strong>{total}</strong> kegiatan
-                        </p>
-                    </div>
-
+            {berita?.links && (
                     <div className="pagination">
-                        {links.map((link, i) => (
-                            <Link
-                                key={i}
-                                href={link.url || '#'}
-                                className={`
-                                    ${link.active ? 'active' : ''}
-                                    ${String(link.label).includes('Previous') || String(link.label).includes('Next')
-                                        ? 'navigate'
-                                        : ''}
-                                `}
-                                dangerouslySetInnerHTML={{
-                                    __html: link.label
+                        {berita.links.map((link, index) => (
+                            <button
+                                key={index}
+                                disabled={!link.url}
+                                className={`page-btn ${link.active ? 'active' : ''}`}
+                                onClick={() => {
+                                    if (link.url) {
+                                        router.visit(link.url, {
+                                            preserveScroll: true,
+                                            preserveState: true,
+                                        });
+                                    }
                                 }}
-                                preserveScroll
+                                dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         ))}
                     </div>
-
-                </div>
             )}
 
             {/* =========================
