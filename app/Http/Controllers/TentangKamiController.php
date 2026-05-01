@@ -8,21 +8,29 @@ class TentangKamiController extends Controller
 {
     public function visiMisi()
     {
-        return Inertia::render('TentangKami/VisiMisi');
+        $informasi = \App\Models\Informasi::first();
+        return Inertia::render('TentangKami/VisiMisi', ['informasi' => $informasi]);
     }
 
     public function proker()
     {
-        return Inertia::render('TentangKami/Proker');
+        $informasi = \App\Models\Informasi::first();
+        return Inertia::render('TentangKami/Proker', ['informasi' => $informasi]);
     }
 
     public function tujuan()
     {
-        return Inertia::render('TentangKami/Tujuan');
+        $informasi = \App\Models\Informasi::first();
+        return Inertia::render('TentangKami/Tujuan', ['informasi' => $informasi]);
     }
 
     public function strukturOrganisasi()
     {
-        return Inertia::render('TentangKami/StrukturOrganisasi');
+        $informasi = \App\Models\Informasi::first();
+        $struktur = \App\Models\StrukturOrganisasi::orderBy('level')->orderBy('id')->get();
+        return Inertia::render('TentangKami/StrukturOrganisasi', [
+            'struktur' => $struktur,
+            'informasi' => $informasi
+        ]);
     }
 }

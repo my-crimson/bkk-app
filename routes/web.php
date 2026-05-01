@@ -87,7 +87,35 @@ Route::middleware('role:management')->prefix('admin')->group(function () {
 
     // Tracer Study
     Route::get('/tracer-study', [TracerStudyController::class, 'index'])->name('admin.tracer-study');
+
+    // CRUD Informasi
+    Route::get('/informasi', [\App\Http\Controllers\Admin\InformasiController::class, 'index'])->name('admin.informasi.index');
+    Route::put('/informasi', [\App\Http\Controllers\Admin\InformasiController::class, 'updateInformasi'])->name('admin.informasi.update');
+    Route::post('/informasi/pengantar-profile', [\App\Http\Controllers\Admin\InformasiController::class, 'updatePengantarProfile'])->name('admin.informasi.pengantar-profile');
+    Route::put('/informasi/level-options', [\App\Http\Controllers\Admin\InformasiController::class, 'updateLevelOptions'])->name('admin.informasi.level-options');
+    Route::post('/informasi/struktur', [\App\Http\Controllers\Admin\InformasiController::class, 'storeStruktur'])->name('admin.informasi.struktur.store');
+    Route::post('/informasi/struktur/{id}', [\App\Http\Controllers\Admin\InformasiController::class, 'updateStruktur'])->name('admin.informasi.struktur.update');
+    Route::delete('/informasi/struktur/{id}', [\App\Http\Controllers\Admin\InformasiController::class, 'destroyStruktur'])->name('admin.informasi.struktur.destroy');
+
+    // CRUD Siswa/Alumni
+    Route::get('/alumni', [\App\Http\Controllers\Admin\AlumniController::class, 'index'])->name('admin.alumni.index');
+    Route::get('/alumni/create', [\App\Http\Controllers\Admin\AlumniController::class, 'create'])->name('admin.alumni.create');
+    Route::post('/alumni', [\App\Http\Controllers\Admin\AlumniController::class, 'store'])->name('admin.alumni.store');
+    Route::get('/alumni/{id}/edit', [\App\Http\Controllers\Admin\AlumniController::class, 'edit'])->name('admin.alumni.edit');
+    Route::put('/alumni/{id}', [\App\Http\Controllers\Admin\AlumniController::class, 'update'])->name('admin.alumni.update');
+    Route::delete('/alumni/{id}', [\App\Http\Controllers\Admin\AlumniController::class, 'destroy'])->name('admin.alumni.destroy');
+    Route::post('/alumni/import', [\App\Http\Controllers\Admin\AlumniController::class, 'import'])->name('admin.alumni.import');
+    Route::get('/alumni/template', [\App\Http\Controllers\Admin\AlumniController::class, 'downloadTemplate'])->name('admin.alumni.template');
+    Route::post('/alumni/{id}/reset-password', [\App\Http\Controllers\Admin\AlumniController::class, 'resetPassword'])->name('admin.alumni.reset-password');
+
+    // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\Admin\AlumniController::class, 'notifications'])->name('admin.notifications');
+    Route::post('/notifications/{id}/resolve', [\App\Http\Controllers\Admin\AlumniController::class, 'resolveNotification'])->name('admin.notifications.resolve');
+    Route::get('/notifications/pending-count', [\App\Http\Controllers\Admin\AlumniController::class, 'pendingCount'])->name('admin.notifications.pending-count');
 });
+
+// Forgot Password (public)
+Route::post('/forgot-password', [\App\Http\Controllers\ForgotPasswordController::class, 'store'])->name('forgot-password.store');
 
 // ========== ALUMNI ROUTES ==========
 Route::middleware('role:alumni')->group(function () {

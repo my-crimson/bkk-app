@@ -131,10 +131,15 @@ export default function AdminPerusahaanCreate() {
                         required
                     >
                         <option value="">-- Pilih Jenis --</option>
+                        <option value="PT">PT</option>
+                        <option value="CV">CV</option>
+                        <option value="UD">UD</option>
                         <option value="UMKM">UMKM</option>
-                        <option value="MOU">MOU</option>
-                        <option value="perseroan">Perseroan</option>
-                        <option value="Startup">Startup</option>
+                        <option value="Firma">Firma</option>
+                        <option value="Perusahaan Perseorangan">Perusahaan Perseorangan</option>
+                        <option value="Koperasi">Koperasi</option>
+                        <option value="BUMN">BUMN</option>
+                        <option value="Swasta">Swasta</option>
                     </select>
                 </div>
 
@@ -181,13 +186,12 @@ export default function AdminPerusahaanCreate() {
 
                 <div className="form-group">
                     <label>
-                        Logo <span style={{ color: 'red' }}>*</span>
+                        Logo
                     </label>
 
                     <input
                         type="file"
                         accept="image/*"
-                        required
                         onChange={e => {
                             const file = e.target.files?.[0];
                             const error = validateImage(file, 'Logo');

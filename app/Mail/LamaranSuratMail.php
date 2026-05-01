@@ -17,16 +17,18 @@ class LamaranSuratMail extends Mailable implements ShouldQueue
 
     public $lowker;
     public $alumni;
-    public $namaFile;
+    public $namaFileLamaran;
+    public $namaFileCv;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Lowker $lowker, Alumni $alumni, string $namaFile)
+    public function __construct(Lowker $lowker, Alumni $alumni, string $namaFileLamaran, string $namaFileCv)
     {
         $this->lowker = $lowker;
         $this->alumni = $alumni;
-        $this->namaFile = $namaFile;
+        $this->namaFileLamaran = $namaFileLamaran;
+        $this->namaFileCv = $namaFileCv;
     }
 
     /**
@@ -58,11 +60,12 @@ class LamaranSuratMail extends Mailable implements ShouldQueue
      */
     public function attachments(): array
     {
-        $filePath = storage_path('app/public/uploads/lamaran/' . $this->namaFile);
-        
-        if (file_exists($filePath)) {
-            // Detect file extension for correct MIME type
-            $extension = strtolower(pathinfo($this->namaFile, PATHINFO_EXTENSION));
+        $attachments = [];
+
+        // Attach Lamaran
+        $filePathLamaran = storage_path('app/public/uploads/lamaran/' . $this->namaFileLamaran);
+        if (file_exists($filePathLamaran)) {
+            $extension = strtolower(pathinfo($this->namaFileLamaran, PATHINFO_EXTENSION));
             $mimeTypes = [
                 'pdf'  => 'application/pdf',
                 'doc'  => 'application/msword',
@@ -71,13 +74,28 @@ class LamaranSuratMail extends Mailable implements ShouldQueue
             $mime = $mimeTypes[$extension] ?? 'application/octet-stream';
             $displayName = 'Surat-Lamaran-' . $this->alumni->nama . '.' . $extension;
 
-            return [
-                \Illuminate\Mail\Mailables\Attachment::fromPath($filePath)
-                    ->as($displayName)
-                    ->withMime($mime),
-            ];
+            $attachments[] = \Illuminate\Mail\Mailables\Attachment::fromPath($filePathLamaran)
+                ->as($displayName)
+                ->withMime($mime);
         }
 
-        return [];
+        // Attach CV
+        $filePathCv = storage_path('app/public/uploads/lamaran/' . $this->namaFileCv);
+        if (file_exists($filePathCv)) {
+            $extensionCv = strtolower(pathinfo($this->namaFileCv, PATHINFO_EXTENSION));
+            $mimeTypesCv = [
+                'pdf'  => 'application/pdf',
+                'doc'  => 'application/msword',
+                'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            ];
+            $mimeCv = $mimeTypesCv[$extensionCv] ?? 'application/octet-stream';
+            $displayNameCv = 'CV-' . $this->alumni->nama . '.' . $extensionCv;
+
+            $attachments[] = \Illuminate\Mail\Mailables\Attachment::fromPath($filePathCv)
+                ->as($displayNameCv)
+                ->withMime($mimeCv);
+        }
+
+        return $attachments;
     }
 }

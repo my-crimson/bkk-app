@@ -76,13 +76,13 @@ export default function SurveyIndex({ alumni, alumniList, surveyStatus }) {
                         <div className="survey-choice">
                             <p>Profesi yang sedang dijalani dalam 6 bulan terakhir</p>
                             <div className="survey-choice-container">
-                                {['bekerja', 'wirausaha', 'menganggur', 'magang', 'kuliah'].map((opt) => (
-                                    <div className="survey-choice-input" key={opt}>
+                                {['bekerja', 'wirausaha', 'menganggur', 'magang', 'kuliah', 'pelatihan'].map((opt) => (
+                                    <label className="survey-choice-input" key={opt} style={{ cursor: 'pointer' }}>
                                         <input type="radio" name="survey_choice" value={opt}
                                             checked={data.survey_choice === opt}
                                             onChange={e => setData('survey_choice', e.target.value)} />
                                         <p>{opt.charAt(0).toUpperCase() + opt.slice(1)}</p>
-                                    </div>
+                                    </label>
                                 ))}
                             </div>
                         </div>
@@ -92,16 +92,15 @@ export default function SurveyIndex({ alumni, alumniList, surveyStatus }) {
                                 name="description" value={data.description}
                                 onChange={e => setData('description', e.target.value)}></textarea>
                         </div>
-                    </div>
-
-                    <div className="survey-submit">
-                        <button
-                            type="submit"
-                            className="survey-submit-btn"
-                            disabled={processing || (alumni && surveyStatus && !surveyStatus.can_submit)}
-                        >
-                            SUBMIT
-                        </button>
+                        <div className="survey-submit">
+                            <button
+                                type="submit"
+                                className="survey-submit-btn"
+                                disabled={processing || (alumni && surveyStatus && !surveyStatus.can_submit)}
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

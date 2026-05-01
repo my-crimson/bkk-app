@@ -33,6 +33,7 @@ class LamaranController extends Controller
         $request->validate([
             'id_lowker' => 'required|exists:lowker,id_lowker',
             'file_lamaran' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB max
+            'file_cv' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB max
         ]);
 
         // Check if lowongan has expired
@@ -53,13 +54,17 @@ class LamaranController extends Controller
         // Get alumni data with jurusan relation
         $alumni = Alumni::with('jurusan')->findOrFail($alumni_id);
 
-        // Upload file
-        $file = $request->file('file_lamaran');
-        $filename = time() . '_' . $alumni_id . '_' . $file->getClientOriginalName();
+        // Upload files
+        $fileLamaran = $request->file('file_lamaran');
+        $filenameLamaran = time() . '_lamaran_' . $alumni_id . '_' . str_replace(' ', '_', $fileLamaran->getClientOriginalName());
+        
+        $fileCv = $request->file('file_cv');
+        $filenameCv = time() . '_cv_' . $alumni_id . '_' . str_replace(' ', '_', $fileCv->getClientOriginalName());
         
         try {
-            Storage::disk('public')->putFileAs('uploads/lamaran', $file, $filename);
-            \Log::info('File uploaded successfully', ['filename' => $filename]);
+            Storage::disk('public')->putFileAs('uploads/lamaran', $fileLamaran, $filenameLamaran);
+            Storage::disk('public')->putFileAs('uploads/lamaran', $fileCv, $filenameCv);
+            \Log::info('Files uploaded successfully', ['lamaran' => $filenameLamaran, 'cv' => $filenameCv]);
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal mengunggah file. Silakan coba lagi. ' . $e->getMessage());
         }
@@ -70,7 +75,8 @@ class LamaranController extends Controller
                 'id_alumni' => $alumni_id,
                 'id_lowker' => $request->id_lowker,
                 'tanggal_lamar' => now()->toDateString(),
-                'file_lamaran' => $filename,
+                'file_lamaran' => $filenameLamaran,
+                'file_cv' => $filenameCv,
             ]);
             \Log::info('Lamaran record created', ['id_alumni' => $alumni_id, 'id_lowker' => $request->id_lowker]);
         } catch (\Exception $e) {
@@ -88,7 +94,7 @@ class LamaranController extends Controller
             
             if ($emailTo) {
                 \Log::info('Sending email to: ' . $emailTo);
-                Mail::to($emailTo)->send(new LamaranSuratMail($lowker, $alumni, $filename));
+                Mail::to($emailTo)->send(new LamaranSuratMail($lowker, $alumni, $filenameLamaran, $filenameCv));
                 \Log::info('Email sent successfully', ['email' => $emailTo]);
             } else {
                 \Log::warning('No email found for company');

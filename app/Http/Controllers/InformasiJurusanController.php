@@ -14,7 +14,7 @@ class InformasiJurusanController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Jurusan::query();
+        $query = Jurusan::where('jurusan', '!=', 'Semua Jurusan');
 
         // FILTER SEARCH
         if ($request->filled('search')) {
@@ -43,7 +43,7 @@ class InformasiJurusanController extends Controller
 
     public function crudIndex(Request $request)
     {
-        $query = Jurusan::query();
+        $query = Jurusan::where('jurusan', '!=', 'Semua Jurusan');
 
         // FILTER SEARCH
         if ($request->filled('search')) {

@@ -4,7 +4,6 @@ import { Link, router, usePage } from '@inertiajs/react';
 export default function GuestNav() {
     const { url } = usePage();
     const [mobileActive, setMobileActive] = useState(false);
-    const [homeTapCount, setHomeTapCount] = useState(0);
 
     const isActive = (paths, exact = false) => {
         const check = (path) => {
@@ -19,19 +18,6 @@ export default function GuestNav() {
         return check(paths) ? 'active' : '';
     };
 
-    useEffect(() => {
-        if (homeTapCount >= 10) {
-            setHomeTapCount(0);
-            router.visit('/login/management');
-            return;
-        }
-
-        if (homeTapCount === 0) return;
-
-        const timer = setTimeout(() => setHomeTapCount(0), 3000);
-        return () => clearTimeout(timer);
-    }, [homeTapCount]);
-
     return (
         <nav className="navbar">
             <div className="hamburger" onClick={() => setMobileActive(!mobileActive)}>
@@ -45,7 +31,6 @@ export default function GuestNav() {
                     <a
                         className={isActive(['/', '/pengantar', '/informasi-kegiatan'])}
                         href="#"
-                        onClick={() => setHomeTapCount((count) => count + 1)}
                     >
                         HOME <i className="fa-solid fa-chevron-down"></i>
                     </a>
@@ -69,7 +54,16 @@ export default function GuestNav() {
                     </ul>
                 </li>
 
-                <li><Link className={isActive('/login/siswa')} href="/login/siswa">LOGIN</Link></li>
+                {/* LOGIN */}
+                <li>
+                    <a className={isActive(['/login/siswa', '/login/management'])} href="#">
+                        LOGIN <i className="fa-solid fa-chevron-down"></i>
+                    </a>
+                    <ul className="dropdown">
+                        <li><Link className={isActive('/login/siswa')} href="/login/siswa">Siswa / Alumni</Link></li>
+                        <li><Link className={isActive('/login/management')} href="/login/management">Management</Link></li>
+                    </ul>
+                </li>
 
                 <li><Link className={isActive('/informasi-jurusan')} href="/informasi-jurusan">INFORMASI JURUSAN</Link></li>
                 <li><Link className={isActive('/perusahaan')} href="/perusahaan">PERUSAHAAN</Link></li>

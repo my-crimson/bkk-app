@@ -2,7 +2,7 @@ import { Head } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
 import { useEffect, useRef } from 'react';
 
-export default function VisiMisi() {
+export default function VisiMisi({ informasi }) {
     const ref = useRef(null);
     useEffect(() => {
         if (ref.current) {
@@ -21,14 +21,8 @@ export default function VisiMisi() {
                 <div className="header-bar">
                     <a href="#">TENTANG KAMI / Visi Misi</a>
                 </div>
-                <section className="visi-misi" ref={ref}>
-                    <h2>VISI BKK SMKN 1 BOYOLANGU</h2>
-                    <p>Terwujudnya Bursa Kerja Khusus (BKK) yang mampu menjembatani pencari dan pemberi kerja serta menyalurkan tamatan yang dapat memenuhi tuntutan kebutuhan Usaha dan Industri memasuki Era Global.</p>
-                    <h2>MISI BKK SMKN 1 BOYOLANGU</h2>
-                    <ol>
-                        <li>Menjadi pusat informasi lowongan pekerjaan yang aktual bagi siswa dan alumni SMKN 1 Boyolangu.</li>
-                        <li>Menjalin kerjasama dengan Dunia Usaha/Industri untuk mengadakan pelatihan dan rekrutmen tenaga kerja bagi siswa dan alumni.</li>
-                    </ol>
+                <section className="visi-misi" ref={ref} style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
+                    {informasi?.visi_misi || 'Belum ada data Visi Misi.'}
                 </section>
             </div>
         </MainLayout>

@@ -113,6 +113,7 @@ header .rectangle {
 .navbar {
     background: #134CBC;
     position: relative;
+    overflow: visible;
 }
 
 .navbar-container {
@@ -123,6 +124,7 @@ header .rectangle {
     padding: 0;
     margin: 0;
     position: relative;
+    overflow: visible;
 }
 
 .navbar .logout-left a {
@@ -527,56 +529,91 @@ footer {
 .search-container {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .search {
     display: flex;
     align-items: center;
-    height: 50px;
-    gap: 10px;
-    background-color: #D9D9D9;
-    padding: 5px;
-    border: 1px solid #B0A8A8;
+    flex-wrap: wrap;
+    gap: 15px;
+    background-color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border: 1px solid #eaeaea;
     user-select: none;
 }
 
-.search select,
-.search option {
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    text-align: center;
-    height: 35px;
+.search label {
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+    margin-right: -5px;
 }
 
 .search-select,
 .search-input {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 15px;
+    color: #333;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    transition: all 0.3s ease;
+    outline: none;
+    height: auto;
+}
+
+.search-select {
+    font-weight: 500;
+    min-width: 180px;
+    cursor: pointer;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.search-select option {
+    font-size: 15px;
+    text-align: left;
+    padding: 10px;
+}
+
+.search-select:focus,
+.search-input:focus {
+    border-color: #3590FA;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(53, 144, 250, 0.15);
 }
 
 .search-input {
-    font-size: 14px;
-    height: 35px;
-    width: 200px;
+    width: 250px;
 }
 
 .search-button {
-    padding: 7px 15px;
-    font-size: 16px;
-    background-color: #007bff;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #134CBC;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: color 0.3s ease, background-color 0.3s ease;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(19, 76, 188, 0.2);
 }
 
 .search-button:hover {
-    background-color: #0056b3;
+    background-color: #0e3a90;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(19, 76, 188, 0.3);
+}
+
+.search-button:active {
+    transform: translateY(1px);
 }
 
 /* ========== JOB CARDS / LOKER ========== */
@@ -593,19 +630,19 @@ footer {
 .job-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    justify-content: space-between;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     width: 100%;
-    max-width: 400px;
-    height: 300px;
+    max-width: 380px;
+    height: 340px;
     margin: 20px 15px;
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    overflow: hidden;
 }
 
 .job-card.show {
@@ -613,109 +650,130 @@ footer {
     transform: translateY(0);
 }
 
+.job-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
 .job-card .job-header {
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    background-color: #D9D9D9;
-    height: 40px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    border-bottom: 1px solid #eaeaea;
+    height: auto;
+    min-height: 50px;
 }
 
 .job-header h3 {
-    margin-left: 20px;
+    margin: 0;
     font-size: 18px;
-    color: #333;
+    color: #134CBC;
+    font-weight: bold;
 }
 
 .job-card .job-detail {
     display: flex;
     flex-direction: column;
+    padding: 15px 20px;
+    flex-grow: 1;
 }
 
 .job-detail ul {
     display: flex;
     flex-direction: column;
     text-align: left;
-    padding: 15px 0;
+    padding: 0;
+    margin: 0;
 }
 
 .job-detail li {
     display: flex;
     align-items: center;
-    font-size: 14px;
-    margin-left: 23px;
-    margin-top: 5px;
-    font-style: italic;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
     list-style: none;
 }
 
 .job-detail i {
-    font-size: 15px;
-    margin-right: 10px;
+    font-size: 14px;
+    color: #888;
+    margin-right: 12px;
+    width: 16px;
+    text-align: center;
 }
 
 .job-detail .job-role {
     text-align: left;
-    margin-left: 23px;
-    font-weight: 600;
-    font-size: 20px;
+    margin: 15px 0 10px 0;
+    font-weight: 800;
+    font-size: 22px;
+    color: #333;
+    line-height: 1.2;
 }
 
 .job-card .line {
-    width: 96%;
-    height: 1px;
-    background-color: #999999;
-    margin: 10px auto;
+    display: none;
 }
 
 .job-tags {
     display: flex;
-    gap: 5px;
-    justify-content: center;
-    margin-bottom: 15px;
+    gap: 8px;
+    justify-content: flex-start;
+    margin-top: auto;
+    flex-wrap: wrap;
 }
 
 .job-tags p {
-    background-color: #3590FA;
-    padding: 5px 10px;
-    border-radius: 4px;
+    background-color: #e6f0ff;
+    padding: 6px 12px;
+    border-radius: 20px;
     font-size: 12px;
-    color: #D9D9D9;
+    color: #134CBC;
+    font-weight: bold;
+    border: 1px solid #b3d4ff;
+    margin: 0;
 }
 
 .job-footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background-color: #D9D9D9;
-    height: 100px;
+    background-color: #fcfcfc;
+    border-top: 1px solid #eaeaea;
+    padding: 15px 20px;
 }
 
 .job-footer .detail-button,
 .job-footer .edit-button {
-    padding: 10px 25px;
+    padding: 10px 20px;
     font-size: 14px;
+    font-weight: bold;
     color: #fff;
-    background-color: #007bff;
+    background-color: #3590FA;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-right: 20px;
-    transition: color 0.3s ease, background-color 0.3s ease;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .job-footer .delete-button {
-    padding: 10px 25px;
+    padding: 10px 20px;
     font-size: 14px;
+    font-weight: bold;
     color: #fff;
     background-color: #dc3545;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .job-footer .delete-button:hover {
@@ -725,12 +783,12 @@ footer {
 .detail-button i,
 .edit-button i,
 .delete-button i {
-    margin-right: 7px;
+    margin-right: 8px;
 }
 
 .detail-button:hover,
 .edit-button:hover {
-    background-color: #0056b3;
+    background-color: #134CBC;
 }
 
 .no-data {
@@ -1188,40 +1246,55 @@ footer {
     justify-content: center;
     align-items: center;
     padding-bottom: 100px;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.survey-container form {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .survey-title {
-    margin: 20px 0;
+    margin: 30px 0;
+    text-align: center;
 }
 
 .survey-title p {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 800;
+    color: #134CBC;
+    letter-spacing: 0.5px;
+    margin: 0;
 }
 
 .survey-box {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    max-width: 800px;
-    border: solid 1px black;
-    border-radius: 15px;
-    padding: 25px;
-    background: #EBFAFF;
+    width: 100%;
+    border-radius: 12px;
+    padding: 30px;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
+    margin-bottom: 20px;
 }
 
 .alumni-badge {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: #ffffff;
-    border: 1px solid #cfe8ff;
-    border-radius: 999px;
-    padding: 8px 14px;
+    background: #f0f7ff;
+    border: 1px solid #cce5ff;
+    border-radius: 8px;
+    padding: 10px 16px;
     color: #0b60d1;
     font-weight: 600;
-    margin-top: 8px;
-    box-shadow: 0 2px 6px rgba(11, 96, 209, 0.12);
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(11, 96, 209, 0.05);
+    font-size: 15px;
 }
 
 .alumni-badge i {
@@ -1229,72 +1302,125 @@ footer {
 }
 
 .survey-box p {
-    font-family: "PT Serif Caption", serif;
+    font-family: inherit;
+    color: #333;
+    margin: 0 0 10px 0;
 }
 
-.survey-choice p {
-    font-size: 20px;
+.survey-choice > p {
+    font-size: 16px;
+    font-weight: 700;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .survey-choice-input p {
-    font-size: 18px;
-    margin-left: 5px;
+    font-size: 15px;
+    margin-left: 8px;
+    color: #555;
+    margin-bottom: 0;
 }
 
 .survey-choice-input input {
-    width: 17px;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
+    accent-color: #3590FA;
 }
 
 .survey-choice-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 60%;
-    margin: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .survey-choice-input {
     display: flex;
-    margin: 10px 30px;
+    align-items: center;
+    background: #f8fafc;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.survey-choice-input:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
 }
 
 .survey-description {
     display: flex;
     flex-direction: column;
-    font-size: 20px;
-    margin-top: 20px;
+    margin-top: 25px;
+}
+
+.survey-description > p {
+    font-size: 16px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 10px;
 }
 
 .survey-description textarea {
-    margin-top: 10px;
     width: 100%;
     height: 120px;
-    padding: 10px;
+    padding: 15px;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
     resize: none;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.survey-description textarea:focus {
+    border-color: #3590FA;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(53, 144, 250, 0.15);
 }
 
 .survey-submit {
     display: flex;
-    width: 80%;
-    margin-top: 20px;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 25px;
 }
 
 .survey-submit-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    width: 150px;
-    height: 40px;
+    box-shadow: 0 4px 10px rgba(19, 76, 188, 0.2);
+    border-radius: 8px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
     color: white;
-    background: #3590FA;
-    text-decoration: none;
+    background: #134CBC;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.survey-submit-btn:hover {
+    background: #0e3a90;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(19, 76, 188, 0.3);
+}
+
+.survey-submit-btn:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .alert {
@@ -3164,4 +3290,54 @@ body::-webkit-scrollbar {
 
 .hamburger {
     display: none;
+}
+
+/* ========== DATE PICKER CUSTOMIZATION ========== */
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+}
+
+input[type="date"]:hover {
+    border-color: #3590FA;
+    background-color: #f1f8ff;
+}
+
+input[type="date"]:focus {
+    border-color: #134CBC;
+    box-shadow: 0 0 5px rgba(19, 76, 188, 0.3);
+    background-color: #ffffff;
+}
+
+/* Custom Calendar Icon (Webkit) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    opacity: 0.7;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background-color: rgba(53, 144, 250, 0.1);
+    opacity: 1;
+}
+
+/* ========== NOTIFICATION BADGE PULSE ========== */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
 }

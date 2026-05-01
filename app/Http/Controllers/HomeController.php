@@ -14,7 +14,8 @@ class HomeController extends Controller
 
     public function pengantar()
     {
-        return Inertia::render('Home/Pengantar');
+        $informasi = \App\Models\Informasi::first();
+        return Inertia::render('Home/Pengantar', ['informasi' => $informasi]);
     }
 
     public function informasiKegiatan()

@@ -67,7 +67,11 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                     </form>
                 </div>
 
-                <h3 className="tracer-year">{summary.periode_label}</h3>
+                <div style={{ textAlign: 'center', marginBottom: '30px', marginTop: '20px' }}>
+                    <h3 style={{ display: 'inline-block', fontSize: '36px', color: '#134CBC', fontWeight: '900', borderBottom: '4px solid #3590FA', paddingBottom: '10px', margin: 0 }}>
+                        {summary.periode_label}
+                    </h3>
+                </div>
 
                 <table className="rekap-table tracer-table">
                     <thead>
@@ -121,19 +125,47 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
             </div>
 
             {selectedSurvey && (
-                <div className="tracer-survey-overlay" onClick={() => setSelectedSurvey(null)}>
-                    <div className="tracer-survey-modal" onClick={(e) => e.stopPropagation()}>
-                        <div className="tracer-survey-header">
-                            <h3>Detail Survey Alumni</h3>
-                            <button type="button" onClick={() => setSelectedSurvey(null)}>x</button>
+                <div className="tracer-survey-overlay" onClick={() => setSelectedSurvey(null)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999, padding: '20px' }}>
+                    <div className="tracer-survey-modal" onClick={(e) => e.stopPropagation()} style={{ background: 'white', padding: '35px', borderRadius: '15px', width: '100%', maxWidth: '550px', boxShadow: '0 15px 40px rgba(0,0,0,0.2)', animation: 'fadeIn 0.3s ease-out' }}>
+                        <div className="tracer-survey-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #f0f0f5', paddingBottom: '15px', marginBottom: '25px' }}>
+                            <h3 style={{ margin: 0, color: '#134CBC', fontSize: '22px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 'bold' }}>
+                                <i className="fa-solid fa-clipboard-list" style={{ color: '#3590FA' }}></i> Detail Survey Alumni
+                            </h3>
+                            <button type="button" onClick={() => setSelectedSurvey(null)} style={{ background: '#ffebee', color: '#dc3545', border: 'none', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', transition: 'all 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#ffcdd2'} onMouseOut={(e) => e.currentTarget.style.background = '#ffebee'}>
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
                         </div>
-                        <p><strong>Nama:</strong> {selectedSurvey.nama}</p>
-                        <p><strong>Jurusan:</strong> {selectedSurvey.jurusan}</p>
-                        <p><strong>Tanggal Isi:</strong> {selectedSurvey.tanggal_survey}</p>
-                        <p><strong>Pilihan Survey:</strong> {selectedSurvey.survey_detail?.pilihan || '-'}</p>
-                        <div className="tracer-survey-box">
-                            <strong>Kritik / Saran:</strong>
-                            <p>{selectedSurvey.survey_detail?.kritiksaran || '-'}</p>
+                        <div style={{ marginBottom: '25px', fontSize: '15px', lineHeight: '1.8' }}>
+                            <div style={{ display: 'flex', borderBottom: '1px dashed #e0e0e0', paddingBottom: '10px', marginBottom: '10px' }}>
+                                <strong style={{ minWidth: '140px', color: '#666' }}>Nama</strong>
+                                <span style={{ color: '#333', fontWeight: 'bold' }}>: {selectedSurvey.nama}</span>
+                            </div>
+                            <div style={{ display: 'flex', borderBottom: '1px dashed #e0e0e0', paddingBottom: '10px', marginBottom: '10px' }}>
+                                <strong style={{ minWidth: '140px', color: '#666' }}>Jurusan</strong>
+                                <span style={{ color: '#333' }}>: {selectedSurvey.jurusan}</span>
+                            </div>
+                            <div style={{ display: 'flex', borderBottom: '1px dashed #e0e0e0', paddingBottom: '10px', marginBottom: '10px' }}>
+                                <strong style={{ minWidth: '140px', color: '#666' }}>Waktu Isi Survey</strong>
+                                <span style={{ color: '#134CBC', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    : <i className="fa-regular fa-clock"></i> {selectedSurvey.tanggal_survey}
+                                </span>
+                            </div>
+                            <div style={{ display: 'flex', borderBottom: '1px dashed #e0e0e0', paddingBottom: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                                <strong style={{ minWidth: '140px', color: '#666' }}>Pilihan Survey</strong>
+                                <span style={{ display: 'flex', alignItems: 'center' }}>: 
+                                    <span style={{ marginLeft: '8px', background: '#d4edda', color: '#155724', padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold', border: '1px solid #c3e6cb' }}>
+                                        {selectedSurvey.survey_detail?.pilihan || '-'}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="tracer-survey-box" style={{ background: '#f8f9fa', padding: '20px', borderRadius: '10px', borderLeft: '4px solid #3590FA', borderRight: '1px solid #eee', borderTop: '1px solid #eee', borderBottom: '1px solid #eee' }}>
+                            <strong style={{ display: 'block', marginBottom: '10px', color: '#333', fontSize: '15px' }}>
+                                <i className="fa-solid fa-comment-dots" style={{color: '#3590FA', marginRight: '6px'}}></i> Kritik / Saran:
+                            </strong>
+                            <p style={{ margin: 0, color: '#555', fontStyle: 'italic', lineHeight: '1.6', fontSize: '14px' }}>
+                                "{selectedSurvey.survey_detail?.kritiksaran || '-'}"
+                            </p>
                         </div>
                     </div>
                 </div>

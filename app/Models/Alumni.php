@@ -13,7 +13,7 @@ class Alumni extends Model
     protected $fillable = [
         'nama', 'jenis_kelamin', 'nisn', 'tempat_lahir', 'tanggal_lahir',
         'nik', 'agama', 'alamat', 'rt', 'rw', 'dusun', 'kelurahan',
-        'kecamatan', 'kode_pos', 'email', 'no_wa', 'id_jurusan',
+        'kecamatan', 'kode_pos', 'email', 'no_wa', 'id_jurusan', 'tahun_lulus',
         'password', 'password_changed', 'gambar',
     ];
 

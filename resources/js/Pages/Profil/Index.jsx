@@ -41,6 +41,12 @@ export default function ProfilIndex({ alumni, mustChangePassword }) {
         return `/storage/${alumni.gambar}`;
     }, [alumni.gambar]);
 
+    const maskedNik = useMemo(() => {
+        if (!alumni.nik) return '-';
+        if (alumni.nik.length <= 6) return '******';
+        return alumni.nik.substring(0, 6) + '*'.repeat(alumni.nik.length - 6);
+    }, [alumni.nik]);
+
     const submit = async (e) => {
         e.preventDefault();
         if (!(await confirmAction('update profil'))) return;
@@ -59,9 +65,10 @@ export default function ProfilIndex({ alumni, mustChangePassword }) {
         passwordForm.post('/profil/change-password', {
             onSuccess: () => {
                 sessionStorage.removeItem('pw_warning_dismissed');
-                setShowChangePassword(false);
-                notifyActionSuccess('ubah password');
-                passwordForm.reset();
+                notifyActionSuccess('ubah password. Silakan login kembali dengan password baru Anda.');
+                setTimeout(() => {
+                    router.post('/logout');
+                }, 1500);
             },
         });
     };
@@ -155,7 +162,7 @@ export default function ProfilIndex({ alumni, mustChangePassword }) {
                         <div className="profil-modern-grid">
                             <div className="profil-modern-panel">
                                 <p><strong>NISN</strong><span>{alumni.nisn || '-'}</span></p>
-                                <p><strong>NIK</strong><span>{alumni.nik || '-'}</span></p>
+                                <p><strong>NIK</strong><span>{maskedNik}</span></p>
                                 <p><strong>Nama Lengkap</strong><span>{alumni.nama || '-'}</span></p>
                                 <p><strong>Jenis Kelamin</strong><span>{alumni.jenis_kelamin || '-'}</span></p>
                                 <p><strong>Tempat Tanggal Lahir</strong><span>{`${alumni.tempat_lahir || '-'}, ${alumni.tanggal_lahir || '-'}`}</span></p>

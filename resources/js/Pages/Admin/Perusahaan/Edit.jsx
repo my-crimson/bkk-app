@@ -2,7 +2,7 @@ import { Head, useForm, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
-import { confirmAction, notifyActionSuccess } from '@/helpers/actionPopup';
+import { confirmAction, notifyActionSuccess, notifyActionError } from '@/Helpers/actionPopup';
 export default function AdminPerusahaanEdit({ perusahaan }) {
     const { data, setData, post,  processing, errors } = useForm({
         _method: 'PUT',
@@ -49,7 +49,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         e.preventDefault();
 
         if (fileErrors.logo || fileErrors.gambar) {
-            alert('Perbaiki error pada file terlebih dahulu!');
+            notifyActionError('Perbaiki error pada file terlebih dahulu!');
             return;
         }
 
@@ -61,7 +61,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         }
     };
 
-    const jenisOptions = ['UMKM', 'MOU', 'perseroan', 'Startup'];
+    const jenisOptions = ['PT', 'CV', 'UD', 'UMKM', 'Firma', 'Perusahaan Perseorangan', 'Koperasi', 'BUMN', 'Swasta'];
     const skalaOptions = ['lokal', 'Provinsi', 'Nasional', 'Internasional'];
 
     return (

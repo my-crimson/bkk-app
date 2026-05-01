@@ -87,9 +87,20 @@
 
             <div class="section">
                 <h3>👤 Data Pelamar</h3>
-                <div class="field"><strong>Nama:</strong> {{ $alumni->nama ?? '-' }}</div>
-                <div class="field"><strong>Email:</strong> {{ $alumni->email ?? '-' }}</div>
-                <div class="field"><strong>No. HP / WA:</strong> {{ $alumni->no_wa ?? '-' }}</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <tr>
+                        <td style="width: 140px; padding: 6px 0; color: #555; vertical-align: top;"><strong>Nama:</strong></td>
+                        <td style="padding: 6px 0;">{{ $alumni->nama ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; color: #555; vertical-align: top;"><strong>Email:</strong></td>
+                        <td style="padding: 6px 0; word-break: break-all;"><a href="mailto:{{ $alumni->email }}" style="color: #134CBC; text-decoration: none;">{{ $alumni->email ?? '-' }}</a></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; color: #555; vertical-align: top;"><strong>No. HP / WA:</strong></td>
+                        <td style="padding: 6px 0;">{{ $alumni->no_wa ?? '-' }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
 

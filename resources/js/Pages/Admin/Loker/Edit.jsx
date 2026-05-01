@@ -10,12 +10,19 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
         persyaratan: lowker.persyaratan || '',
         gaji: lowker.gaji || '',
         lokasi: lowker.lokasi || '',
-        tgl_posting: lowker.tgl_posting || '',
         tgl_ditutup: lowker.tgl_ditutup || '',
         id_perusahaan: lowker.id_perusahaan || '',
         id_jurusan: lowker.id_jurusan || '',
         status: lowker.status || 'aktif',
     });
+
+    const handleGajiChange = (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value) {
+            value = 'Rp ' + parseInt(value, 10).toLocaleString('id-ID');
+        }
+        setData('gaji', value);
+    };
 
     const submit = async (e) => {
         e.preventDefault();
@@ -132,7 +139,8 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
 
                         <input
                             value={data.gaji}
-                            onChange={e => setData('gaji', e.target.value)}
+                            onChange={handleGajiChange}
+                            placeholder="Rp "
                         />
                     </div>
 
@@ -148,18 +156,7 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label>
-                            Tanggal Posting <span style={{ color: 'red' }}>*</span>
-                        </label>
 
-                        <input
-                            type="date"
-                            value={data.tgl_posting}
-                            onChange={e => setData('tgl_posting', e.target.value)}
-                            required
-                        />
-                    </div>
 
                     <div className="form-group">
                         <label>

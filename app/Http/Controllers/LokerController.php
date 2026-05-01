@@ -105,7 +105,7 @@ class LokerController extends Controller
     public function create()
     {
         $perusahaan = Perusahaan::orderBy('nama')->get();
-        $jurusan = Jurusan::orderBy('jurusan')->get();
+        $jurusan = Jurusan::orderByRaw("CASE WHEN jurusan = 'Semua Jurusan' THEN 0 ELSE 1 END")->orderBy('jurusan')->get();
         return Inertia::render('Admin/Loker/Create', [
             'perusahaan' => $perusahaan,
             'jurusan' => $jurusan,
@@ -127,7 +127,7 @@ class LokerController extends Controller
             'persyaratan' => $request->persyaratan,
             'gaji' => $request->gaji,
             'lokasi' => $request->lokasi,
-            'tgl_posting' => $request->tgl_posting ?? now()->toDateString(),
+            'tgl_posting' => now()->toDateString(),
             'tgl_ditutup' => $request->tgl_ditutup,
             'id_perusahaan' => $request->id_perusahaan,
             'id_jurusan' => $request->id_jurusan,
@@ -143,7 +143,7 @@ class LokerController extends Controller
         $this->cleanupExpiredLowker();
         $lowker = Lowker::findOrFail($id);
         $perusahaan = Perusahaan::orderBy('nama')->get();
-        $jurusan = Jurusan::orderBy('jurusan')->get();
+        $jurusan = Jurusan::orderByRaw("CASE WHEN jurusan = 'Semua Jurusan' THEN 0 ELSE 1 END")->orderBy('jurusan')->get();
         return Inertia::render('Admin/Loker/Edit', [
             'lowker' => $lowker,
             'perusahaan' => $perusahaan,
@@ -167,7 +167,7 @@ class LokerController extends Controller
             'persyaratan' => $request->persyaratan,
             'gaji' => $request->gaji,
             'lokasi' => $request->lokasi,
-            'tgl_posting' => $request->tgl_posting,
+
             'tgl_ditutup' => $request->tgl_ditutup,
             'id_perusahaan' => $request->id_perusahaan,
             'id_jurusan' => $request->id_jurusan,

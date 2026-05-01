@@ -43,37 +43,31 @@ export default function AdminBeritaIndex({ berita, filters }) {
             <div style={{ padding: '20px' }}>
 
                 {/* FILTER */}
-                <div className="search-container">
-                    <form className="search" onSubmit={handleFilter}>
-
-                        <label htmlFor="search-kegiatan">
-                            Pencarian:
-                        </label>
-
+                <div className="search-container" style={{ margin: '15px 0' }}>
+                    <form className="search" onSubmit={handleFilter} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '15px', padding: '10px 20px', width: 'fit-content', margin: '0 auto' }}>
+                        <label htmlFor="search-kegiatan" style={{ margin: 0, fontWeight: 600 }}>Pencarian:</label>
                         <input
                             id="search-kegiatan"
                             name="search"
                             className="search-input"
-                            placeholder="Cari judul kegiatan..."
+                            style={{ width: '200px', height: '38px' }}
+                            placeholder="Judul kegiatan..."
                             defaultValue={filters?.search || ''}
                         />
 
-                        <label htmlFor="tanggal-kegiatan">
-                            Tanggal:
-                        </label>
-
+                        <label htmlFor="tanggal-kegiatan" style={{ margin: 0, fontWeight: 600 }}>Tanggal:</label>
                         <input
                             type="date"
                             id="tanggal-kegiatan"
                             name="tanggal"
                             className="search-input"
+                            style={{ width: '150px', height: '38px' }}
                             defaultValue={filters?.tanggal || ''}
                         />
 
-                        <button className="search-button" type="submit">
-                            Cari
+                        <button className="search-button" type="submit" style={{ height: '38px', padding: '0 20px', display: 'flex', alignItems: 'center' }}>
+                            <i className="fa-solid fa-magnifying-glass" style={{ marginRight: '5px' }}></i> Cari
                         </button>
-
                     </form>
                 </div>
 

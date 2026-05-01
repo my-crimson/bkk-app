@@ -18,6 +18,7 @@ class TracerStudyController extends Controller
         $month = (int) $wibNow->format('n');
         $periodStartYear = $month >= 7 ? $year : $year - 1;
         $periodEndYear = $periodStartYear + 1;
+        $currentYearLabel = (string) $year;
 
         $selectedCode = strtoupper((string) $request->query('jurusan', ''));
         $searchQuery = trim((string) $request->query('search', ''));
@@ -136,7 +137,7 @@ class TracerStudyController extends Controller
                 'status' => $statusFilter,
             ],
             'summary' => [
-                'periode_label' => "{$periodStartYear}/{$periodEndYear}",
+                'periode_label' => "Tahun {$currentYearLabel}",
                 'generated_at_wib' => $wibNow->translatedFormat('l, d F Y H:i:s') . ' WIB',
                 'total_alumni' => $rows->count(),
                 'sudah_mengisi' => $rows->where('status_survey', 'Sudah Mengisi')->count(),

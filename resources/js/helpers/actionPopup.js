@@ -17,3 +17,12 @@ export function notifyActionSuccess(actionLabel) {
         },
     }));
 }
+
+export function notifyActionError(message) {
+    window.dispatchEvent(new CustomEvent('app:notify-action', {
+        detail: {
+            type: 'error',
+            message: message,
+        },
+    }));
+}
