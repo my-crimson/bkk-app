@@ -162,7 +162,7 @@ export default function AlumniLogin() {
                                 Tersedia <strong>24 jam</strong>
                             </p>
                             <a
-                                href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Halo Admin BKK, saya ingin mereset password akun saya. NISN saya: ')}`}
+                                href={`https://wa.me/6287844852308?text=${encodeURIComponent('Halo Admin BKK, saya ingin mereset password akun saya. NISN saya: ')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{
