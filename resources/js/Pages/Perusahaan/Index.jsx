@@ -5,18 +5,6 @@ import { useState, useEffect } from 'react';
 // --- STYLING TETAP (TIDAK DIUBAH) ---
 const CarouselStyles = () => (
     <style>{`
-        .header-bar {
-            background-color: #d1f0ff;
-            padding: 10px 20px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .header-bar a {
-            color: #002366;
-            text-decoration: none;
-            margin-right: 40px;
-        }
 
         .company-container {
             width: 100%;
