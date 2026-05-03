@@ -191,20 +191,26 @@ export default function AdminNav() {
 
                 {/* ================= HOME ================= */}
                 <li>
-                    <a className={isActive(['/', '/informasi-kegiatan'])} href="#">
+                    <a className={isActive(['/', '/pengantar', '/informasi-kegiatan'])} href="#">
                         HOME <i className="fa-solid fa-chevron-down"></i>
                     </a>
                     <ul className="dropdown">
-                        <li>
-                            <Link className={isActive('/', { exact: true })} href="/">
-                                Halaman Utama
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className={isActive('/informasi-kegiatan')} href="/informasi-kegiatan">
-                                Informasi Kegiatan BKK
-                            </Link>
-                        </li>
+                        <li><Link className={isActive('/', true)} href="/">Halaman Utama</Link></li>
+                        <li><Link className={isActive('/pengantar')} href="/pengantar">Pengantar</Link></li>
+                        <li><Link className={isActive('/informasi-kegiatan')} href="/informasi-kegiatan">Informasi Kegiatan BKK</Link></li>
+                    </ul>
+                </li>
+
+                {/* ABOUT */}
+                <li>
+                    <a className={isActive(['/visi-misi','/proker','/tujuan','/struktur-organisasi'])} href="#">
+                        TENTANG KAMI <i className="fa-solid fa-chevron-down"></i>
+                    </a>
+                    <ul className="dropdown">
+                        <li><Link className={isActive('/visi-misi')} href="/visi-misi">Visi Misi</Link></li>
+                        <li><Link className={isActive('/proker')} href="/proker">Program Kerja</Link></li>
+                        <li><Link className={isActive('/tujuan')} href="/tujuan">Tujuan</Link></li>
+                        <li><Link className={isActive('/struktur-organisasi')} href="/struktur-organisasi">Struktur Organisasi</Link></li>
                     </ul>
                 </li>
 

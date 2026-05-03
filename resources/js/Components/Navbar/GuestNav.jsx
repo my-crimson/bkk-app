@@ -54,6 +54,10 @@ export default function GuestNav() {
                     </ul>
                 </li>
 
+                <li><Link className={isActive('/informasi-jurusan')} href="/informasi-jurusan">INFORMASI JURUSAN</Link></li>
+                <li><Link className={isActive('/perusahaan')} href="/perusahaan">PERUSAHAAN</Link></li>
+                <li><Link className={isActive('/loker')} href="/loker">LOWONGAN KERJA</Link></li>
+
                 {/* LOGIN */}
                 <li>
                     <a className={isActive(['/login/siswa', '/login/management'])} href="#">
@@ -65,11 +69,9 @@ export default function GuestNav() {
                     </ul>
                 </li>
 
-                <li><Link className={isActive('/informasi-jurusan')} href="/informasi-jurusan">INFORMASI JURUSAN</Link></li>
-                <li><Link className={isActive('/perusahaan')} href="/perusahaan">PERUSAHAAN</Link></li>
-                <li><Link className={isActive('/loker')} href="/loker">LOWONGAN KERJA</Link></li>
-
             </ul>
+
+    
         </nav>
     );
 }

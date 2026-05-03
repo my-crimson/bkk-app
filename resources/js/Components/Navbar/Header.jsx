@@ -14,15 +14,15 @@ export default function Header() {
                 <div className="contact-phone">
                     <i className="fas fa-phone-alt"></i>
                     <div className="contact-ket">
-                        <p>Call Us</p>
-                        <p>+6281-xxx-xxx-xxx</p>
+                        <p>Call Us (Whatsapp)</p>
+                        <p>+62 878-4485-2308 </p>
                     </div>
                 </div>
                 <div className="contact-email">
                     <i className="fas fa-envelope"></i>
                     <div className="contact-ket">
                         <p>Email Us</p>
-                        <p>bkksmkn1boyolangu@gmail.com</p>
+                        <p>bkksmkn1boy@gmail.com</p>
                     </div>
                 </div>
                 <div className="contact-map">
