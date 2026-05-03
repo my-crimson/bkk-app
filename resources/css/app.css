@@ -1,3 +1,4 @@
+
 /* ========== GLOBAL RESET & BASE ========== */
 * {
     margin: 0;
@@ -73,19 +74,19 @@ header .rectangle {
     margin-right: 50px;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 60px;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
 
 .contact-ket i {
-    font-size: 16px;
+    font-size: 14px;
     align-items: center;
 }
 
 .contact-ket p {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .contact-phone,
@@ -119,7 +120,8 @@ header .rectangle {
 .navbar-container {
     display: flex;
     justify-content: space-around;
-    height: 50px;
+    align-items: center;
+    height: 40px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -170,7 +172,7 @@ header .rectangle {
 .navbar ul li ul.dropdown li a {
     text-align: left;
     color: black;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     transition: color 0.3s ease;
 }
@@ -186,7 +188,7 @@ header .rectangle {
     padding: 10px 10px;
     color: #FFF;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
     position: relative;
@@ -240,16 +242,17 @@ header .rectangle {
 /* ========== BERANDA / HERO ========== */
 
 .container {
-    background-image: url('/public/images/bg-utama.png');
+    /* Menggunakan overlay gradien agar teks putih selalu terbaca di atas gambar */
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('/public/images/bg-utama.png');
     background-size: cover;
-    background-position: 75% center;
+    background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* Memberikan efek parallax halus */
 
     min-height: 100vh;
     width: 100%;
-
     overflow-x: hidden;
-
     display: flex;
     flex-direction: column;
 }
@@ -257,27 +260,22 @@ header .rectangle {
 /* ========== HERO ========== */
 .hero {
     flex: 1;
-
-    background-size: cover;
-    background-position: center;
-
     color: white;
-    padding: 50px 20px;
+    padding: 80px 20px;
+    display: flex;
+    align-items: center; /* Center secara vertikal di desktop */
 }
 
 /* ========== HERO CONTENT ========== */
 .hero-content {
-    margin-top: 10px;
-    max-width: 100%;
-
+    margin-top: 0;
+    max-width: 900px;
     text-align: left;
-
     opacity: 0;
     transform: translateY(30px);
-
-    transition:
-        opacity 0.9s ease-out,
-        transform 0.6s ease-out;
+    transition: 
+        opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-content.show {
@@ -287,26 +285,33 @@ header .rectangle {
 
 .hero-content h1 {
     font-family: 'Franklin Gothic Medium', sans-serif;
-    font-size: 6rem;
-    line-height: 1.3;
-
-    margin-bottom: 10px;
-
+    /* Responsive font size: besar di desktop, menyesuaikan di mobile */
+    font-size: clamp(2.5rem, 8vw, 5.5rem); 
+    line-height: 1.1;
+    margin-bottom: 20px;
     text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: -1px;
     user-select: none;
+    text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .hero hr {
-    width: 100%;
-    max-width: 500px;
+    width: 100px; /* Lebar garis dibuat lebih ikonik */
+    border: 0;
+    height: 4px;
+    background-color: #e56911;
+    margin: 20px 0;
 }
 
 /* ========== TAGLINE ========== */
 .tagline {
-    font-size: 2rem;
-    margin-bottom: 30px;
-
-    font-family: 'Ponnala';
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    margin-bottom: 40px;
+    font-family: 'Ponnala', serif;
+    letter-spacing: 5px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
     user-select: none;
 }
 
@@ -314,49 +319,39 @@ header .rectangle {
 .video-button {
     background-color: #e56911;
     color: white;
-
-    padding: 10px 20px;
-
+    padding: 14px 28px;
     border: none;
-    border-radius: 7px;
-
+    border-radius: 50px; /* Lebih rounded agar modern */
     text-decoration: none;
-    font-weight: 600;
-
-    margin-bottom: 30px;
-
-    display: flex;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 50px;
+    display: inline-flex;
     align-items: center;
     width: max-content;
-
-    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
-
-    transition: background-color 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 .video-button i {
-    font-size: 25px;
-    margin-left: 10px;
+    font-size: 1.5rem;
+    margin-left: 12px;
 }
 
 .video-button:hover {
-    background-color: #eba911;
+    background-color: #f77f2d;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px rgba(229, 105, 17, 0.3);
 }
 
 /* ========== LOGIN OPTIONS ========== */
 .login-options {
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(250px, 1fr));
-
-    gap: 20px;
-
-    justify-content: center;
-
+    /* Grid otomatis menyesuaikan kolom berdasarkan lebar layar */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
     width: 100%;
-    max-width: 800px;
-
+    max-width: 700px;
     margin-top: 20px;
 }
 
@@ -364,51 +359,76 @@ header .rectangle {
 .login-card {
     display: flex;
     align-items: center;
-
-    background-color: #4e4e50;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparan gelap agar elegan */
+    backdrop-filter: blur(10px); /* Efek glassmorphism */
     color: white;
-
-    padding: 15px;
-
+    padding: 20px;
     text-align: left;
     text-decoration: none;
-
-    font-weight: bold;
-
-    width: 100%;
-    max-width: 300px;
-    height: 15vh;
-
-    border-radius: 10px;
-
-    transition: background-color 0.3s;
-
-    box-shadow: 2px 12px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .login-card:hover {
-    background-color: #6c757d;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    border-color: #e56911;
 }
 
 .login-card .icon {
-    width: 80px;
-    height: 80px;
-
-    margin-right: 15px;
-
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
     flex-shrink: 0;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+}
+
+.login-card span {
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
 /* ========== FOOTER ========== */
 footer {
-    background-color: #1b1b2f;
-    color: white;
-
+    background-color: #0f0f1a;
+    color: rgba(255, 255, 255, 0.6);
     text-align: center;
-
-    padding: 10px 0;
-
+    padding: 20px 0;
+    font-size: 0.9rem;
     margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ========== RESPONSIVE MOBILE ========== */
+@media (max-width: 768px) {
+    .hero {
+        padding: 40px 20px;
+        align-items: flex-start; /* Teks naik ke atas di mobile */
+    }
+
+    .hero-content {
+        text-align: center; /* Rata tengah di mobile agar lebih seimbang */
+    }
+
+    .hero hr {
+        margin: 20px auto; /* Center horizontal */
+    }
+
+    .video-button {
+        margin: 0 auto 40px auto; /* Center button */
+    }
+
+    .login-options {
+        justify-items: center;
+        margin-top: 40px;
+    }
+
+    .login-card {
+        max-width: 100%;
+        width: 100%;
+    }
 }
 
 /* ========== LOGIN PAGES ========== */
@@ -2960,20 +2980,6 @@ body::-webkit-scrollbar {
     border: 1px solid red;
 }
 
-.header-bar {
-  background-color: #d1f0ff;
-  padding: 10px 20px;
-  text-align: left;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.header-bar a {
-  color: #002366;
-  text-decoration: none;
-  margin-right: 40px;
-}
-
 .card-container {
   display: flex;
   justify-content: center;
@@ -3190,6 +3196,8 @@ body::-webkit-scrollbar {
   margin-top: 20px;
   font-size: 14px;
   font-weight: 500;
+
+
 }/* ========== RESPONSIVE OVERRIDES ========== */
 @media (max-width: 768px) {
     header {
@@ -3267,18 +3275,33 @@ body::-webkit-scrollbar {
         display: block;
     }
 
+
     /* Login & Hero responsive */
-    .hero-content h1 {
-        font-size: 2.5rem;
+    .hero {
+        padding: 40px 20px;
+        align-items: flex-start; /* Teks naik ke atas di mobile */
+    }
+
+    .hero-content {
+        text-align: center; /* Rata tengah di mobile agar lebih seimbang */
+    }
+
+    .hero hr {
+        margin: 20px auto; /* Center horizontal */
+    }
+
+    .video-button {
+        margin: 0 auto 40px auto; /* Center button */
     }
 
     .login-options {
-        grid-template-columns: 1fr;
-        width: 100%;
+        justify-items: center;
+        margin-top: 40px;
     }
 
     .login-card {
-        height: auto;
+        max-width: 100%;
+        width: 100%;
     }
 
     /* Center text image if needed */
