@@ -4,6 +4,7 @@ import Header from '../Components/Navbar/Header';
 import GuestNav from '../Components/Navbar/GuestNav';
 import ManagementNav from '../Components/Navbar/ManagementNav';
 import AlumniNav from '../Components/Navbar/AlumniNav';
+import Footer from '../Components/Footer';
 
 export default function MainLayout({ children, className = '' }) {
     const { auth, flash, mustChangePassword } = usePage().props;
@@ -129,7 +130,10 @@ export default function MainLayout({ children, className = '' }) {
             )}
             <Header />
             {renderNavbar()}
-            {children}
+            <main className="content-wrapper" style={{ minHeight: 'calc(100vh - 200px)' }}>
+                {children}
+            </main>
+            <Footer />
         </div>
     );
 }

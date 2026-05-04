@@ -276,13 +276,13 @@ header .rectangle {
 /* ========== BERANDA / HERO ========== */
 
 .container {
-    /* Menggunakan overlay gradien agar teks putih selalu terbaca di atas gambar */
+
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
                 url('/public/images/bg-utama.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Memberikan efek parallax halus */
+    background-attachment: fixed;
 
     min-height: 100vh;
     width: 100%;
@@ -297,7 +297,7 @@ header .rectangle {
     color: white;
     padding: 80px 20px;
     display: flex;
-    align-items: center; /* Center secara vertikal di desktop */
+    align-items: center; 
 }
 
 /* ========== HERO CONTENT ========== */
@@ -319,7 +319,7 @@ header .rectangle {
 
 .hero-content h1 {
     font-family: 'Franklin Gothic Medium', sans-serif;
-    /* Responsive font size: besar di desktop, menyesuaikan di mobile */
+
     font-size: clamp(2.5rem, 8vw, 5.5rem); 
     line-height: 1.1;
     margin-bottom: 20px;
@@ -331,7 +331,7 @@ header .rectangle {
 }
 
 .hero hr {
-    width: 100px; /* Lebar garis dibuat lebih ikonik */
+    width: 100px;
     border: 0;
     height: 4px;
     background-color: #e56911;
@@ -355,7 +355,7 @@ header .rectangle {
     color: white;
     padding: 14px 28px;
     border: none;
-    border-radius: 50px; /* Lebih rounded agar modern */
+    border-radius: 50px;
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
@@ -381,7 +381,7 @@ header .rectangle {
 /* ========== LOGIN OPTIONS ========== */
 .login-options {
     display: grid;
-    /* Grid otomatis menyesuaikan kolom berdasarkan lebar layar */
+
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     width: 100%;
@@ -393,8 +393,8 @@ header .rectangle {
 .login-card {
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.1); /* Transparan gelap agar elegan */
-    backdrop-filter: blur(10px); /* Efek glassmorphism */
+    background-color: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px); 
     color: white;
     padding: 20px;
     text-align: left;
@@ -425,14 +425,63 @@ header .rectangle {
 }
 
 /* ========== FOOTER ========== */
-footer {
+.main-footer {
     background-color: #0f0f1a;
     color: rgba(255, 255, 255, 0.6);
     text-align: center;
-    padding: 20px 0;
-    font-size: 0.9rem;
     margin-top: auto;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px;
+}
+
+.footer-content {
+    display: none; /* Hidden on desktop */
+}
+
+.footer-contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-contact-item:hover {
+    color: #3590FA;
+}
+
+.footer-contact-item i {
+    font-size: 24px;
+    margin-right: 12px;
+    color: #3590FA;
+}
+
+.footer-contact-text {
+    text-align: left;
+}
+
+.footer-contact-text p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.footer-contact-text p:first-child {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    font-size: 0.9rem;
 }
 
 /* ========== RESPONSIVE MOBILE ========== */
@@ -3047,16 +3096,15 @@ footer {
 .password-input-wrap {
     position: relative;
     width: 100%;
-    margin-top: 5px; /* Move margin-top from input to wrapper for perfect centering */
+    margin-top: 5px; 
 }
 
 .password-input-wrap input {
     width: 100%;
     padding-right: 40px !important;
-    margin-top: 0 !important; /* Reset margin so wrapper handles it and button centers correctly */
+    margin-top: 0 !important; 
 }
 
-/* Sembunyikan icon mata default bawaan browser (terutama Edge) */
 .password-input-wrap input::-ms-reveal,
 .password-input-wrap input::-ms-clear {
     display: none;
@@ -3086,7 +3134,7 @@ footer {
     width: 24px;
     height: 24px;
     transition: color 0.2s;
-    margin-top: 2.5px; /* slight adjustment for typical label/input height differences, though translateY usually handles it. Will rely on translateY */
+    margin-top: 2.5px;
 }
 
 .password-toggle-btn:hover,
@@ -3140,7 +3188,9 @@ footer {
     .navbar p {
         font-size: 10px;
     }
-}/* INFORMASI JURUSAN */
+}
+
+/* INFORMASI JURUSAN */
 
 * {
   margin: 0;

@@ -8,7 +8,7 @@ export default function Beranda() {
 
     useEffect(() => {
         const observerOptions = {
-            threshold: 0.1, // Memicu animasi saat 10% elemen terlihat
+            threshold: 0.1, 
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -82,10 +82,6 @@ export default function Beranda() {
                         )}
                     </div>
                 </section>
-
-                <footer>
-                    <p>&copy; 2024 Bursa Kerja Khusus SMKN 1 Boyolangu. All Rights Reserved.</p>
-                </footer>
             </div>
         </MainLayout>
     );
