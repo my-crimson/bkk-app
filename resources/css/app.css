@@ -29,64 +29,61 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid #002366;
+    position: relative; 
+    padding-left: 20px;
+    padding-right: 20px;
+    min-height: 100px; 
+    overflow: hidden; 
 }
 
 header .rectangle {
     position: absolute;
     top: 0;
     right: 0;
-    width: 78%;
+    width: 70%; 
     max-width: 1200px;
     min-height: 25px;
     background-color: #134CBC;
     border-bottom-left-radius: 54px;
+    z-index: 0; 
 }
 
 .logo {
     display: flex;
     align-items: center;
+    z-index: 1; 
+    flex-shrink: 0; 
 }
 
 .logo-header {
     display: flex;
     align-items: center;
-    margin-left: 20px;
 }
 
 .logo-header img {
     height: 75px;
-    margin-bottom: 15px;
+    width: auto;
+    margin-bottom: 5px;
 }
 
 .header-text {
-    flex: 2;
-    text-align: center;
+    text-align: left;
 }
 
 #text-img {
-    width: 220px;
+    width: 200px; 
     height: auto;
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 .contact-info {
-    margin-top: 10px;
-    margin-right: 50px;
+    z-index: 1;
     display: flex;
-    flex-wrap: wrap;
-    gap: 60px;
+    flex-wrap: nowrap; 
+    gap: 40px; 
     align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.contact-ket i {
-    font-size: 14px;
-    align-items: center;
-}
-
-.contact-ket p {
-    font-size: 12px;
+    justify-content: flex-end;
+    flex: 1;
 }
 
 .contact-phone,
@@ -95,30 +92,42 @@ header .rectangle {
 .contact-instagram {
     display: flex;
     align-items: center;
-    justify-content: center;
     color: #134CBC;
     transition: all 0.3s ease;
+    white-space: nowrap; 
 }
 
-.contact-phone:hover,
-.contact-email:hover,
-.contact-map:hover,
-.contact-instagram:hover {
-    color: #0e3a90;
-    transform: translateY(-2px);
+.contact-ket p {
+    font-size: 11.5px;
+    margin: 0;
+    line-height: 1.2;
 }
 
 .contact-phone i,
 .contact-email i,
 .contact-map i,
 .contact-instagram i {
-    margin-right: 10px;
-    font-size: 23px;
+    margin-right: 8px;
+    font-size: 20px;
 }
 
-.contact-item i {
-    margin-right: 8px;
-    color: #002366;
+@media (max-width: 1200px) {
+    .contact-info {
+        gap: 15px;
+    }
+    #text-img {
+        width: 180px;
+    }
+    header .rectangle {
+        width: 60%;
+    }
+}
+
+@media (min-width: 1600px) {
+    header {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
 }
 
 /* ========== NAVBAR ========== */
