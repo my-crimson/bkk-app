@@ -130,6 +130,14 @@ export default function InformasiKegiatan({ berita, filters }) {
                                             alt={item.judul}
                                             loading="lazy"
                                             decoding="async"
+                                            onLoad={(e) => {
+                                                const img = e.target;
+                                                if (img.naturalHeight > img.naturalWidth) {
+                                                    img.classList.add('portrait');
+                                                } else {
+                                                    img.classList.add('landscape');
+                                                }
+                                            }}
                                         />
                                     ) : (
                                         <div className="kegiatan-image--placeholder">
@@ -233,6 +241,14 @@ export default function InformasiKegiatan({ berita, filters }) {
                                         src={`/storage/uploads/kegiatan/${selectedKegiatan.gambar}`}
                                         alt={selectedKegiatan.judul}
                                         className="kegiatan-popup-image"
+                                        onLoad={(e) => {
+                                            const img = e.target;
+                                            if (img.naturalHeight > img.naturalWidth) {
+                                                img.classList.add('portrait');
+                                            } else {
+                                                img.classList.add('landscape');
+                                            }
+                                        }}
                                     />
                                 ) : (
                                     <div className="kegiatan-image--placeholder">

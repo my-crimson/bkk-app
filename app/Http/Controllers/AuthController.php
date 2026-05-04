@@ -10,11 +10,6 @@ use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-    public function showAdminLogin()
-    {
-        // Legacy endpoint: admin login disatukan ke management login
-        return redirect()->route('login.management');
-    }
 
     public function showAlumniLogin()
     {
@@ -32,11 +27,6 @@ class AuthController extends Controller
         return Inertia::render('Auth/ManagementLogin');
     }
 
-    public function loginAdmin(Request $request)
-    {
-        // Legacy endpoint: admin login diperlakukan sebagai management login
-        return $this->processLogin($request, 'management');
-    }
 
     public function loginAlumni(Request $request)
     {
@@ -100,6 +90,7 @@ class AuthController extends Controller
                     'user_id' => $alumni->id,
                     'nama' => $alumni->nama,
                     'role' => 'alumni',
+                    'gambar' => $alumni->gambar,
                     'last_login' => time(),
                     'must_change_password' => !$alumni->password_changed,
                 ]);

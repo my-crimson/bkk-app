@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminBeritaIndex({ berita, filters }) {
+export default function ManagementBeritaIndex({ berita, filters }) {
     const handleDelete = async (id) => {
         if (!(await confirmAction('hapus kegiatan'))) return;
-        router.delete(`/admin/berita/${id}`, {
+        router.delete(`/management/berita/${id}`, {
             onSuccess: () => notifyActionSuccess('hapus kegiatan'),
         });
     };
@@ -17,7 +17,7 @@ export default function AdminBeritaIndex({ berita, filters }) {
         const form = new FormData(e.target);
 
         router.get(
-            '/admin/berita',
+            '/management/berita',
             {
                 search: form.get('search'),
                 tanggal: form.get('tanggal'),
@@ -72,7 +72,7 @@ export default function AdminBeritaIndex({ berita, filters }) {
                 </div>
 
                 <div className="job-list">
-                    <Link className="job-card show" id="tambah-kegiatan" href="/admin/berita/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
+                    <Link className="job-card show" id="tambah-kegiatan" href="/management/berita/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
                         <div className="tambah-btn">
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                                 <i className="fa-solid fa-plus" style={{ fontSize: '34px' }}></i>
@@ -114,7 +114,7 @@ export default function AdminBeritaIndex({ berita, filters }) {
                                     <i className="fa-solid fa-trash"></i>
                                     Hapus
                                 </button>
-                                <Link href={`/admin/berita/${item.id_berita}/edit`} className="detail-button" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                                <Link href={`/management/berita/${item.id_berita}/edit`} className="detail-button" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
                                     <i className="fa-solid fa-bars"></i>
                                     Detail
                                 </Link>

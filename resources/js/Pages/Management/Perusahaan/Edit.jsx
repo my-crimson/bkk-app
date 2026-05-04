@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
 import { confirmAction, notifyActionSuccess, notifyActionError } from '@/Helpers/actionPopup';
-export default function AdminPerusahaanEdit({ perusahaan }) {
+export default function ManagementPerusahaanEdit({ perusahaan }) {
     const { data, setData, post,  processing, errors } = useForm({
         _method: 'PUT',
         nama: perusahaan.nama || '',
@@ -54,7 +54,7 @@ export default function AdminPerusahaanEdit({ perusahaan }) {
         }
 
         if (await confirmAction('mengubah perusahaan ini')) {
-            post(`/admin/perusahaan/${perusahaan.id_perusahaan}`, {
+            post(`/management/perusahaan/${perusahaan.id_perusahaan}`, {
                 forceFormData: true,
                 onSuccess: () => notifyActionSuccess('mengubah perusahaan'),
             });

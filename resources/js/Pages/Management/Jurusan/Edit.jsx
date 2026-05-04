@@ -4,7 +4,7 @@ import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminJurusanEdit({ jurusan }) {
+export default function ManagementJurusanEdit({ jurusan }) {
 
     const { data, setData, post, processing, errors } = useForm({
         _method: 'PUT',
@@ -57,7 +57,7 @@ export default function AdminJurusanEdit({ jurusan }) {
 
         if (!(await confirmAction('update jurusan'))) return;
 
-        post(`/admin/jurusan/${jurusan.id_jurusan}`, {
+        post(`/management/jurusan/${jurusan.id_jurusan}`, {
             forceFormData: true,
             onSuccess: () => {
                 notifyActionSuccess('update jurusan');

@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminJurusanIndex({ jurusan }) {
+export default function ManagementJurusanIndex({ jurusan }) {
     const handleDelete = async (id) => {
         if (!(await confirmAction('hapus jurusan'))) return;
-        router.delete(`/admin/jurusan/${id}`, {
+        router.delete(`/management/jurusan/${id}`, {
             onSuccess: () => notifyActionSuccess('hapus jurusan'),
         });
     };
@@ -24,7 +24,7 @@ export default function AdminJurusanIndex({ jurusan }) {
 
             <div style={{ padding: '20px' }}>
                 <div className="job-list">
-                    <Link className="job-card show" id="tambah-jurusan" href="/admin/jurusan/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
+                    <Link className="job-card show" id="tambah-jurusan" href="/management/jurusan/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
                         <div className="tambah-btn">
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                                 <i className="fa-solid fa-plus" style={{ fontSize: '34px' }}></i>
@@ -66,7 +66,7 @@ export default function AdminJurusanIndex({ jurusan }) {
                                     <i className="fa-solid fa-trash"></i>
                                     Hapus
                                 </button>
-                                <Link href={`/admin/jurusan/${item.id_jurusan}/edit`} className="detail-button" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                                <Link href={`/management/jurusan/${item.id_jurusan}/edit`} className="detail-button" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
                                     <i className="fa-solid fa-pen-to-square"></i>
                                     Edit
                                 </Link>

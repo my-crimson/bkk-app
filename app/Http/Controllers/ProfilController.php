@@ -35,6 +35,9 @@ class ProfilController extends Controller
 
         $alumni->update($data);
 
+        // Refresh session data so navbar reflects changes immediately
+        session(['nama' => $alumni->nama, 'gambar' => $alumni->gambar]);
+
         return back()->with('success', 'Profil berhasil diperbarui!');
     }
 

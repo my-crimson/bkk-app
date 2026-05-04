@@ -3,7 +3,7 @@ import { Link, usePage, router } from '@inertiajs/react';
 import axios from 'axios';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminNav() {
+export default function ManagementNav() {
     const { url } = usePage();
     const [mobileActive, setMobileActive] = useState(false);
     const [notifCount, setNotifCount] = useState(0);
@@ -16,7 +16,7 @@ export default function AdminNav() {
         const { exact = false, excludeAdmin = false } = options;
 
         const check = (path) => {
-            if (excludeAdmin && url.startsWith('/admin')) return false;
+            if (excludeAdmin && url.startsWith('/management')) return false;
             if (path === '/') return url === '/';
             return exact ? url === path : url.startsWith(path);
         };
@@ -40,14 +40,14 @@ export default function AdminNav() {
     // ================= NOTIFICATIONS =================
     const fetchNotifCount = async () => {
         try {
-            const res = await axios.get('/admin/notifications/pending-count');
+            const res = await axios.get('/management/notifications/pending-count');
             setNotifCount(res.data.count || 0);
         } catch (e) { /* ignore */ }
     };
 
     const fetchNotifs = async () => {
         try {
-            const res = await axios.get('/admin/notifications');
+            const res = await axios.get('/management/notifications');
             setNotifs(res.data);
         } catch (e) { /* ignore */ }
     };
@@ -55,7 +55,7 @@ export default function AdminNav() {
     const handleResolve = async (id) => {
         if (!(await confirmAction('reset password siswa ini'))) return;
         try {
-            const res = await axios.post(`/admin/notifications/${id}/resolve`);
+            const res = await axios.post(`/management/notifications/${id}/resolve`);
             if (res.data.success) {
                 notifyActionSuccess('reset password');
                 fetchNotifs();
@@ -217,7 +217,7 @@ export default function AdminNav() {
 
                 {/* ================= TRACER ================= */}
                 <li>
-                    <Link className={isActive('/admin/tracer-study')} href="/admin/tracer-study">
+                    <Link className={isActive('/management/tracer-study')} href="/management/tracer-study">
                         TRACER STUDY
                     </Link>
                 </li>
@@ -251,17 +251,17 @@ export default function AdminNav() {
 
                 {/* ================= REKAP ================= */}
                 <li>
-                    <a className={isActive(['/admin/rekap-alumni', '/admin/rekap-loker'])} href="#">
+                    <a className={isActive(['/management/rekap-alumni', '/management/rekap-loker'])} href="#">
                         REKAP <i className="fa-solid fa-chevron-down"></i>
                     </a>
                     <ul className="dropdown">
                         <li>
-                            <Link className={isActive('/admin/rekap-alumni')} href="/admin/rekap-alumni">
+                            <Link className={isActive('/management/rekap-alumni')} href="/management/rekap-alumni">
                                 Rekap Alumni
                             </Link>
                         </li>
                         <li>
-                            <Link className={isActive('/admin/rekap-loker')} href="/admin/rekap-loker">
+                            <Link className={isActive('/management/rekap-loker')} href="/management/rekap-loker">
                                 Rekap Lowongan Kerja
                             </Link>
                         </li>
@@ -270,38 +270,38 @@ export default function AdminNav() {
 
                 {/* ================= CRUD ================= */}
                 <li className="crud-dropdown">
-                    <a className={isActive(['/admin/perusahaan', '/admin/loker', '/admin/berita', '/admin/jurusan', '/admin/informasi', '/admin/alumni'])} href="#">
+                    <a className={isActive(['/management/perusahaan', '/management/loker', '/management/berita', '/management/jurusan', '/management/informasi', '/management/alumni'])} href="#">
                         C.R.U.D <i className="fa-solid fa-chevron-down"></i>
                     </a>
                     <ul className="dropdown">
                         <li>
-                            <Link className={isActive('/admin/informasi')} href="/admin/informasi">
+                            <Link className={isActive('/management/informasi')} href="/management/informasi">
                                 CRUD Informasi
                             </Link>
                         </li>
                         <li>
-                            <Link className={isActive('/admin/berita')} href="/admin/berita">
+                            <Link className={isActive('/management/berita')} href="/management/berita">
                                 CRUD Kegiatan BKK
                             </Link>
                         </li>
                         <li>
-                            <Link className={isActive('/admin/perusahaan')} href="/admin/perusahaan">
+                            <Link className={isActive('/management/perusahaan')} href="/management/perusahaan">
                                 CRUD Perusahaan
                             </Link>
                         </li>
                         <li>
-                            <Link className={isActive('/admin/loker')} href="/admin/loker">
+                            <Link className={isActive('/management/loker')} href="/management/loker">
                                 CRUD Lowongan Kerja
                             </Link>
                         </li>
                         <li>
-                            <Link className={isActive('/admin/jurusan')} href="/admin/jurusan">
+                            <Link className={isActive('/management/jurusan')} href="/management/jurusan">
                                 CRUD Informasi Jurusan
                             </Link>
                         </li>
                         <li>
-                            <Link className={isActive('/admin/alumni')} href="/admin/alumni">
-                                CRUD Siswa/Alumni
+                            <Link className={isActive('/management/alumni')} href="/management/alumni">
+                                CRUD Siswa & Management
                             </Link>
                         </li>
                     </ul>

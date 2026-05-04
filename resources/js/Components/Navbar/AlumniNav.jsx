@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 
 export default function AlumniNav() {
-    const { url } = usePage();
+    const { url, props } = usePage();
+    const { auth } = props;
     const [mobileActive, setMobileActive] = useState(false);
 
     const isActive = (paths, exact = false) => {
@@ -18,6 +19,15 @@ export default function AlumniNav() {
         return check(paths) ? 'active' : '';
     };
 
+    const profileImage = useMemo(() => {
+        const gambar = auth?.user?.gambar;
+        if (!gambar) return null;
+        if (gambar.startsWith('http')) return gambar;
+        return `/storage/${gambar}`;
+    }, [auth?.user?.gambar]);
+
+    const initial = (auth?.user?.nama || 'A').charAt(0).toUpperCase();
+
     return (
         <nav className="navbar">
             <div className="hamburger" onClick={() => setMobileActive(!mobileActive)}>
@@ -29,7 +39,11 @@ export default function AlumniNav() {
                 {/* PROFILE */}
                 <li>
                     <div onClick={() => window.location.href = '/profil'} className="profile-icon">
-                        <i className="fa-solid fa-user fa-sm" style={{ color: '#5135FA' }}></i>
+                        {profileImage ? (
+                            <img src={profileImage} alt="Profil" className="profile-icon-img" />
+                        ) : (
+                            <span className="profile-icon-initial">{initial}</span>
+                        )}
                     </div>
                 </li>
 

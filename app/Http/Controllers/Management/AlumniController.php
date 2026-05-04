@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alumni;
@@ -41,10 +41,12 @@ class AlumniController extends Controller
 
         $alumni = $query->orderBy('nama', 'asc')->paginate(15)->withQueryString();
         $jurusanList = Jurusan::all();
+        $management_users = \App\Models\User::whereIn('role', ['management', 'admin'])->get();
 
-        return Inertia::render('Admin/Alumni/Index', [
+        return Inertia::render('Management/Alumni/Index', [
             'alumni' => $alumni,
             'jurusanList' => $jurusanList,
+            'management_users' => $management_users,
             'filters' => $request->only(['search', 'tahun_lulus', 'jurusan']),
         ]);
     }
@@ -52,7 +54,7 @@ class AlumniController extends Controller
     public function create()
     {
         $jurusanList = Jurusan::all();
-        return Inertia::render('Admin/Alumni/Create', [
+        return Inertia::render('Management/Alumni/Create', [
             'jurusanList' => $jurusanList,
         ]);
     }
@@ -86,14 +88,14 @@ class AlumniController extends Controller
 
         Alumni::create($data);
 
-        return redirect()->route('admin.alumni.index')->with('success', 'Siswa/Alumni berhasil ditambahkan.');
+        return redirect()->route('management.alumni.index')->with('success', 'Siswa/Alumni berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
         $alumni = Alumni::findOrFail($id);
         $jurusanList = Jurusan::all();
-        return Inertia::render('Admin/Alumni/Edit', [
+        return Inertia::render('Management/Alumni/Edit', [
             'alumni' => $alumni,
             'jurusanList' => $jurusanList,
         ]);
@@ -131,13 +133,35 @@ class AlumniController extends Controller
             'email', 'no_wa',
         ]));
 
-        return redirect()->route('admin.alumni.index')->with('success', 'Data siswa/alumni berhasil diperbarui.');
+        return redirect()->route('management.alumni.index')->with('success', 'Data siswa/alumni berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
+        // Delete related records first to avoid foreign key constraints
+        \App\Models\Lamaran::where('id_alumni', $id)->delete();
+        \App\Models\Survey::where('id_alumni', $id)->delete();
+        \App\Models\PasswordResetRequest::where('id_alumni', $id)->delete();
+
         Alumni::findOrFail($id)->delete();
         return redirect()->back()->with('success', 'Siswa/Alumni berhasil dihapus.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:alumni,id',
+        ]);
+
+        // Delete related records first to avoid foreign key constraints
+        \App\Models\Lamaran::whereIn('id_alumni', $request->ids)->delete();
+        \App\Models\Survey::whereIn('id_alumni', $request->ids)->delete();
+        \App\Models\PasswordResetRequest::whereIn('id_alumni', $request->ids)->delete();
+
+        $count = Alumni::whereIn('id', $request->ids)->delete();
+
+        return redirect()->back()->with('success', "{$count} data siswa/alumni berhasil dihapus.");
     }
 
     public function import(Request $request)
@@ -147,11 +171,30 @@ class AlumniController extends Controller
             'tahun_lulus' => 'required|string|max:4',
         ]);
 
+        $file = $request->file('file');
+        \Log::info("User uploaded file: " . $file->getClientOriginalName());
+        
         $import = new AlumniImport($request->tahun_lulus);
-        Excel::import($import, $request->file('file'));
+        Excel::import($import, $file);
 
         $imported = $import->getImportedCount();
         $skipped = $import->getSkippedCount();
+        $failedRows = $import->getFailedRows();
+
+        if (count($failedRows) > 0) {
+            $errorDetail = implode(' | ', array_slice($failedRows, 0, 3));
+            $msg = "Berhasil mengimpor {$imported} data.";
+            if ($skipped > 0) {
+                $msg .= " {$skipped} dilewati (NISN sudah ada).";
+            }
+            $msg .= " " . count($failedRows) . " baris gagal: " . $errorDetail;
+            return redirect()->back()->with('warning', $msg);
+        }
+
+        if ($imported == 0 && $skipped == 0) {
+            return redirect()->back()->withErrors(['file' => 'Tidak ada data yang diimpor. Pastikan format kolom sesuai dengan template dan data tidak kosong.']);
+        }
+
         $msg = "Berhasil mengimpor {$imported} data siswa/alumni.";
         if ($skipped > 0) {
             $msg .= " ({$skipped} data dilewati karena NISN sudah ada)";
@@ -180,11 +223,13 @@ class AlumniController extends Controller
         }
 
         // Sample row
+        $randomNisn = rand(1000000000, 9999999999);
+        $randomNik = rand(1000000000000000, 9999999999999999);
         $sample = [
-            'Budi Santoso', '0011223344', 'L', 'Tulungagung', '2006-01-15',
-            '3504000000000001', 'Islam', 'Jl. Raya No 1', 'Teknik Komputer dan Jaringan',
+            'Siswa Testing', (string)$randomNisn, 'L', 'Tulungagung', '2006-01-15',
+            (string)$randomNik, 'Islam', 'Jl. Raya No 1', 'Teknik Komputer dan Jaringan (TKJ)',
             '1', '2', 'Dusun A', 'Kelurahan B', 'Boyolangu', '66234',
-            'budi@email.com', '081234567890',
+            'testing@email.com', '081234567890',
         ];
 
         foreach ($sample as $i => $val) {
@@ -221,6 +266,9 @@ class AlumniController extends Controller
     // === Notification endpoints ===
     public function notifications()
     {
+        // Auto-cleanup: hapus notifikasi yang sudah lebih dari 24 jam
+        PasswordResetRequest::where('created_at', '<', now()->subHours(24))->delete();
+
         $notifs = PasswordResetRequest::with('alumni')
             ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
             ->orderBy('created_at', 'desc')

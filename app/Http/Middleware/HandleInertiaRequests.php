@@ -24,6 +24,7 @@ class HandleInertiaRequests extends Middleware
                     'username' => $request->session()->get('username'),
                     'nama' => $request->session()->get('nama'),
                     'role' => $request->session()->get('role'),
+                    'gambar' => $request->session()->get('gambar'),
                 ] : null,
             ],
             'flash' => [

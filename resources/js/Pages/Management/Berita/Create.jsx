@@ -2,7 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminBeritaCreate() {
+export default function ManagementBeritaCreate() {
     const { data, setData, post, processing, reset } = useForm({
         judul: '',
         tanggal: '',
@@ -15,7 +15,7 @@ export default function AdminBeritaCreate() {
     const submit = async (e) => {
         e.preventDefault();
         if (!(await confirmAction('tambah kegiatan'))) return;
-        post('/admin/berita', {
+        post('/management/berita', {
             forceFormData: true,
             onSuccess: () => {
                 reset();

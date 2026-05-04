@@ -3,7 +3,7 @@ import MainLayout from '../../../Layouts/MainLayout';
 import { useEffect, useRef } from 'react';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminLokerIndex({ lowker, jurusanList, filters }) {
+export default function ManagementLokerIndex({ lowker, jurusanList, filters }) {
     const { flash } = usePage().props;
     const cardsRef = useRef([]);
 
@@ -18,12 +18,12 @@ export default function AdminLokerIndex({ lowker, jurusanList, filters }) {
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        router.get('/admin/loker', { jurusan: formData.get('jurusan'), lokasi: formData.get('lokasi') });
+        router.get('/management/loker', { jurusan: formData.get('jurusan'), lokasi: formData.get('lokasi') });
     };
 
     const handleDelete = async (id) => {
         if (!(await confirmAction('hapus lowongan kerja'))) return;
-        router.delete(`/admin/loker/${id}`, {
+        router.delete(`/management/loker/${id}`, {
             onSuccess: () => notifyActionSuccess('hapus lowongan kerja'),
         });
     };
@@ -51,7 +51,7 @@ export default function AdminLokerIndex({ lowker, jurusanList, filters }) {
             <div className="job-list">
                 <div className="job-card show" id="tambah-loker">
                     <div className="tambah-btn">
-                        <Link href="/admin/loker/create">
+                        <Link href="/management/loker/create">
                             <i className="fa-solid fa-plus fa-2xl"></i>
                             <p>Tambahkan Lowongan Kerja</p>
                         </Link>
@@ -76,7 +76,7 @@ export default function AdminLokerIndex({ lowker, jurusanList, filters }) {
                             <button className="delete-button" onClick={() => handleDelete(row.id_lowker)}>
                                 <i className="fas fa-trash"></i> HAPUS
                             </button>
-                            <Link href={`/admin/loker/${row.id_lowker}/edit`}>
+                            <Link href={`/management/loker/${row.id_lowker}/edit`}>
                                 <button className="edit-button"><i className="fas fa-plus"></i> EDIT</button>
                             </Link>
                         </div>

@@ -60,7 +60,7 @@ class PerusahaanController extends Controller
         // Admin menggunakan pagination
         $perusahaan = $query->orderBy('id_perusahaan', 'desc')->paginate(10)->withQueryString();
 
-        return Inertia::render('Admin/Perusahaan/Index', [
+        return Inertia::render('Management/Perusahaan/Index', [
             'perusahaan' => $perusahaan,
             'filters' => $request->only(['search', 'skala']),
         ]);
@@ -68,7 +68,7 @@ class PerusahaanController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Perusahaan/Create');
+        return Inertia::render('Management/Perusahaan/Create');
     }
 
 
@@ -114,7 +114,7 @@ class PerusahaanController extends Controller
             dd($e->getMessage());
         }
 
-        return redirect()->route('admin.perusahaan.index')
+        return redirect()->route('management.perusahaan.index')
             ->with('success', 'Perusahaan berhasil ditambahkan!');
     }
 
@@ -122,7 +122,7 @@ class PerusahaanController extends Controller
     public function edit($id)
     {
         $perusahaan = Perusahaan::findOrFail($id);
-        return Inertia::render('Admin/Perusahaan/Edit', [
+        return Inertia::render('Management/Perusahaan/Edit', [
             'perusahaan' => $perusahaan,
         ]);
     }
@@ -134,17 +134,39 @@ class PerusahaanController extends Controller
         
         $data = $request->only([
             'nama', 'alamat', 'deskripsi', 'kontak', 'website',
-            'email', 'logo', 'gambar', 'jenis', 'skala',
+            'email', 'jenis', 'skala',
         ]);
         
         // Set default value for kerja_sama if provided
         if ($request->kerja_sama) {
             $data['kerja_sama'] = $request->kerja_sama;
         }
+
+        if ($request->hasFile('logo')) {
+            // Delete old logo
+            if ($perusahaan->logo) {
+                Storage::disk('public')->delete('logo_perusahaan/' . $perusahaan->logo);
+            }
+            $fileLogo = $request->file('logo');
+            $namaLogo = 'logo_' . time() . '_' . $fileLogo->getClientOriginalName();
+            $fileLogo->storeAs('logo_perusahaan', $namaLogo, 'public');
+            $data['logo'] = $namaLogo;
+        }
+
+        if ($request->hasFile('gambar')) {
+            // Delete old gambar
+            if ($perusahaan->gambar) {
+                Storage::disk('public')->delete('gambar_perusahaan/' . $perusahaan->gambar);
+            }
+            $fileGambar = $request->file('gambar');
+            $namaGambar = 'gambar_' . time() . '_' . $fileGambar->getClientOriginalName();
+            $fileGambar->storeAs('gambar_perusahaan', $namaGambar, 'public');
+            $data['gambar'] = $namaGambar;
+        }
         
         $perusahaan->update($data);
 
-        return redirect()->route('admin.perusahaan.index')->with('success', 'Perusahaan berhasil diperbarui!');
+        return redirect()->route('management.perusahaan.index')->with('success', 'Perusahaan berhasil diperbarui!');
     }
 
 
@@ -164,7 +186,7 @@ class PerusahaanController extends Controller
 
         $perusahaan->delete();
 
-        return redirect()->route('admin.perusahaan.index')
+        return redirect()->route('management.perusahaan.index')
             ->with('success', 'Perusahaan berhasil dihapus!');
     }
 }

@@ -100,7 +100,7 @@ export default function ProfilIndex({ alumni, mustChangePassword }) {
                         <p>{alumni.nisn || '-'}</p>
                         <p>
                             Siswa / Alumni Tahun{' '}
-                            {alumni.tahun_lulus ? `${alumni.tahun_lulus}/${Number(alumni.tahun_lulus) + 1}` : '-'}
+                            {alumni.tahun_lulus || '-'}
                         </p>
                     </div>
                 </div>

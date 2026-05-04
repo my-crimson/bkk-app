@@ -94,7 +94,7 @@ class LokerController extends Controller
         $jurusanList = Jurusan::orderBy('jurusan')
             ->pluck('jurusan');
 
-        return Inertia::render('Admin/Loker/Index', [
+        return Inertia::render('Management/Loker/Index', [
             'lowker' => $lowker,
             'jurusanList' => $jurusanList,
             'filters' => $request->only(['jurusan', 'lokasi']),
@@ -106,7 +106,7 @@ class LokerController extends Controller
     {
         $perusahaan = Perusahaan::orderBy('nama')->get();
         $jurusan = Jurusan::orderByRaw("CASE WHEN jurusan = 'Semua Jurusan' THEN 0 ELSE 1 END")->orderBy('jurusan')->get();
-        return Inertia::render('Admin/Loker/Create', [
+        return Inertia::render('Management/Loker/Create', [
             'perusahaan' => $perusahaan,
             'jurusan' => $jurusan,
         ]);
@@ -134,7 +134,7 @@ class LokerController extends Controller
             'status' => $request->status ?: 'aktif',
         ]);
 
-        return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil ditambahkan!');
+        return redirect()->route('management.loker.index')->with('success', 'Lowongan kerja berhasil ditambahkan!');
     }
 
     // Admin: edit form
@@ -144,7 +144,7 @@ class LokerController extends Controller
         $lowker = Lowker::findOrFail($id);
         $perusahaan = Perusahaan::orderBy('nama')->get();
         $jurusan = Jurusan::orderByRaw("CASE WHEN jurusan = 'Semua Jurusan' THEN 0 ELSE 1 END")->orderBy('jurusan')->get();
-        return Inertia::render('Admin/Loker/Edit', [
+        return Inertia::render('Management/Loker/Edit', [
             'lowker' => $lowker,
             'perusahaan' => $perusahaan,
             'jurusan' => $jurusan,
@@ -174,7 +174,7 @@ class LokerController extends Controller
             'status' => $request->status ?: 'aktif',
         ]);
 
-        return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil diperbarui!');
+        return redirect()->route('management.loker.index')->with('success', 'Lowongan kerja berhasil diperbarui!');
     }
 
     // Admin: delete
@@ -183,6 +183,6 @@ class LokerController extends Controller
         $lowker = Lowker::findOrFail($id);
         $lowker->delete();
 
-        return redirect()->route('admin.loker.index')->with('success', 'Lowongan kerja berhasil dihapus!');
+        return redirect()->route('management.loker.index')->with('success', 'Lowongan kerja berhasil dihapus!');
     }
 }

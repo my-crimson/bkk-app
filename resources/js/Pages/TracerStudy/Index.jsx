@@ -9,7 +9,7 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        router.get('/admin/tracer-study', {
+        router.get('/management/tracer-study', {
             search: formData.get('search') || '',
             jurusan: filters.jurusan || '',
             status: formData.get('status') || '',
@@ -32,7 +32,7 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                         return (
                             <Link
                                 key={code}
-                                href={`/admin/tracer-study?${params.toString()}`}
+                                href={`/management/tracer-study?${params.toString()}`}
                                 className={`tracer-pill ${filters.jurusan === code ? 'active' : ''}`}
                                 preserveScroll
                             >

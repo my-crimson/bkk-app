@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
 use App\Models\Informasi;
@@ -25,7 +25,7 @@ class InformasiController extends Controller
 
         $struktur = StrukturOrganisasi::orderBy('level')->orderBy('id')->get();
 
-        return Inertia::render('Admin/Informasi/Index', [
+        return Inertia::render('Management/Informasi/Index', [
             'informasi' => $informasi,
             'struktur' => $struktur
         ]);
@@ -139,7 +139,7 @@ class InformasiController extends Controller
         ]);
 
         $struktur = StrukturOrganisasi::findOrFail($id);
-        $data = $request->all();
+        $data = $request->except('foto_profil');
 
         if ($request->hasFile('foto_profil')) {
             // Delete old file if exists

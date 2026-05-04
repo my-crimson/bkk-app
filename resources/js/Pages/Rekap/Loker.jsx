@@ -16,7 +16,7 @@ export default function RekapLoker({
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        router.get('/admin/rekap-loker', {
+        router.get('/management/rekap-loker', {
             perusahaan: formData.get('perusahaan') || '',
             lokasi: formData.get('lokasi') || '',
             jurusan: formData.get('jurusan') || '',

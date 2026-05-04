@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePage, router } from '@inertiajs/react';
 import Header from '../Components/Navbar/Header';
 import GuestNav from '../Components/Navbar/GuestNav';
-import AdminNav from '../Components/Navbar/AdminNav';
+import ManagementNav from '../Components/Navbar/ManagementNav';
 import AlumniNav from '../Components/Navbar/AlumniNav';
 
 export default function MainLayout({ children, className = '' }) {
@@ -14,7 +14,7 @@ export default function MainLayout({ children, className = '' }) {
 
     const renderNavbar = () => {
         if (!auth?.user) return <GuestNav />;
-        if (auth.user.role === 'management') return <AdminNav />;
+        if (auth.user.role === 'management') return <ManagementNav />;
         if (auth.user.role === 'alumni') return <AlumniNav />;
         return <GuestNav />;
     };

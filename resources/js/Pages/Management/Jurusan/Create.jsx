@@ -4,7 +4,7 @@ import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminJurusanCreate() {
+export default function ManagementJurusanCreate() {
     const { data, setData, post, processing, reset, errors } = useForm({
         jurusan: '',
         deskripsi: '',
@@ -46,7 +46,7 @@ export default function AdminJurusanCreate() {
 
         if (!(await confirmAction('tambah jurusan'))) return;
 
-        post('/admin/jurusan', {
+        post('/management/jurusan', {
             forceFormData: true,
             onSuccess: () => {
                 reset();

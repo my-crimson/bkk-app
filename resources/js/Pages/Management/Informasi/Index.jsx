@@ -25,7 +25,7 @@ export default function InformasiIndex({ informasi, struktur }) {
     const submitInfo = async (e) => {
         e.preventDefault();
         if (!(await confirmAction('simpan perubahan informasi'))) return;
-        formInfo.put('/admin/informasi', {
+        formInfo.put('/management/informasi', {
             preserveScroll: true,
             onSuccess: () => notifyActionSuccess('update informasi'),
         });
@@ -42,7 +42,7 @@ export default function InformasiIndex({ informasi, struktur }) {
     const submitProfile = async (e) => {
         e.preventDefault();
         if (!(await confirmAction('simpan profil pengantar'))) return;
-        formProfile.post('/admin/informasi/pengantar-profile', {
+        formProfile.post('/management/informasi/pengantar-profile', {
             preserveScroll: true,
             onSuccess: () => notifyActionSuccess('update profil pengantar'),
         });
@@ -74,13 +74,13 @@ export default function InformasiIndex({ informasi, struktur }) {
         setLevelOptions(updated);
         setNewLevelLabel('');
         // Save to DB
-        router.put('/admin/informasi/level-options', { level_options: updated }, { preserveScroll: true });
+        router.put('/management/informasi/level-options', { level_options: updated }, { preserveScroll: true });
     };
 
     const removeLevelOption = (level) => {
         const updated = levelOptions.filter(l => l.level !== level);
         setLevelOptions(updated);
-        router.put('/admin/informasi/level-options', { level_options: updated }, { preserveScroll: true });
+        router.put('/management/informasi/level-options', { level_options: updated }, { preserveScroll: true });
     };
 
     // =========== STRUKTUR FORM ===========
@@ -122,8 +122,8 @@ export default function InformasiIndex({ informasi, struktur }) {
         const actionLabel = strukturId ? 'update anggota' : 'tambah anggota';
         if (!(await confirmAction(actionLabel))) return;
         const url = strukturId
-            ? `/admin/informasi/struktur/${strukturId}`
-            : '/admin/informasi/struktur';
+            ? `/management/informasi/struktur/${strukturId}`
+            : '/management/informasi/struktur';
         formStruktur.post(url, {
             preserveScroll: true,
             onSuccess: () => {
@@ -135,7 +135,7 @@ export default function InformasiIndex({ informasi, struktur }) {
 
     const deleteStruktur = async (id) => {
         if (await confirmAction('hapus anggota')) {
-            router.delete(`/admin/informasi/struktur/${id}`, {
+            router.delete(`/management/informasi/struktur/${id}`, {
                 preserveScroll: true,
                 onSuccess: () => notifyActionSuccess('hapus anggota'),
             });

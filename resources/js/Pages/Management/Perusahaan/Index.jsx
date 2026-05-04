@@ -3,12 +3,12 @@ import { useMemo } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/helpers/actionPopup';
 
-export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
+export default function ManagementPerusahaanIndex({ perusahaan, filters = {} }) {
 
     // ================= DELETE =================
     const handleDelete = async (id) => {
         if (await confirmAction('menghapus perusahaan ini')) {
-            router.delete(`/admin/perusahaan/${id}`, {
+            router.delete(`/management/perusahaan/${id}`, {
                 preserveScroll: true,
                 preserveState: false,
                 onSuccess: () => notifyActionSuccess('menghapus perusahaan'),
@@ -21,7 +21,7 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
 
         const formData = new FormData(e.target);
 
-        router.get('/admin/perusahaan', {
+        router.get('/management/perusahaan', {
             search: formData.get('search') || '',
             skala: formData.get('skala') || '',
         }, {
@@ -104,7 +104,7 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
 
                 <Link
                     className="perusahaan-add-card"
-                    href="/admin/perusahaan/create"
+                    href="/management/perusahaan/create"
                 >
                     <i className="fa-solid fa-plus"></i>
                     <p>Tambahkan Perusahaan</p>
@@ -152,7 +152,7 @@ export default function AdminPerusahaanIndex({ perusahaan, filters = {} }) {
                         <div className="perusahaan-card-actions">
 
                             <Link
-                                href={`/admin/perusahaan/${p.id_perusahaan}/edit`}
+                                href={`/management/perusahaan/${p.id_perusahaan}/edit`}
                                 className="perusahaan-btn perusahaan-btn-edit"
                             >
                                 <i className="fa-solid fa-pen-to-square"></i>

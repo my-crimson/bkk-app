@@ -2,18 +2,18 @@ import { Head, useForm } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
+export default function ManagementLokerCreate({ perusahaan, jurusan }) {
 
-    const { data, setData, put, processing } = useForm({
-        judul_lowker: lowker.judul_lowker || '',
-        deskripsi: lowker.deskripsi || '',
-        persyaratan: lowker.persyaratan || '',
-        gaji: lowker.gaji || '',
-        lokasi: lowker.lokasi || '',
-        tgl_ditutup: lowker.tgl_ditutup || '',
-        id_perusahaan: lowker.id_perusahaan || '',
-        id_jurusan: lowker.id_jurusan || '',
-        status: lowker.status || 'aktif',
+    const { data, setData, post, processing } = useForm({
+        judul_lowker: '',
+        deskripsi: '',
+        persyaratan: '',
+        gaji: '',
+        lokasi: '',
+        tgl_ditutup: '',
+        id_perusahaan: '',
+        id_jurusan: '',
+        status: 'aktif',
     });
 
     const handleGajiChange = (e) => {
@@ -27,25 +27,25 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
     const submit = async (e) => {
         e.preventDefault();
 
-        if (!(await confirmAction('update lowongan kerja'))) return;
+        if (!(await confirmAction('tambah lowongan kerja'))) return;
 
-        put(`/admin/loker/${lowker.id_lowker}`, {
-            onSuccess: () => notifyActionSuccess('update lowongan kerja'),
+        post('/management/loker', {
+            onSuccess: () => notifyActionSuccess('tambah lowongan kerja'),
         });
     };
 
     return (
         <MainLayout>
-            <Head title="Edit Lowongan Kerja" />
+            <Head title="Tambah Lowongan Kerja" />
 
             <div className="header-bar">
-                <a href="#">CRUD / Edit Lowongan Kerja</a>
+                <a href="#">CRUD / Tambah Lowongan Kerja</a>
             </div>
 
             <div className="crud-form">
 
                 <h2 style={{ marginBottom: '20px', color: '#134CBC' }}>
-                    Edit Lowongan Kerja
+                    Tambah Lowongan Kerja
                 </h2>
 
                 <form onSubmit={submit}>
@@ -191,7 +191,7 @@ export default function AdminLokerEdit({ lowker, perusahaan, jurusan }) {
                         className="btn-submit"
                         disabled={processing}
                     >
-                        {processing ? 'Mengupdate...' : 'Update'}
+                        {processing ? 'Menyimpan...' : 'Simpan'}
                     </button>
 
                 </form>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
 import { confirmAction, notifyActionSuccess } from '@/helpers/actionPopup';
-export default function AdminPerusahaanCreate() {
+export default function ManagementPerusahaanCreate() {
     const { data, setData, post, processing, reset, errors } = useForm({
         nama: '', alamat: '', deskripsi: '', website: '', email: '', kontak: '',
         logo: null, gambar: null, jenis: '', skala: '', kerja_sama: '',
@@ -32,7 +32,7 @@ export default function AdminPerusahaanCreate() {
         if (fileErrors.logo || fileErrors.gambar) return;
 
         if (await confirmAction('menambahkan perusahaan ini')) {
-            post('/admin/perusahaan', {
+            post('/management/perusahaan', {
                 forceFormData: true,
                 onSuccess: () => {
                     reset();

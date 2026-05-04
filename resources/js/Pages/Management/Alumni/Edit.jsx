@@ -2,19 +2,22 @@ import { Head, useForm, Link } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminAlumniCreate({ jurusanList }) {
-    const { data, setData, post, processing, errors } = useForm({
-        nama: '', nisn: '', jenis_kelamin: '', tempat_lahir: '', tanggal_lahir: '',
-        nik: '', agama: '', alamat: '', tahun_lulus: '', id_jurusan: '',
-        rt: '', rw: '', dusun: '', kelurahan: '', kecamatan: '', kode_pos: '',
-        email: '', no_wa: '',
+export default function ManagementAlumniEdit({ alumni, jurusanList }) {
+    const { data, setData, put, processing, errors } = useForm({
+        nama: alumni.nama || '', nisn: alumni.nisn || '', jenis_kelamin: alumni.jenis_kelamin || '',
+        tempat_lahir: alumni.tempat_lahir || '', tanggal_lahir: alumni.tanggal_lahir || '',
+        nik: alumni.nik || '', agama: alumni.agama || '', alamat: alumni.alamat || '',
+        kelas: alumni.tahun_lulus || '', id_jurusan: alumni.id_jurusan || '',
+        rt: alumni.rt || '', rw: alumni.rw || '', dusun: alumni.dusun || '',
+        kelurahan: alumni.kelurahan || '', kecamatan: alumni.kecamatan || '', kode_pos: alumni.kode_pos || '',
+        email: alumni.email || '', no_wa: alumni.no_wa || '',
     });
 
     const submit = async (e) => {
         e.preventDefault();
-        if (!(await confirmAction('tambah siswa/alumni baru'))) return;
-        post('/admin/alumni', {
-            onSuccess: () => notifyActionSuccess('tambah siswa/alumni'),
+        if (!(await confirmAction('update data siswa/alumni'))) return;
+        put(`/management/alumni/${alumni.id}`, {
+            onSuccess: () => notifyActionSuccess('update siswa/alumni'),
         });
     };
 
@@ -25,14 +28,14 @@ export default function AdminAlumniCreate({ jurusanList }) {
 
     return (
         <MainLayout>
-            <Head title="Tambah Siswa/Alumni" />
-            <div className="header-bar"><a href="#">CRUD / Siswa/Alumni / Tambah</a></div>
+            <Head title="Edit Siswa/Alumni" />
+            <div className="header-bar"><a href="#">CRUD / Siswa/Alumni / Edit</a></div>
 
             <div style={{ padding: '25px', maxWidth: '800px', margin: '0 auto' }}>
                 <div style={{ background: '#fff', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', padding: '30px' }}>
                     <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#1e293b', marginBottom: '25px' }}>
-                        <i className="fa-solid fa-user-plus" style={{ marginRight: '10px', color: '#134CBC' }}></i>
-                        Tambah Siswa/Alumni
+                        <i className="fa-solid fa-user-pen" style={{ marginRight: '10px', color: '#f59e0b' }}></i>
+                        Edit Data: {alumni.nama}
                     </h2>
 
                     <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -40,12 +43,12 @@ export default function AdminAlumniCreate({ jurusanList }) {
                         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
                             <div style={{ flex: '2 1 300px' }}>
                                 <label style={labelStyle}>Nama Lengkap {required}</label>
-                                <input type="text" value={data.nama} onChange={e => setData('nama', e.target.value)} style={inputStyle} placeholder="Nama lengkap siswa" required />
+                                <input type="text" value={data.nama} onChange={e => setData('nama', e.target.value)} style={inputStyle} required />
                                 {errors.nama && <div style={errStyle}>{errors.nama}</div>}
                             </div>
                             <div style={{ flex: '1 1 150px' }}>
                                 <label style={labelStyle}>NISN {required}</label>
-                                <input type="text" value={data.nisn} onChange={e => setData('nisn', e.target.value)} style={inputStyle} placeholder="NISN" required />
+                                <input type="text" value={data.nisn} onChange={e => setData('nisn', e.target.value)} style={inputStyle} required />
                                 {errors.nisn && <div style={errStyle}>{errors.nisn}</div>}
                             </div>
                         </div>
@@ -59,12 +62,10 @@ export default function AdminAlumniCreate({ jurusanList }) {
                                     <option value="L">Laki-laki</option>
                                     <option value="P">Perempuan</option>
                                 </select>
-                                {errors.jenis_kelamin && <div style={errStyle}>{errors.jenis_kelamin}</div>}
                             </div>
                             <div style={{ flex: '1 1 150px' }}>
                                 <label style={labelStyle}>Tahun Lulus {required}</label>
                                 <input type="number" value={data.tahun_lulus} onChange={e => setData('tahun_lulus', e.target.value)} style={inputStyle} placeholder="Mis: 2024" required />
-                                {errors.tahun_lulus && <div style={errStyle}>{errors.tahun_lulus}</div>}
                             </div>
                             <div style={{ flex: '1 1 200px' }}>
                                 <label style={labelStyle}>Jurusan {required}</label>
@@ -82,12 +83,10 @@ export default function AdminAlumniCreate({ jurusanList }) {
                             <div style={{ flex: '1 1 200px' }}>
                                 <label style={labelStyle}>Tempat Lahir {required}</label>
                                 <input type="text" value={data.tempat_lahir} onChange={e => setData('tempat_lahir', e.target.value)} style={inputStyle} required />
-                                {errors.tempat_lahir && <div style={errStyle}>{errors.tempat_lahir}</div>}
                             </div>
                             <div style={{ flex: '1 1 180px' }}>
                                 <label style={labelStyle}>Tanggal Lahir {required}</label>
                                 <input type="date" value={data.tanggal_lahir} onChange={e => setData('tanggal_lahir', e.target.value)} style={inputStyle} required />
-                                {errors.tanggal_lahir && <div style={errStyle}>{errors.tanggal_lahir}</div>}
                             </div>
                         </div>
 
@@ -96,7 +95,6 @@ export default function AdminAlumniCreate({ jurusanList }) {
                             <div style={{ flex: '1 1 200px' }}>
                                 <label style={labelStyle}>NIK {required}</label>
                                 <input type="text" value={data.nik} onChange={e => setData('nik', e.target.value)} style={inputStyle} required />
-                                {errors.nik && <div style={errStyle}>{errors.nik}</div>}
                             </div>
                             <div style={{ flex: '1 1 150px' }}>
                                 <label style={labelStyle}>Agama {required}</label>
@@ -113,25 +111,21 @@ export default function AdminAlumniCreate({ jurusanList }) {
                         <div>
                             <label style={labelStyle}>Alamat {required}</label>
                             <textarea value={data.alamat} onChange={e => setData('alamat', e.target.value)} style={{ ...inputStyle, height: '80px', resize: 'vertical' }} required />
-                            {errors.alamat && <div style={errStyle}>{errors.alamat}</div>}
                         </div>
 
-                        {/* Row 5: RT/RW/Dusun */}
+                        {/* Row 5 */}
                         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
                             <div style={{ flex: '1 1 80px' }}>
                                 <label style={labelStyle}>RT {required}</label>
                                 <input type="number" value={data.rt} onChange={e => setData('rt', e.target.value)} style={inputStyle} required />
-                                {errors.rt && <div style={errStyle}>{errors.rt}</div>}
                             </div>
                             <div style={{ flex: '1 1 80px' }}>
                                 <label style={labelStyle}>RW {required}</label>
                                 <input type="number" value={data.rw} onChange={e => setData('rw', e.target.value)} style={inputStyle} required />
-                                {errors.rw && <div style={errStyle}>{errors.rw}</div>}
                             </div>
                             <div style={{ flex: '2 1 150px' }}>
                                 <label style={labelStyle}>Dusun {required}</label>
                                 <input type="text" value={data.dusun} onChange={e => setData('dusun', e.target.value)} style={inputStyle} required />
-                                {errors.dusun && <div style={errStyle}>{errors.dusun}</div>}
                             </div>
                         </div>
 
@@ -140,46 +134,36 @@ export default function AdminAlumniCreate({ jurusanList }) {
                             <div style={{ flex: '1 1 150px' }}>
                                 <label style={labelStyle}>Kelurahan {required}</label>
                                 <input type="text" value={data.kelurahan} onChange={e => setData('kelurahan', e.target.value)} style={inputStyle} required />
-                                {errors.kelurahan && <div style={errStyle}>{errors.kelurahan}</div>}
                             </div>
                             <div style={{ flex: '1 1 150px' }}>
                                 <label style={labelStyle}>Kecamatan {required}</label>
                                 <input type="text" value={data.kecamatan} onChange={e => setData('kecamatan', e.target.value)} style={inputStyle} required />
-                                {errors.kecamatan && <div style={errStyle}>{errors.kecamatan}</div>}
                             </div>
                             <div style={{ flex: '1 1 100px' }}>
                                 <label style={labelStyle}>Kode Pos {required}</label>
                                 <input type="number" value={data.kode_pos} onChange={e => setData('kode_pos', e.target.value)} style={inputStyle} required />
-                                {errors.kode_pos && <div style={errStyle}>{errors.kode_pos}</div>}
                             </div>
                         </div>
 
-                        {/* Row 7: Contact */}
+                        {/* Row 7 */}
                         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
                             <div style={{ flex: '1 1 200px' }}>
                                 <label style={labelStyle}>Email {required}</label>
-                                <input type="email" value={data.email} onChange={e => setData('email', e.target.value)} style={inputStyle} placeholder="email@contoh.com" required />
-                                {errors.email && <div style={errStyle}>{errors.email}</div>}
+                                <input type="email" value={data.email} onChange={e => setData('email', e.target.value)} style={inputStyle} required />
                             </div>
                             <div style={{ flex: '1 1 180px' }}>
                                 <label style={labelStyle}>No WA {required}</label>
-                                <input type="text" value={data.no_wa} onChange={e => setData('no_wa', e.target.value)} style={inputStyle} placeholder="08123456789" required />
-                                {errors.no_wa && <div style={errStyle}>{errors.no_wa}</div>}
+                                <input type="text" value={data.no_wa} onChange={e => setData('no_wa', e.target.value)} style={inputStyle} required />
                             </div>
                         </div>
 
-                        <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>
-                            <i className="fa-solid fa-info-circle" style={{ marginRight: '4px' }}></i>
-                            Password otomatis menggunakan NISN. Siswa bisa mengubahnya setelah login pertama.
-                        </p>
-
                         {/* Buttons */}
                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '5px' }}>
-                            <Link href="/admin/alumni" style={{ padding: '10px 25px', background: '#e2e8f0', color: '#333', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'none', fontSize: '14px' }}>
+                            <Link href="/management/alumni" style={{ padding: '10px 25px', background: '#e2e8f0', color: '#333', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'none', fontSize: '14px' }}>
                                 Batal
                             </Link>
                             <button type="submit" disabled={processing} style={{ padding: '10px 25px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>
-                                {processing ? 'Menyimpan...' : 'Simpan'}
+                                {processing ? 'Menyimpan...' : 'Update'}
                             </button>
                         </div>
                     </form>

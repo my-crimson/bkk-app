@@ -1,4 +1,4 @@
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import axios from 'axios';
 import PasswordInput from '../../Components/PasswordInput';
@@ -45,6 +45,19 @@ export default function AlumniLogin() {
     return (
         <div className="login-page">
             <Head title="Login Siswa/Alumni" />
+            
+            {/* Tombol Kembali ke Beranda */}
+            <Link href="/" className="back-home-button" title="Kembali ke Beranda">
+                <i className="fa-solid fa-xmark"></i>
+            </Link>
+            
+            <div className="login-left" style={{ backgroundImage: "url('/images/login-bg.jpg')" }}>
+                <div className="login-left-content">
+                    <h1>SMKN 1 BOYOLANGU</h1>
+                    <p>Bursa Kerja Khusus - Jembatan Masa Depan Anda</p>
+                </div>
+            </div>
+
             <div className="login-container">
                 <div className="login-card-form">
                     <div className="login-header">
@@ -156,13 +169,13 @@ export default function AlumniLogin() {
                         <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
                             <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#166534', margin: '0 0 8px 0' }}>
                                 <i className="fa-brands fa-whatsapp" style={{ marginRight: '6px' }}></i>
-                                Hubungi Admin via WhatsApp
+                                Hubungi Management via WhatsApp
                             </h4>
                             <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 10px 0' }}>
                                 Tersedia <strong>24 jam</strong>
                             </p>
                             <a
-                                href={`https://wa.me/6287844852308?text=${encodeURIComponent('Halo Admin BKK, saya ingin mereset password akun saya. NISN saya: ')}`}
+                                href={`https://wa.me/6287844852308?text=${encodeURIComponent('Halo Management BKK, saya ingin mereset password akun saya. NISN saya: ')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{

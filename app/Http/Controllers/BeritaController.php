@@ -69,7 +69,7 @@ class BeritaController extends Controller
             ->paginate(5)
             ->withQueryString();
 
-        return Inertia::render('Admin/Berita/Index', [
+        return Inertia::render('Management/Berita/Index', [
             'berita' => $berita,
             'filters' => $request->only(['search', 'tanggal']),
         ]);
@@ -77,7 +77,7 @@ class BeritaController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Berita/Create');
+        return Inertia::render('Management/Berita/Create');
     }
 
     public function store(Request $request)
@@ -104,7 +104,7 @@ class BeritaController extends Controller
         Berita::create($data);
 
         return redirect()
-            ->route('admin.berita.index')
+            ->route('management.berita.index')
             ->with('success', 'Kegiatan berhasil ditambahkan!');
     }
 
@@ -112,7 +112,7 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
 
-        return Inertia::render('Admin/Berita/Edit', [
+        return Inertia::render('Management/Berita/Edit', [
             'berita' => $berita,
         ]);
     }
@@ -144,7 +144,7 @@ class BeritaController extends Controller
         $berita->update($data);
 
         return redirect()
-            ->route('admin.berita.index')
+            ->route('management.berita.index')
             ->with('success', 'Kegiatan berhasil diperbarui!');
     }
 
@@ -153,7 +153,7 @@ class BeritaController extends Controller
         Berita::findOrFail($id)->delete();
 
         return redirect()
-            ->route('admin.berita.index')
+            ->route('management.berita.index')
             ->with('success', 'Kegiatan berhasil dihapus!');
     }
 }

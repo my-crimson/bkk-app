@@ -1,4 +1,4 @@
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage, Link } from '@inertiajs/react';
 import PasswordInput from '../../Components/PasswordInput';
 
 export default function ManagementLogin() {
@@ -16,6 +16,19 @@ export default function ManagementLogin() {
     return (
         <div className="login-page">
             <Head title="Login Management" />
+            
+            {/* Tombol Kembali ke Beranda */}
+            <Link href="/" className="back-home-button" title="Kembali ke Beranda">
+                <i className="fa-solid fa-xmark"></i>
+            </Link>
+            
+            <div className="login-left" style={{ backgroundImage: "url('/images/login-bg.jpg')" }}>
+                <div className="login-left-content">
+                    <h1>SMKN 1 BOYOLANGU</h1>
+                    <p>Bursa Kerja Khusus - Jembatan Masa Depan Anda</p>
+                </div>
+            </div>
+
             <div className="login-container">
                 <div className="login-card-form">
                     <div className="login-header">

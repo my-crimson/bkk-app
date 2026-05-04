@@ -99,25 +99,35 @@ export default function StrukturOrganisasi({ struktur, informasi }) {
                                     flexDirection: 'column', 
                                     alignItems: 'center', 
                                     position: 'relative', 
-                                    width: '100%' 
+                                    width: '100%',
+                                    marginBottom: '20px'
                                 }}>
    
-                                    {index > 0 && (
-                                        <div className="line-vertical" style={{ width: '2px', height: '40px', background: '#cbd5e1', position: 'absolute', top: '-40px' }}></div>
-                                    )}
+                                    <div style={{
+                                        marginBottom: '25px',
+                                        padding: '10px 30px',
+                                        background: 'linear-gradient(135deg, #1e40af, #3b82f6)',
+                                        color: 'white',
+                                        borderRadius: '50px',
+                                        fontSize: '18px',
+                                        fontWeight: '800',
+                                        letterSpacing: '1.5px',
+                                        textTransform: 'uppercase',
+                                        boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)',
+                                        border: '2px solid rgba(255,255,255,0.3)',
+                                        display: 'inline-block'
+                                    }}>
+                                        {levelOptions.find(opt => String(opt.level) === String(level))?.label || `Level ${level}`}
+                                    </div>
                                     
                                     <div className="cards-container" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '30px', position: 'relative' }}>
 
-                                        {index > 0 && levels[level].length > 1 && (
-                                            <div className="line-horizontal" style={{ position: 'absolute', top: '-20px', left: '50px', right: '50px', height: '2px', background: '#cbd5e1' }}></div>
-                                        )}
+
 
                                         {levels[level].map(item => (
                                             <div key={item.id} className="card-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       
-                                                {index > 0 && (
-                                                    <div className="line-connector" style={{ width: '2px', height: '20px', background: '#cbd5e1', marginBottom: '0px', display: levels[level].length > 1 ? 'block' : 'none' }}></div>
-                                                )}
+
 
                                                 <div className="org-card" style={{ 
                                                     background: '#ffffff', 

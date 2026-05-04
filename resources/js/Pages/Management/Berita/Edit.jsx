@@ -2,7 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
-export default function AdminBeritaEdit({ berita }) {
+export default function ManagementBeritaEdit({ berita }) {
     const { data, setData, post, processing } = useForm({
         _method: 'PUT', judul: berita.judul || '', tanggal: berita.tanggal || '',
         jml_peserta: berita.jml_peserta || '', lokasi: berita.lokasi || '', deskripsi: berita.deskripsi || '',
@@ -12,7 +12,7 @@ export default function AdminBeritaEdit({ berita }) {
     const submit = async (e) => {
         e.preventDefault();
         if (!(await confirmAction('update kegiatan'))) return;
-        post(`/admin/berita/${berita.id_berita}`, {
+        post(`/management/berita/${berita.id_berita}`, {
             forceFormData: true,
             onSuccess: () => notifyActionSuccess('update kegiatan'),
         });

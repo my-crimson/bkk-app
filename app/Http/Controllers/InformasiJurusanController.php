@@ -62,7 +62,7 @@ class InformasiJurusanController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Admin/Jurusan/Index', [
+        return Inertia::render('Management/Jurusan/Index', [
             'jurusan' => $jurusan,
             'filters' => $request->only(['search']),
         ]);
@@ -70,7 +70,7 @@ class InformasiJurusanController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Jurusan/Create');
+        return Inertia::render('Management/Jurusan/Create');
     }
 
     public function store(Request $request)
@@ -106,7 +106,7 @@ class InformasiJurusanController extends Controller
         Jurusan::create($data);
 
         return redirect()
-            ->route('admin.jurusan.index')
+            ->route('management.jurusan.index')
             ->with('success', 'Jurusan berhasil ditambahkan!');
     }
 
@@ -114,7 +114,7 @@ class InformasiJurusanController extends Controller
     {
         $jurusan = Jurusan::findOrFail($id);
 
-        return Inertia::render('Admin/Jurusan/Edit', [
+        return Inertia::render('Management/Jurusan/Edit', [
             'jurusan' => $jurusan,
         ]);
     }
@@ -154,7 +154,7 @@ class InformasiJurusanController extends Controller
         $jurusan->update($data);
 
         return redirect()
-            ->route('admin.jurusan.index')
+            ->route('management.jurusan.index')
             ->with('success', 'Jurusan berhasil diperbarui!');
     }
 
@@ -164,7 +164,7 @@ class InformasiJurusanController extends Controller
 
         if ($jurusan->alumni()->count() > 0) {
             return redirect()
-                ->route('admin.jurusan.index')
+                ->route('management.jurusan.index')
                 ->with(
                     'error',
                     'Jurusan tidak dapat dihapus karena masih memiliki data alumni terkait.'
@@ -173,7 +173,7 @@ class InformasiJurusanController extends Controller
 
         if ($jurusan->lowker()->count() > 0) {
             return redirect()
-                ->route('admin.jurusan.index')
+                ->route('management.jurusan.index')
                 ->with(
                     'error',
                     'Jurusan tidak dapat dihapus karena masih memiliki data lowongan kerja terkait.'
@@ -183,7 +183,7 @@ class InformasiJurusanController extends Controller
         $jurusan->delete();
 
         return redirect()
-            ->route('admin.jurusan.index')
+            ->route('management.jurusan.index')
             ->with('success', 'Jurusan berhasil dihapus!');
     }
 }
