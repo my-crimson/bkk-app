@@ -24,8 +24,8 @@ export default function ManagementJurusanIndex({ jurusan }) {
 
             <div style={{ padding: '20px' }}>
                 <div className="job-list">
-                    <Link className="job-card show" id="tambah-jurusan" href="/management/jurusan/create" style={{ cursor: 'pointer', textDecoration: 'none' }}>
-                        <div className="tambah-btn">
+                    <Link className="job-card show" id="tambah-jurusan" href="/management/jurusan/create" style={{ cursor: 'pointer', textDecoration: 'none', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                        <div className="tambah-btn" style={{ color: '#134CBC' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                                 <i className="fa-solid fa-plus" style={{ fontSize: '34px' }}></i>
                                 <p style={{ fontWeight: 600 }}>Tambahkan Jurusan</p>
