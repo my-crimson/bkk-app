@@ -77,19 +77,27 @@ export default function LokerIndex({ lowker, jurusanList, filters }) {
                 )}
             </div>
 
-            <div className="pagination-container">
-                <div className="pagination-info">
-                    <p>Ditampilkan <strong>{from}</strong> sampai <strong>{to}</strong> dari total <strong>{total}</strong> lowongan</p>
-                </div>
-                <div className="pagination">
-                    {links.map((link, i) => (
-                        <Link key={i} href={link.url || '#'}
-                            className={`${link.active ? 'active' : ''} ${link.label.includes('Previous') || link.label.includes('Next') ? 'navigate' : ''}`}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            preserveScroll />
-                    ))}
-                </div>
-            </div>
+            {/* PAGINATION*/}
+                {lowker?.links && (
+                    <div className="pagination">
+                        {lowker.links.map((link, index) => (
+                            <button
+                                key={index}
+                                disabled={!link.url}
+                                className={`page-btn ${link.active ? 'active' : ''}`}
+                                onClick={() => {
+                                    if (link.url) {
+                                        router.visit(link.url, {
+                                            preserveScroll: true,
+                                            preserveState: true, 
+                                        });
+                                    }
+                                }}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
+                        ))}
+                    </div>
+                )}
         </MainLayout>
     );
 }
