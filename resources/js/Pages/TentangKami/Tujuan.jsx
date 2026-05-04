@@ -5,6 +5,11 @@ import { useEffect, useRef } from 'react';
 export default function Tujuan({ informasi }) {
     const ref = useRef(null);
 
+    // peomoran
+    const tujuanArray = informasi?.tujuan 
+        ? informasi.tujuan.split('\n').filter(line => line.trim() !== '') 
+        : [];
+
     useEffect(() => {
         if (ref.current) {
             const observer = new IntersectionObserver((entries) => {
@@ -68,7 +73,6 @@ export default function Tujuan({ informasi }) {
                         borderRadius: '2px'
                     }}></div>
 
-                    {/* Kontainer Isi*/}
                     <div className="content-box" style={{ 
                         background: '#ffffff',
                         padding: '40px',
@@ -77,14 +81,45 @@ export default function Tujuan({ informasi }) {
                         border: '1px solid #e2e8f0',
                         lineHeight: '1.8'
                     }}>
-                        <div className="content-text" style={{ 
-                            fontSize: '16px', 
-                            color: '#555', 
-                            whiteSpace: 'pre-wrap', 
-                            textAlign: 'justify'
-                        }}>
-                            {informasi?.tujuan || 'Belum ada data Tujuan.'}
-                        </div>
+                        {tujuanArray.length > 0 ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                {tujuanArray.map((item, index) => (
+                                    <div key={index} style={{ display: 'flex', alignItems: 'flex-start' }}>
+                                        <div style={{ 
+                                            minWidth: '35px', 
+                                            height: '35px', 
+                                            backgroundColor: '#eff6ff', 
+                                            color: '#3b82f6', 
+                                            borderRadius: '8px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontWeight: 'bold',
+                                            fontSize: '14px',
+                                            marginRight: '15px',
+                                            border: '1px solid #dbeafe',
+                                            flexShrink: 0 
+                                        }}>
+                                            {index + 1}
+                                        </div>
+                                        
+                                        {/* Teks Isi */}
+                                        <div className="content-text" style={{ 
+                                            fontSize: '16px', 
+                                            color: '#475569', 
+                                            textAlign: 'justify',
+                                            paddingTop: '4px'
+                                        }}>
+                                            {item}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div style={{ textAlign: 'center', color: '#94a3b8' }}>
+                                Belum ada data Tujuan.
+                            </div>
+                        )}
                     </div>
 
                     {/* Footer Sederhana */}
@@ -108,7 +143,7 @@ export default function Tujuan({ informasi }) {
                         font-size: 24px !important;
                     }
                     .content-box {
-                        padding: 20px !important;
+                        padding: 25px 15px !important;
                         border-radius: 12px !important;
                     }
                     .responsive-container {
@@ -118,7 +153,6 @@ export default function Tujuan({ informasi }) {
                         font-size: 15px !important;
                     }
                 }
-
             `}</style>
         </MainLayout>
     );
