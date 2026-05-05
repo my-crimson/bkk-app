@@ -379,7 +379,7 @@ export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], j
                                 {links.map((link, i) => (
                                     <button
                                         key={i} disabled={!link.url}
-                                        onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                        onClick={() => link.url && router.get(link.url, {}, { preserveState: true, preserveScroll: false })}
                                         style={{ padding: '6px 14px', borderRadius: '6px', border: link.active ? '2px solid #134CBC' : '1px solid #d1d5db', background: link.active ? '#134CBC' : '#fff', color: link.active ? '#fff' : (link.url ? '#333' : '#ccc'), cursor: link.url ? 'pointer' : 'default', fontSize: '13px' }}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
@@ -449,7 +449,13 @@ export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], j
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {management_users?.map((user, idx) => {
+                                    {management_users && [...management_users]
+                                        .sort((a, b) => {
+                                            if (a.id === current_user?.id) return -1;
+                                            if (b.id === current_user?.id) return 1;
+                                            return 0;
+                                        })
+                                        .map((user, idx) => {
                                         const isSelf = user.id === current_user?.id;
                                         return (
                                             <tr key={user.id} style={{

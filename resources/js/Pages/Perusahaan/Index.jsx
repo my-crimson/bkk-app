@@ -169,6 +169,8 @@ const CarouselStyles = () => (
         .company-detail-popup {
             padding: 25px 40px 35px;
             overflow-y: auto;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
         }
 
         .company-detail-popup table {
@@ -231,7 +233,7 @@ const CarouselStyles = () => (
     `}</style>
 );
 
-export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = [], filters = {} }) {
+export default function PerusahaanIndex({ perusahaan = {}, carouselPerusahaan = [], filters = {} }) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [activePopup, setActivePopup] = useState(null);
     const [isPaused, setIsPaused] = useState(false);
@@ -241,6 +243,9 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
     // Carousel aktif jika minimal ada 7 data
     const useCarousel = total >= 7;
 
+    // Data grid dari paginator Laravel
+    const perusahaanData = perusahaan?.data || [];
+
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -248,7 +253,8 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
             search: formData.get('search') || '',
             skala: formData.get('skala') || '',
         }, { 
-            preserveState: true, 
+            preserveState: true,
+            preserveScroll: true,
             replace: true 
         });
     };
@@ -272,6 +278,17 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
         const interval = setInterval(handleNext, 5000);
         return () => clearInterval(interval);
     }, [isPaused, useCarousel, total, isTransitioning]);
+
+    useEffect(() => {
+        if (activePopup) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [activePopup]);
 
     const getSlotClass = (itemIndex) => {
         let diff = itemIndex - activeIndex;
@@ -377,8 +394,8 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
 
             {/* --- SECTION 3: HASIL GRID --- */}
             <div className="results-grid">
-                {perusahaan.length > 0 ? (
-                    perusahaan.map(p => (
+                {perusahaanData.length > 0 ? (
+                    perusahaanData.map(p => (
                         <div key={`grid-${p.id_perusahaan}`} className="card-perusahaan">
                             {p.gambar ? (
                                 <img className="card-img" src={`/storage/gambar_perusahaan/${p.gambar}`} alt={p.nama} />
@@ -405,6 +422,25 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                 )}
             </div>
 
+            {/* --- PAGINATION --- */}
+            {perusahaan?.links && (
+                <div className="pagination">
+                    {perusahaan.links.map((link, index) => (
+                        <button
+                            key={index}
+                            disabled={!link.url}
+                            className={`page-btn ${link.active ? 'active' : ''}`}
+                            onClick={() => {
+                                if (link.url) {
+                                    router.get(link.url, {}, { preserveState: true, preserveScroll: false });
+                                }
+                            }}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
+            )}
+
             {/* --- BAGIAN POPUP DETAIL --- */}
             {activePopup && (
                 <div className="popup-overlay active" onClick={() => setActivePopup(null)}>
@@ -422,12 +458,21 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
                             <div className="company-title-popup">
                                 <h1>{activePopup.nama}</h1>
                             </div>
-                            <div className="company-desc-popup">
-                                <p>{activePopup.deskripsi || 'Deskripsi perusahaan belum tersedia.'}</p>
-                            </div>
                         </div>
 
                         <div className="company-detail-popup">
+                            {activePopup.logo && (
+                                <div style={{ textAlign: 'center', margin: '0 0 20px 0' }}>
+                                    <img 
+                                        src={`/storage/logo_perusahaan/${activePopup.logo}`} 
+                                        alt={activePopup.nama} 
+                                        style={{ maxWidth: '200px', maxHeight: '150px', objectFit: 'contain', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }} 
+                                    />
+                                </div>
+                            )}
+                            <div className="company-desc-popup" style={{ marginBottom: '25px', paddingBottom: '20px', borderBottom: '1px dashed #cbd5e1' }}>
+                                <p style={{ lineHeight: '1.6', color: '#475569', margin: 0 }}>{activePopup.deskripsi || 'Deskripsi perusahaan belum tersedia.'}</p>
+                            </div>
                             <table>
                                 <tbody>
                                     <tr>

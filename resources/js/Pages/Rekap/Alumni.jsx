@@ -17,7 +17,7 @@ export default function RekapAlumni({ alumni, summary = {}, jurusan = [], filter
 
     const applyFilter = (e) => {
         e.preventDefault();
-        router.get('/management/rekap-alumni', filterData, { preserveState: true });
+        router.get('/management/rekap-alumni', filterData, { preserveState: true, preserveScroll: true, replace: true });
     };
     const chartJurusan = summary.chart_jurusan || [];
     const chartGender = summary.chart_gender || [];
@@ -203,7 +203,7 @@ export default function RekapAlumni({ alumni, summary = {}, jurusan = [], filter
                         {alumni.links.map((link, i) => (
                             <button
                                 key={i} disabled={!link.url}
-                                onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                onClick={() => link.url && router.get(link.url, {}, { preserveState: true, preserveScroll: false })}
                                 style={{ padding: '6px 14px', borderRadius: '6px', border: link.active ? '2px solid #134CBC' : '1px solid #d1d5db', background: link.active ? '#134CBC' : '#fff', color: link.active ? '#fff' : (link.url ? '#333' : '#ccc'), cursor: link.url ? 'pointer' : 'default', fontSize: '13px' }}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />

@@ -26,6 +26,7 @@ export default function ManagementPerusahaanIndex({ perusahaan, filters = {} }) 
             skala: formData.get('skala') || '',
         }, {
             preserveState: true,
+            preserveScroll: true,
             replace: true
         });
     };
@@ -203,7 +204,6 @@ export default function ManagementPerusahaanIndex({ perusahaan, filters = {} }) 
                                 dangerouslySetInnerHTML={{
                                     __html: link.label
                                 }}
-                                preserveScroll
                             />
                         ))}
                     </div>

@@ -19,6 +19,10 @@ export default function LokerIndex({ lowker, jurusanList, filters }) {
         router.get('/loker', {
             jurusan: formData.get('jurusan'),
             lokasi: formData.get('lokasi'),
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true
         });
     };
 
@@ -88,7 +92,7 @@ export default function LokerIndex({ lowker, jurusanList, filters }) {
                                 onClick={() => {
                                     if (link.url) {
                                         router.visit(link.url, {
-                                            preserveScroll: true,
+                                            preserveScroll: false,
                                             preserveState: true, 
                                         });
                                     }
