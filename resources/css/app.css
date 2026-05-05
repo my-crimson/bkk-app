@@ -1563,6 +1563,8 @@ header .rectangle {
     flex-wrap: wrap;
     gap: 5px;
     justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 40px;
 }
 
 .pagination a,
