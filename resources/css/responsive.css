@@ -488,3 +488,10 @@
 .hamburger {
     display: none;
 }
+
+@media (max-width: 1920px) {
+    
+.contact-info {
+    gap: 70px; 
+}
+}

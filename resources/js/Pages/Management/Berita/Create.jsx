@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
@@ -67,13 +67,18 @@ export default function ManagementBeritaCreate() {
                         </label>
                         <input type="file" accept="image/*" onChange={e => setData('gambar', e.target.files?.[0] ?? null)} required />
                     </div>
-                    <button
-                        type="submit"
-                        className="btn-submit"
-                        disabled={processing}
-                    >
-                        {processing ? 'Menyimpan...' : 'Simpan'}
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <Link href="/management/berita" className="btn-submit" style={{ backgroundColor: '#64748b', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            Kembali
+                        </Link>
+                        <button
+                            type="submit"
+                            className="btn-submit"
+                            disabled={processing}
+                        >
+                            {processing ? 'Menyimpan...' : 'Simpan'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </MainLayout>

@@ -164,17 +164,17 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
                     <>
                         {/* FILTER */}
                         <div className="search-container" style={{ margin: '15px 0' }}>
-                            <form className="search" onSubmit={handleFilter} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '15px', padding: '10px 20px', width: 'fit-content', margin: '0 auto', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                <label htmlFor="search-alumni" style={{ margin: 0, fontWeight: 600 }}>Pencarian:</label>
-                                <input id="search-alumni" type="text" name="search" placeholder="Cari nama/NISN..." defaultValue={filters?.search || ''} style={{ ...inputStyle, width: '200px' }} />
-                                <input type="number" name="tahun_lulus" placeholder="Thn Lulus..." defaultValue={filters?.tahun_lulus || ''} style={{ ...inputStyle, width: '130px' }} />
-                                <select name="jurusan" defaultValue={filters?.jurusan || ''} style={{ ...inputStyle, width: 'auto', minWidth: '180px' }}>
+                            <form className="search" onSubmit={handleFilter}>
+                                <label htmlFor="search-alumni">Pencarian:</label>
+                                <input id="search-alumni" className="search-input" type="text" name="search" placeholder="Cari nama/NISN..." defaultValue={filters?.search || ''} />
+                                <input type="number" className="search-input" name="tahun_lulus" placeholder="Thn Lulus..." defaultValue={filters?.tahun_lulus || ''} />
+                                <select name="jurusan" className="search-select" defaultValue={filters?.jurusan || ''}>
                                     <option value="">Semua Jurusan</option>
                                     {jurusanList?.map(j => (
                                         <option key={j.id_jurusan} value={j.id_jurusan}>{j.jurusan}</option>
                                     ))}
                                 </select>
-                                <button type="submit" style={btnPrimary}>
+                                <button type="submit" className="search-button">
                                     <i className="fa-solid fa-magnifying-glass"></i> Filter
                                 </button>
                             </form>
@@ -261,7 +261,7 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
 
                         {/* PAGINATION */}
                         {links.length > 3 && (
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginTop: '20px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginTop: '20px', marginBottom: '20px', flexWrap: 'wrap', paddingBottom: '20px' }}>
                                 {links.map((link, i) => (
                                     <button
                                         key={i} disabled={!link.url}

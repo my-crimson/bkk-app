@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess } from '@/Helpers/actionPopup';
 
@@ -186,13 +186,18 @@ export default function ManagementLokerEdit({ lowker, perusahaan, jurusan }) {
                         </select>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="btn-submit"
-                        disabled={processing}
-                    >
-                        {processing ? 'Mengupdate...' : 'Update'}
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <Link href="/management/loker" className="btn-submit" style={{ backgroundColor: '#64748b', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            Kembali
+                        </Link>
+                        <button
+                            type="submit"
+                            className="btn-submit"
+                            disabled={processing}
+                        >
+                            {processing ? 'Mengupdate...' : 'Update'}
+                        </button>
+                    </div>
 
                 </form>
             </div>

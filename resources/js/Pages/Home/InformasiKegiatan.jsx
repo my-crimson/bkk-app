@@ -74,29 +74,27 @@ export default function InformasiKegiatan({ berita, filters }) {
                    FILTER
                 ========================= */}
                 <div className="search-container" style={{ margin: '15px 0' }}>
-                    <form className="search" onSubmit={handleFilter} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '15px', padding: '10px 20px', width: 'fit-content', margin: '0 auto' }}>
+                    <form className="search" onSubmit={handleFilter}>
 
-                        <label htmlFor="search-kegiatan" style={{ margin: 0, fontWeight: 600 }}>Pencarian:</label>
+                        <label htmlFor="search-kegiatan">Pencarian:</label>
                         <input
                             id="search-kegiatan"
                             name="search"
                             className="search-input"
-                            style={{ width: '200px', height: '38px' }}
                             placeholder="Cari kegiatan..."
                             defaultValue={filters?.search || ''}
                         />
 
-                        <label htmlFor="tanggal-kegiatan" style={{ margin: 0, fontWeight: 600 }}>Tanggal:</label>
+                        <label htmlFor="tanggal-kegiatan">Tanggal:</label>
                         <input
                             type="date"
                             id="tanggal-kegiatan"
                             name="tanggal"
                             className="search-input"
-                            style={{ width: '150px', height: '38px' }}
                             defaultValue={filters?.tanggal || ''}
                         />
 
-                        <button className="search-button" type="submit" style={{ height: '38px', padding: '0 20px', display: 'flex', alignItems: 'center' }}>
+                        <button className="search-button" type="submit">
                             <i className="fa-solid fa-magnifying-glass" style={{ marginRight: '5px' }}></i> Cari
                         </button>
 

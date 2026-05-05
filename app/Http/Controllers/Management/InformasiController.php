@@ -16,7 +16,8 @@ class InformasiController extends Controller
         $informasi = Informasi::first();
         if (!$informasi) {
             $informasi = Informasi::create([
-                'visi_misi' => '',
+                'visi' => '',
+                'misi' => '',
                 'proker' => '',
                 'tujuan' => '',
                 'pengantar' => ''
@@ -34,7 +35,8 @@ class InformasiController extends Controller
     public function updateInformasi(Request $request)
     {
         $request->validate([
-            'visi_misi' => 'nullable|string',
+            'visi' => 'nullable|string',
+            'misi' => 'nullable|string',
             'proker' => 'nullable|string',
             'tujuan' => 'nullable|string',
             'pengantar' => 'nullable|string',
@@ -45,7 +47,8 @@ class InformasiController extends Controller
             $informasi = new Informasi();
         }
 
-        $informasi->visi_misi = $request->visi_misi;
+        $informasi->visi = $request->visi;
+        $informasi->misi = $request->misi;
         $informasi->proker = $request->proker;
         $informasi->tujuan = $request->tujuan;
         $informasi->pengantar = $request->pengantar;

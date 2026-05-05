@@ -46,8 +46,8 @@ export default function Persyaratan({ lowker }) {
         <MainLayout>
             <Head title={`Persyaratan - ${lowker.judul_lowker}`} />
             <div className="header-bar"><a href="#">Lowongan Kerja / Persyaratan</a></div>
-            <div style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
-                <div style={{ background: 'white', borderRadius: '15px', padding: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
+            <div className="persyaratan-wrapper" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
+                <div className="persyaratan-card" style={{ background: 'white', borderRadius: '15px', padding: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)', boxSizing: 'border-box', overflow: 'hidden' }}>
                     {flash?.success && <div style={{ background: '#d4edda', color: '#155724', padding: '15px', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #28a745' }}>{flash.success}</div>}
                     {flash?.error && <div style={{ background: '#f8d7da', color: '#721c24', padding: '15px', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #dc3545' }}>{flash.error}</div>}
 
@@ -59,7 +59,7 @@ export default function Persyaratan({ lowker }) {
                     
                     {/* Header */}
                     <div style={{ textAlign: 'center', marginBottom: '35px' }}>
-                        <h1 style={{ color: '#134CBC', fontSize: '32px', margin: '0 0 10px 0', fontWeight: 'bold' }}>{lowker.judul_lowker}</h1>
+                        <h1 style={{ color: '#134CBC', fontSize: '28px', margin: '0 0 10px 0', fontWeight: 'bold', wordBreak: 'break-word' }}>{lowker.judul_lowker}</h1>
                         <p style={{ color: '#666', fontSize: '18px', margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
                             <i className="fa-solid fa-building" style={{ color: '#3590FA' }}></i> {lowker.perusahaan?.nama}
                         </p>
@@ -92,7 +92,7 @@ export default function Persyaratan({ lowker }) {
                                 <h3 style={{ color: '#134CBC', margin: '0 0 25px 0', textAlign: 'center', fontSize: '22px' }}>Formulir Lamaran</h3>
                                 
                                 <form onSubmit={submit} style={{ maxWidth: '800px', margin: '0 auto' }}>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '30px' }}>
                                         {/* Box CV */}
                                         <div style={{ background: '#f4f7fb', padding: '30px 20px', borderRadius: '12px', border: '2px dashed #a0c4ff', textAlign: 'center', transition: 'all 0.3s' }}>
                                             <i className="fa-solid fa-file-pdf" style={{ fontSize: '40px', color: '#3590FA', marginBottom: '15px' }}></i>
@@ -106,7 +106,7 @@ export default function Persyaratan({ lowker }) {
                                                 accept=".pdf,.doc,.docx"
                                                 required
                                                 onChange={e => setData('file_cv', e.target.files[0])}
-                                                style={{ width: '100%', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #ddd', cursor: 'pointer' }}
+                                                style={{ width: '100%', padding: '10px', background: 'white', borderRadius: '8px', border: '1px solid #ddd', cursor: 'pointer', boxSizing: 'border-box', fontSize: '13px' }}
                                             />
                                             {errors.file_cv && <span style={{ color: '#dc3545', fontSize: '13px', display: 'block', marginTop: '10px', fontWeight: '600' }}>{errors.file_cv}</span>}
                                         </div>
@@ -124,7 +124,7 @@ export default function Persyaratan({ lowker }) {
                                                 accept=".pdf,.doc,.docx"
                                                 required
                                                 onChange={e => setData('file_lamaran', e.target.files[0])}
-                                                style={{ width: '100%', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #ddd', cursor: 'pointer' }}
+                                                style={{ width: '100%', padding: '10px', background: 'white', borderRadius: '8px', border: '1px solid #ddd', cursor: 'pointer', boxSizing: 'border-box', fontSize: '13px' }}
                                             />
                                             {errors.file_lamaran && <span style={{ color: '#dc3545', fontSize: '13px', display: 'block', marginTop: '10px', fontWeight: '600' }}>{errors.file_lamaran}</span>}
                                         </div>

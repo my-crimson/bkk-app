@@ -21,22 +21,30 @@ export default function SurveyIndex({ alumni, alumniList, surveyStatus }) {
         });
     };
 
+    const getPlaceholderText = (choice) => {
+        switch (choice) {
+            case 'bekerja':
+                return 'Coba jelaskan apa yang kamu lakukan di pekerjaan tersebut dan apa pekerjaanmu yang lainnya';
+            case 'wirausaha':
+                return 'Coba jelaskan bidang wirausaha yang sedang dijalankan dan seperti apa usahanya';
+            case 'kuliah':
+                return 'Coba jelaskan di kampus mana, mengambil jurusan apa, dan kegiatan apa yang dilakukan';
+            case 'magang':
+                return 'Coba jelaskan tempat magang, posisi, dan apa saja yang dikerjakan';
+            case 'pelatihan':
+                return 'Coba jelaskan nama tempat pelatihan, bidangnya, dan hal apa yang dipelajari';
+            case 'menganggur':
+                return 'Coba jelaskan kegiatan sehari-hari atau bidang pekerjaan yang sedang dicari';
+            default:
+                return '';
+        }
+    };
+
     return (
         <MainLayout>
             <Head title="Survey" />
             <div className="header-bar"><a href="#">Isi Survey</a></div>
             <div className="survey-container">
-                {flash?.success && (
-                    <div className="alert alert-success">
-                        <i className="fas fa-check-circle"></i> {flash.success}
-                    </div>
-                )}
-                {flash?.error && (
-                    <div className="alert alert-error">
-                        <i className="fas fa-exclamation-triangle"></i> {flash.error}
-                    </div>
-                )}
-
                 {alumni && surveyStatus && !surveyStatus.can_submit && (
                     <div className="alert alert-error">
                         Anda sudah mengisi survey. Survey berikutnya dapat dikirim lagi pada {surveyStatus.next_submit_label}.
@@ -88,7 +96,8 @@ export default function SurveyIndex({ alumni, alumniList, surveyStatus }) {
                         </div>
                         <div className="survey-description">
                             <p>Keterangan</p>
-                            <textarea placeholder="Misal Jurusan Kuliah/ Bidang Wirausaha/ Jabatan dalam Pekerjaan"
+                            <textarea 
+                                placeholder={getPlaceholderText(data.survey_choice)}
                                 name="description" value={data.description}
                                 onChange={e => setData('description', e.target.value)}></textarea>
                         </div>

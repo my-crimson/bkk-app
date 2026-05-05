@@ -73,8 +73,9 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                     </h3>
                 </div>
 
-                <table className="rekap-table tracer-table">
-                    <thead>
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                    <table className="rekap-table tracer-table">
+                        <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
@@ -120,8 +121,9 @@ export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}
                                 Sudah Mengisi: {summary.sudah_mengisi || 0} | Belum Mengisi: {summary.belum_mengisi || 0}
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {selectedSurvey && (

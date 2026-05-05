@@ -5,9 +5,12 @@ import { useEffect, useRef } from 'react';
 export default function VisiMisi({ informasi }) {
     const ref = useRef(null);
 
-    // penomoran
-    const visiMisiArray = informasi?.visi_misi 
-        ? informasi.visi_misi.split('\n').filter(line => line.trim() !== '') 
+    const visiArray = informasi?.visi 
+        ? informasi.visi.split('\n').filter(line => line.trim() !== '') 
+        : [];
+        
+    const misiArray = informasi?.misi 
+        ? informasi.misi.split('\n').filter(line => line.trim() !== '') 
         : [];
 
     useEffect(() => {
@@ -79,44 +82,79 @@ export default function VisiMisi({ informasi }) {
                         border: '1px solid #e2e8f0',
                         lineHeight: '1.8'
                     }}>
-                        {visiMisiArray.length > 0 ? (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                {visiMisiArray.map((item, index) => (
-                                    <div key={index} style={{ display: 'flex', alignItems: 'flex-start' }}>
-                                        <div style={{ 
-                                            minWidth: '35px', 
-                                            height: '35px', 
-                                            backgroundColor: '#eff6ff', 
-                                            color: '#3b82f6', 
-                                            borderRadius: '8px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            fontWeight: 'bold',
-                                            fontSize: '14px',
-                                            marginRight: '15px',
-                                            border: '1px solid #dbeafe'
-                                        }}>
-                                            {index + 1}
+                        {/* VISI SECTION */}
+                        <div style={{ marginBottom: '40px' }}>
+                            <h3 style={{ fontSize: '20px', color: '#134CBC', fontWeight: 'bold', marginBottom: '15px', borderBottom: '2px solid #e2e8f0', paddingBottom: '10px' }}>
+                                <i className="fa-solid fa-eye" style={{ marginRight: '10px' }}></i> VISI
+                            </h3>
+                            {visiArray.length > 0 ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                    {visiArray.map((item, index) => (
+                                        <div key={index} style={{ display: 'flex', alignItems: 'flex-start', background: '#f8fafc', padding: '15px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                                            <div style={{ 
+                                                minWidth: '35px', 
+                                                height: '35px', 
+                                                backgroundColor: '#eff6ff', 
+                                                color: '#3b82f6', 
+                                                borderRadius: '8px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontWeight: 'bold',
+                                                fontSize: '14px',
+                                                marginRight: '15px',
+                                                border: '1px solid #dbeafe',
+                                                flexShrink: 0
+                                            }}>
+                                                {index + 1}
+                                            </div>
+                                            <div style={{ fontSize: '16px', color: '#475569', textAlign: 'justify', paddingTop: '4px', lineHeight: '1.8' }}>
+                                                {item}
+                                            </div>
                                         </div>
-                                        
-                                        {/* Teks Isi */}
-                                        <div style={{ 
-                                            fontSize: '16px', 
-                                            color: '#475569', 
-                                            textAlign: 'justify',
-                                            paddingTop: '4px' 
-                                        }}>
-                                            {item}
+                                    ))}
+                                </div>
+                            ) : (
+                                <div style={{ color: '#94a3b8', fontStyle: 'italic' }}>Belum ada data Visi.</div>
+                            )}
+                        </div>
+
+                        {/* MISI SECTION */}
+                        <div>
+                            <h3 style={{ fontSize: '20px', color: '#134CBC', fontWeight: 'bold', marginBottom: '15px', borderBottom: '2px solid #e2e8f0', paddingBottom: '10px' }}>
+                                <i className="fa-solid fa-rocket" style={{ marginRight: '10px' }}></i> MISI
+                            </h3>
+                            {misiArray.length > 0 ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                    {misiArray.map((item, index) => (
+                                        <div key={index} style={{ display: 'flex', alignItems: 'flex-start', background: '#f8fafc', padding: '15px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                                            <div style={{ 
+                                                minWidth: '35px', 
+                                                height: '35px', 
+                                                backgroundColor: '#eff6ff', 
+                                                color: '#3b82f6', 
+                                                borderRadius: '8px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontWeight: 'bold',
+                                                fontSize: '14px',
+                                                marginRight: '15px',
+                                                border: '1px solid #dbeafe',
+                                                flexShrink: 0
+                                            }}>
+                                                {index + 1}
+                                            </div>
+                                            <div style={{ fontSize: '16px', color: '#475569', textAlign: 'justify', paddingTop: '4px', lineHeight: '1.8' }}>
+                                                {item}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div style={{ textAlign: 'center', color: '#94a3b8' }}>
-                                Belum ada data Visi Misi.
-                            </div>
-                        )}
+                                    ))}
+                                </div>
+                            ) : (
+                                <div style={{ color: '#94a3b8', fontStyle: 'italic' }}>Belum ada data Misi.</div>
+                            )}
+                        </div>
                     </div>
 
                     <div style={{ 
