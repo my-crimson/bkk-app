@@ -163,11 +163,15 @@ export default function ManagementNav() {
                                 </div>
                             </div>
                             {n.status === 'pending' ? (
-                                <button onClick={() => handleResolve(n.id)} style={{
+                                <button
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                    onClick={() => handleResolve(n.id)}
+                                    style={{
                                     padding: '5px 12px', background: '#134CBC', color: '#fff', border: 'none',
                                     borderRadius: '6px', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer',
                                     whiteSpace: 'nowrap',
-                                }}>
+                                }}
+                                >
                                     <i className="fa-solid fa-key" style={{ marginRight: '4px' }}></i>Reset
                                 </button>
                             ) : (
@@ -204,7 +208,7 @@ export default function ManagementNav() {
 
                 {/* Panel notifikasi mobile — di luar ul agar tidak terpotong */}
                 {showNotifPanel && (
-                    <div className="mgmt-mobile-notif-panel">
+                    <div className="mgmt-mobile-notif-panel" onMouseDown={(e) => e.stopPropagation()}>
                         <NotifPanelContent />
                     </div>
                 )}
@@ -292,7 +296,7 @@ export default function ManagementNav() {
                                 position: 'absolute', top: '35px', left: 0, width: '360px',
                                 background: '#fff', borderRadius: '12px', boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
                                 zIndex: 9999, overflow: 'hidden',
-                            }}>
+                            }} onMouseDown={(e) => e.stopPropagation()}>
                                 <NotifPanelContent />
                             </div>
                         )}
