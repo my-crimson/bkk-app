@@ -169,6 +169,8 @@ const CarouselStyles = () => (
         .company-detail-popup {
             padding: 25px 40px 35px;
             overflow-y: auto;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
         }
 
         .company-detail-popup table {
@@ -276,6 +278,17 @@ export default function PerusahaanIndex({ perusahaan = {}, carouselPerusahaan = 
         const interval = setInterval(handleNext, 5000);
         return () => clearInterval(interval);
     }, [isPaused, useCarousel, total, isTransitioning]);
+
+    useEffect(() => {
+        if (activePopup) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [activePopup]);
 
     const getSlotClass = (itemIndex) => {
         let diff = itemIndex - activeIndex;
@@ -445,8 +458,11 @@ export default function PerusahaanIndex({ perusahaan = {}, carouselPerusahaan = 
                             <div className="company-title-popup">
                                 <h1>{activePopup.nama}</h1>
                             </div>
+                        </div>
+
+                        <div className="company-detail-popup">
                             {activePopup.logo && (
-                                <div style={{ textAlign: 'center', margin: '15px 0' }}>
+                                <div style={{ textAlign: 'center', margin: '0 0 20px 0' }}>
                                     <img 
                                         src={`/storage/logo_perusahaan/${activePopup.logo}`} 
                                         alt={activePopup.nama} 
@@ -454,12 +470,9 @@ export default function PerusahaanIndex({ perusahaan = {}, carouselPerusahaan = 
                                     />
                                 </div>
                             )}
-                            <div className="company-desc-popup">
-                                <p>{activePopup.deskripsi || 'Deskripsi perusahaan belum tersedia.'}</p>
+                            <div className="company-desc-popup" style={{ marginBottom: '25px', paddingBottom: '20px', borderBottom: '1px dashed #cbd5e1' }}>
+                                <p style={{ lineHeight: '1.6', color: '#475569', margin: 0 }}>{activePopup.deskripsi || 'Deskripsi perusahaan belum tersedia.'}</p>
                             </div>
-                        </div>
-
-                        <div className="company-detail-popup">
                             <table>
                                 <tbody>
                                     <tr>
