@@ -3,8 +3,9 @@ import { useState, useMemo, useCallback } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess, notifyActionError } from '@/Helpers/actionPopup';
 
-export default function ManagementAlumniIndex({ alumni, jurusanList, filters, management_users }) {
+export default function ManagementAlumniIndex({ alumni, jurusanList, filters, management_users, current_user }) {
     const [activeTab, setActiveTab] = useState('alumni'); // 'alumni' or 'management'
+    const [showProfileEdit, setShowProfileEdit] = useState(false);
     
     // === ALUMNI STATE & LOGIC ===
     const [showImport, setShowImport] = useState(false);
@@ -95,6 +96,19 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
     const userForm = useForm({ username: '', password: '' });
     const [editUserId, setEditUserId] = useState(null);
 
+    // === PROFILE SELF-EDIT ===
+    const profileForm = useForm({ username: current_user?.username || '', password: '' });
+    const handleProfileSubmit = (e) => {
+        e.preventDefault();
+        profileForm.put(`/management/management-user/${current_user?.id}`, {
+            onSuccess: () => {
+                notifyActionSuccess('update profil akun');
+                setShowProfileEdit(false);
+                profileForm.setData('password', '');
+            }
+        });
+    };
+
     const handleUserSubmit = (e) => {
         e.preventDefault();
         if (editUserId) {
@@ -144,6 +158,96 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
         <MainLayout>
             <Head title="CRUD Siswa & Management" />
             <div className="header-bar"><a href="#">CRUD / Siswa & Management</a></div>
+
+            {/* PROFILE CARD */}
+            <div style={{ padding: '16px 20px 0 20px' }}>
+                <div style={{
+                    background: 'linear-gradient(135deg, #134CBC 0%, #1e40af 100%)',
+                    borderRadius: '14px', padding: '18px 22px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    flexWrap: 'wrap', gap: '12px', boxShadow: '0 4px 20px rgba(19,76,188,0.25)',
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <div style={{
+                            width: '52px', height: '52px', borderRadius: '50%',
+                            background: 'rgba(255,255,255,0.2)', display: 'flex',
+                            alignItems: 'center', justifyContent: 'center',
+                            fontSize: '22px', fontWeight: 700, color: '#fff',
+                            border: '2px solid rgba(255,255,255,0.3)', flexShrink: 0,
+                        }}>
+                            {(current_user?.username || 'M').charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                            <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', marginBottom: '2px' }}>Login sebagai</div>
+                            <div style={{ color: '#fff', fontWeight: 700, fontSize: '17px' }}>{current_user?.username}</div>
+                            <span style={{
+                                background: 'rgba(255,255,255,0.2)', color: '#fff',
+                                padding: '2px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: 600,
+                                textTransform: 'uppercase', letterSpacing: '0.5px',
+                            }}>{current_user?.role}</span>
+                        </div>
+                    </div>
+                    <button
+                        onClick={() => setShowProfileEdit(!showProfileEdit)}
+                        style={{
+                            background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)',
+                            borderRadius: '8px', padding: '8px 16px', cursor: 'pointer', fontSize: '13px',
+                            fontWeight: 600, display: 'flex', alignItems: 'center', gap: '7px',
+                            transition: 'background 0.2s',
+                        }}
+                    >
+                        <i className="fa-solid fa-pen-to-square"></i>
+                        Edit Profil Akun
+                    </button>
+                </div>
+
+                {/* INLINE EDIT FORM */}
+                {showProfileEdit && (
+                    <div style={{
+                        background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px',
+                        padding: '20px', marginTop: '12px', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                    }}>
+                        <h4 style={{ margin: '0 0 14px 0', fontSize: '15px', color: '#1e293b', fontWeight: 700 }}>
+                            <i className="fa-solid fa-user-pen" style={{ marginRight: '8px', color: '#134CBC' }}></i>
+                            Edit Akun Saya
+                        </h4>
+                        <form onSubmit={handleProfileSubmit} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                            <div style={{ flex: '1 1 200px' }}>
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: 600, fontSize: '13px', color: '#475569' }}>Username</label>
+                                <input
+                                    type="text" required
+                                    value={profileForm.data.username}
+                                    onChange={e => profileForm.setData('username', e.target.value)}
+                                    style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', width: '100%', boxSizing: 'border-box' }}
+                                    placeholder="Username baru..."
+                                />
+                                {profileForm.errors.username && <span style={{ color: '#ef4444', fontSize: '12px' }}>{profileForm.errors.username}</span>}
+                            </div>
+                            <div style={{ flex: '1 1 200px' }}>
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: 600, fontSize: '13px', color: '#475569' }}>
+                                    Password <span style={{ color: '#94a3b8', fontWeight: 'normal', fontSize: '11px' }}>(kosongkan jika tidak diubah)</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    value={profileForm.data.password}
+                                    onChange={e => profileForm.setData('password', e.target.value)}
+                                    style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', width: '100%', boxSizing: 'border-box' }}
+                                    placeholder="Password baru..."
+                                />
+                                {profileForm.errors.password && <span style={{ color: '#ef4444', fontSize: '12px' }}>{profileForm.errors.password}</span>}
+                            </div>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                                <button type="submit" disabled={profileForm.processing} style={{ padding: '8px 18px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                    <i className="fa-solid fa-save"></i> Simpan
+                                </button>
+                                <button type="button" onClick={() => setShowProfileEdit(false)} style={{ padding: '8px 14px', background: '#94a3b8', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '14px' }}>
+                                    Batal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+            </div>
 
             {/* TAB NAVIGATION */}
             <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', marginBottom: '20px', padding: '0 20px', marginTop: '20px' }}>
@@ -335,23 +439,61 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {management_users?.map((user, idx) => (
-                                        <tr key={user.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                                            <td style={{ padding: '10px 12px' }}>{idx + 1}</td>
-                                            <td style={{ padding: '10px 12px', fontWeight: 600 }}>{user.username}</td>
-                                            <td style={{ padding: '10px 12px' }}>
-                                                <span style={{ background: '#dbeafe', color: '#1e40af', padding: '2px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 600 }}>
-                                                    {user.role}
-                                                </span>
-                                            </td>
-                                            <td style={{ padding: '10px 12px', textAlign: 'center' }}>
-                                                <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
-                                                    <button onClick={() => handleEditUser(user)} style={btnWarning} title="Edit"><i className="fa-solid fa-pen"></i></button>
-                                                    <button onClick={() => handleDeleteUser(user.id, user.username)} style={btnDanger} title="Hapus"><i className="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {management_users?.map((user, idx) => {
+                                        const isSelf = user.id === current_user?.id;
+                                        return (
+                                            <tr key={user.id} style={{
+                                                borderBottom: '1px solid #e5e7eb',
+                                                background: isSelf ? '#eff6ff' : 'transparent',
+                                            }}>
+                                                <td style={{ padding: '10px 12px' }}>{idx + 1}</td>
+                                                <td style={{ padding: '10px 12px', fontWeight: 600 }}>
+                                                    {user.username}
+                                                    {isSelf && (
+                                                        <span style={{ marginLeft: '8px', background: '#134CBC', color: '#fff', padding: '1px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: 600 }}>
+                                                            Akun Saya
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td style={{ padding: '10px 12px' }}>
+                                                    <span style={{ background: '#dbeafe', color: '#1e40af', padding: '2px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 600 }}>
+                                                        {user.role}
+                                                    </span>
+                                                </td>
+                                                <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                                                     <div style={{ display: 'flex', gap: '6px', justifyContent: 'center', alignItems: 'center' }}>
+                                                        {isSelf ? (
+                                                            <span title="Edit akun Anda melalui kartu profil di atas" style={{
+                                                                padding: '5px 10px', background: '#f1f5f9', color: '#94a3b8',
+                                                                borderRadius: '6px', fontSize: '12px', cursor: 'not-allowed',
+                                                                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                                                            }}>
+                                                                <i className="fa-solid fa-lock"></i>
+                                                            </span>
+                                                        ) : (
+                                                            <button onClick={() => handleEditUser(user)} style={btnWarning} title="Edit">
+                                                                <i className="fa-solid fa-pen"></i>
+                                                            </button>
+                                                        )}
+                                                        {isSelf ? (
+                                                            <span title="Tidak dapat menghapus akun sendiri" style={{
+                                                                padding: '5px 10px', background: '#f1f5f9', color: '#94a3b8',
+                                                                borderRadius: '6px', fontSize: '12px', cursor: 'not-allowed',
+                                                                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                                                            }}>
+                                                                <i className="fa-solid fa-lock"></i>
+                                                            </span>
+                                                        ) : (
+                                                            <button onClick={() => handleDeleteUser(user.id, user.username)} style={btnDanger} title="Hapus">
+                                                                <i className="fa-solid fa-trash"></i>
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+
                                     {(!management_users || management_users.length === 0) && (
                                         <tr><td colSpan="4" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8' }}>Tidak ada data akun management.</td></tr>
                                     )}

@@ -43,12 +43,22 @@ class UserController extends Controller
 
         $user->save();
 
+        // Jika yang diupdate adalah akun sendiri, perbarui session agar profil langsung sinkron
+        if ($id == session('user_id')) {
+            session(['username' => $user->username]);
+        }
+
         return redirect()->back()->with('success', 'Akun Management berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+
+        // Prevent user from deleting their own account
+        if ($id == session('user_id')) {
+            return redirect()->back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
         
         // Prevent deleting the last management account
         $count = User::whereIn('role', ['management', 'admin'])->count();

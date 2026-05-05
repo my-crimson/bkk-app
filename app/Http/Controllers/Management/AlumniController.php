@@ -48,6 +48,11 @@ class AlumniController extends Controller
             'jurusanList' => $jurusanList,
             'management_users' => $management_users,
             'filters' => $request->only(['search', 'tahun_lulus', 'jurusan']),
+            'current_user' => session('user_id') ? [
+                'id'       => session('user_id'),
+                'username' => session('username'),
+                'role'     => session('role'),
+            ] : null,
         ]);
     }
 
