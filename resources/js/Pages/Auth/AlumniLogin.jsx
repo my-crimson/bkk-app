@@ -131,7 +131,7 @@ export default function AlumniLogin() {
                                 Kirim Permintaan Reset via Website
                             </h4>
                             <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 4px 0' }}>
-                                Jam operasional: <strong>07.00 - 17.00 WIB</strong>
+                                Jam operasional: <strong>07.00 - 16.00 WIB</strong>
                             </p>
                             <p style={{ fontSize: '12px', color: '#0369a1', margin: '0 0 10px 0', background: '#e0f2fe', padding: '6px 10px', borderRadius: '6px' }}>
                                 <i className="fa-solid fa-circle-info" style={{ marginRight: '6px' }}></i>

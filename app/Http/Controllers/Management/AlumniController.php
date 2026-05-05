@@ -11,11 +11,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Inertia\Inertia;
+use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class AlumniController extends Controller
 {
+    private function isResetOperationalHours(): bool
+    {
+        $now = Carbon::now('Asia/Jakarta');
+        $minutesNow = ($now->hour * 60) + $now->minute;
+        $startMinutes = 7 * 60; // 07:00
+        $endMinutes = 16 * 60;  // 16:00 (inclusive)
+
+        return !($minutesNow < $startMinutes || $minutesNow > $endMinutes);
+    }
+
     public function index(Request $request)
     {
         $query = Alumni::with('jurusan');
@@ -253,6 +264,10 @@ class AlumniController extends Controller
 
     public function resetPassword($id)
     {
+        if (!$this->isResetOperationalHours()) {
+            return redirect()->back()->with('error', 'Reset password hanya dapat dilakukan pada jam operasional (07:00 - 16:00 WIB).');
+        }
+
         $alumni = Alumni::findOrFail($id);
         $alumni->update([
             'password' => $alumni->nisn,
@@ -287,6 +302,13 @@ class AlumniController extends Controller
 
     public function resolveNotification($id)
     {
+        if (!$this->isResetOperationalHours()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Reset password hanya dapat dilakukan pada jam operasional (07:00 - 16:00 WIB).',
+            ], 422);
+        }
+
         $request = PasswordResetRequest::with('alumni')->findOrFail($id);
 
         // Reset the alumni password

@@ -15,14 +15,16 @@ class ForgotPasswordController extends Controller
             'nisn' => 'required|string',
         ]);
 
-        // Check operational hours (07:00 - 17:00 WIB)
+        // Check operational hours (07:00 - 16:00 WIB)
         $now = Carbon::now('Asia/Jakarta');
-        $hour = $now->hour;
+        $minutesNow = ($now->hour * 60) + $now->minute;
+        $startMinutes = 7 * 60;  // 07:00
+        $endMinutes = 16 * 60;   // 16:00
 
-        if ($hour < 7 || $hour >= 17) {
+        if ($minutesNow < $startMinutes || $minutesNow > $endMinutes) {
             return response()->json([
                 'success' => false,
-                'message' => 'Fitur reset password via website hanya tersedia pada jam operasional (07:00 - 17:00 WIB). Silakan hubungi admin via WhatsApp.',
+                'message' => 'Fitur reset password via website hanya tersedia pada jam operasional (07:00 - 16:00 WIB). Silakan hubungi admin via WhatsApp.',
             ], 422);
         }
 
