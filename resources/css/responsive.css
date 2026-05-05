@@ -2,6 +2,47 @@
     display: none;
 }
 
+/* ===== MANAGEMENT NAVBAR: hidden di desktop, tampil di mobile ===== */
+.management-profile-section {
+    display: none;
+}
+
+.management-mobile-notif {
+    display: none;
+}
+
+/* Notif bell button style (mobile) */
+.mgmt-mobile-bell-btn {
+    display: none;
+}
+
+/* Notif badge */
+.mgmt-notif-badge {
+    display: none;
+}
+
+/* Panel notifikasi mobile */
+.mgmt-mobile-notif-panel {
+    display: none;
+}
+
+/* Profile row + logout panel */
+.mgmt-profile-row {
+    display: none;
+}
+
+.mgmt-logout-panel {
+    display: none;
+}
+
+.mgmt-logout-btn {
+    display: none;
+}
+
+.mgmt-profile-chevron {
+    display: none;
+}
+
 /* ========== RESPONSIVE OVERRIDES ========== */
 @media (max-width: 768px) {
 
@@ -10,17 +51,19 @@
     }
 
     .navbar {
-        padding: 12px 20px;
+        padding: 10px 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background: #134CBC;
         position: relative;
         z-index: 1000;
+        gap: 8px;
     }
 
     .navbar-mobile-logo {
-        display: flex !important;
+        flex: 1;
+        display: flex;
         align-items: center;
         gap: 10px;
     }
@@ -43,6 +86,7 @@
         width: 32px;
         height: 32px;
         cursor: pointer;
+        padding: 10px;
     }
 
     .hamburger-lines {
@@ -73,6 +117,7 @@
     .hamburger.active .line3 {
         transform: translateY(-7.75px) rotate(-45deg);
     }
+    
 
     .navbar-container {
         display: flex !important;
@@ -141,6 +186,236 @@
         padding: 12px 20px 12px 40px;
         font-size: 14px;
         color: rgba(255,255,255,0.8);
+    }
+
+    /* Profil */
+   .profile-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05); /* Highlight khusus mobile */
+        transition: background 0.2s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .profile-section:active {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-info-wrapper {
+        gap: 15px; /* Jarak antara icon dan teks */
+    }
+
+    /* Perbesar ukuran icon khusus mobile */
+    .profile-icon {
+        width: 45px;
+        height: 45px;
+        flex-shrink: 0;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* MUNCULKAN elemen yang disembunyikan di desktop */
+    .profile-text-mobile {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-arrow-mobile {
+        display: block;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 14px;
+    }
+
+    .profile-divider-mobile {
+        display: block;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 0;
+    }
+
+    /* Styling teks profil mobile */
+    .profile-name {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .profile-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+    }
+
+    /* ===== MANAGEMENT NAVBAR MOBILE ===== */
+
+    /* Tampilkan profile section */
+    .management-profile-section {
+        display: block !important;
+        width: 100%;
+        list-style: none;
+    }
+
+    /* Profile row (header klik untuk logout) */
+    .mgmt-profile-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 20px;
+        background: rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+    }
+
+    .mgmt-profile-row:active {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .mgmt-profile-chevron {
+        display: block;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+        transition: transform 0.2s;
+    }
+
+    /* Logout panel yang muncul saat profil diklik */
+    .mgmt-logout-panel {
+        display: block;
+        background: rgba(0, 0, 0, 0.25);
+        padding: 6px 0;
+        animation: slideDown 0.2s ease;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .mgmt-logout-btn {
+        display: flex !important;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 14px 20px 14px 32px;
+        color: #fca5a5 !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        text-decoration: none;
+        border-bottom: none !important;
+        transition: background 0.2s, color 0.2s;
+        background: transparent;
+    }
+
+    .mgmt-logout-btn:hover {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171 !important;
+    }
+
+    .mgmt-logout-btn i {
+        font-size: 16px !important;
+        margin-left: 0 !important;
+    }
+
+    /* Notif bell di sebelah hamburger (mobile) */
+    .management-mobile-notif {
+        display: flex;
+        align-items: center;
+        position: relative;
+        order: 2;
+        margin-right: 4px;
+    }
+
+    .mgmt-mobile-bell-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: rgba(255, 255, 255, 0.12);
+        border: none;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        color: #fff;
+        font-size: 17px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .mgmt-mobile-bell-btn:hover,
+    .mgmt-mobile-bell-btn:active {
+        background: rgba(255, 255, 255, 0.22);
+    }
+
+    .mgmt-notif-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: #ef4444;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        box-shadow: 0 0 6px rgba(239,68,68,0.6);
+        animation: pulse 2s infinite;
+        pointer-events: none;
+    }
+
+    /* Panel notifikasi mobile — muncul dari bawah navbar, lebar penuh */
+    .mgmt-mobile-notif-panel {
+        display: block;
+        position: fixed;
+        top: 57px;
+        left: 10px;
+        right: 10px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        z-index: 10000;
+        overflow: hidden;
+        animation: slideDown 0.22s ease;
+    }
+
+    /* Sembunyikan logout-left di mobile (desktop only) */
+    .navbar .logout-left {
+        display: none !important;
+    }
+
+    /* Pastikan profile-info-wrapper di management punya gap */
+    .management-profile-section .profile-info-wrapper {
+        gap: 15px;
+    }
+
+    /* Profile icon lebih besar di mobile */
+    .management-profile-section .profile-icon {
+        width: 45px;
+        height: 45px;
+        flex-shrink: 0;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Profile text visible di mobile */
+    .management-profile-section .profile-text-mobile {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .management-profile-section .profile-name {
+        color: white;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .management-profile-section .profile-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
     }
 
     /* Global Footer Mobile */
@@ -212,11 +487,4 @@
 
 .hamburger {
     display: none;
-}
-
-@media (max-width: 1200px) {
-    
-.contact-info {
-    gap: 70px; 
-}
 }

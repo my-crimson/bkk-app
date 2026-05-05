@@ -51,15 +51,33 @@ export default function AlumniNav() {
             <ul className={`navbar-container ${mobileActive ? 'mobile-active' : ''}`}>
 
                 {/* PROFILE */}
-                <li>
-                    <div onClick={() => window.location.href = '/profil'} className="profile-icon">
-                        {profileImage ? (
-                            <img src={profileImage} alt="Profil" className="profile-icon-img" />
-                        ) : (
-                            <span className="profile-icon-initial">{initial}</span>
-                        )}
+                <li className="profile-section" onClick={() => window.location.href = '/profil'}>
+                    <div className="profile-info-wrapper">
+                        <div className="profile-icon">
+                            {profileImage ? (
+                                <img src={profileImage} alt="Profil" className="profile-icon-img" />
+                            ) : (
+                                <span className="profile-icon-initial">{initial}</span>
+                            )}
+                        </div>
+                        
+                        {/* Bagian teks ini hanya akan muncul di Mobile */}
+                        <div className="profile-text-mobile">
+                            <span className="profile-name">
+                                {auth?.user?.nama || 'Pengguna'}
+                            </span>
+                            <span className="profile-label">
+                                {auth?.user?.role || 'Alumni'}
+                            </span>
+                        </div>
                     </div>
+                    
+                    {/* Icon panah ini hanya akan muncul di Mobile */}
+                    <i className="fa-solid fa-chevron-right profile-arrow-mobile"></i>
                 </li>
+
+                {/* Garis pemisah ini hanya akan muncul di Mobile */}
+                <hr className="profile-divider-mobile" />
 
                 {/* ================= HOME ================= */}
                 <li className={openDropdown === 'home' ? 'dropdown-open' : ''}>
