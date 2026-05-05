@@ -240,6 +240,18 @@ header .rectangle {
     left: auto;
 }
 
+.profile-section {
+    list-style: none;
+    cursor: pointer;
+    /* Di desktop, kita hanya menampilkan icon tanpa background khusus */
+    display: inline-block; 
+}
+
+.profile-info-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 .profile-icon {
     display: flex;
     justify-content: center;
@@ -247,8 +259,7 @@ header .rectangle {
     width: 35px;
     height: 35px;
     background-color: white;
-    border-radius: 50px;
-    cursor: pointer;
+    border-radius: 50%; /* 50% lebih rapi untuk lingkaran sempurna dibanding 50px */
     overflow: hidden;
 }
 
@@ -265,6 +276,13 @@ header .rectangle {
     color: #5135FA;
     line-height: 1;
     user-select: none;
+}
+
+/* SEMBUNYIKAN elemen mobile saat di layar desktop */
+.profile-text-mobile,
+.profile-arrow-mobile,
+.profile-divider-mobile {
+    display: none;
 }
 
 /* ========== HEADER BAR (breadcrumb) ========== */
