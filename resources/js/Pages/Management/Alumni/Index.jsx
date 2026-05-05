@@ -20,6 +20,15 @@ export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], j
     };
 
     const handleResetPassword = async (id, nama) => {
+        const now = new Date();
+        const minutesNow = now.getHours() * 60 + now.getMinutes();
+        const startMinutes = 7 * 60; // 07:00
+        const endMinutes = 16 * 60;  // 16:00
+        if (minutesNow < startMinutes || minutesNow > endMinutes) {
+            notifyActionError('Reset password hanya dapat dilakukan pada jam operasional 07.00 - 16.00.');
+            return;
+        }
+
         if (!(await confirmAction(`reset password ${nama} ke NISN`))) return;
         router.post(`/management/alumni/${id}/reset-password`, {}, {
             onSuccess: () => notifyActionSuccess('reset password'),

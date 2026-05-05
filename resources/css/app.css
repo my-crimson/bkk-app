@@ -3069,6 +3069,7 @@ header .rectangle {
     padding: 15px 25px;
     border-radius: 8px;
     z-index: 9999;
+    pointer-events: none;
     animation: slideIn 0.3s ease-out, fadeOut 0.5s 3s ease-out forwards;
 }
 
