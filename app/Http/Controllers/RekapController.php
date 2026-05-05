@@ -13,7 +13,8 @@ class RekapController extends Controller
 {
     public function alumni()
     {
-        $alumni = Alumni::with('jurusan')->orderBy('nama')->get();
+        $alumniQuery = Alumni::with('jurusan')->orderBy('nama');
+        $alumni = $alumniQuery->paginate(50);
         $jurusan = Jurusan::whereIn('jurusan', [
             'Rekayasa Perangkat Lunak (RPL)',
             'Teknik Kimia Industri (TKI)',
@@ -31,7 +32,7 @@ class RekapController extends Controller
             'alumni' => $alumni,
             'jurusan' => $jurusan,
             'summary' => [
-                'total_alumni' => $alumni->count(),
+                'total_alumni' => $alumniQuery->count(),
             ],
         ]);
     }

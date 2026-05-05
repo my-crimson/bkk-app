@@ -221,6 +221,9 @@ export default function ProfilIndex({ alumni, mustChangePassword }) {
                         </div>
                         <div className="profil-modern-actions">
                             <button type="submit" className="btn-save" disabled={processing}>Simpan Perubahan</button>
+                            <button type="button" className="btn-cancel" onClick={() => setIsEditing(false)} style={{
+                                padding: '10px 20px', backgroundColor: '#64748b', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer'
+                            }}>Batal</button>
                             <button type="button" className="btn-logout" onClick={handleLogout}>Keluar</button>
                         </div>
                     </form>

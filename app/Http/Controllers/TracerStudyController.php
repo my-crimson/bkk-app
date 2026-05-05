@@ -103,7 +103,7 @@ class TracerStudyController extends Controller
                 'status_survey' => $surveyMasihBerlaku ? 'Sudah Mengisi' : 'Belum Mengisi',
                 'status_color' => $surveyMasihBerlaku ? 'success' : 'danger',
                 'tanggal_survey' => ($tanggalWib && $surveyMasihBerlaku)
-                    ? $tanggalWib->translatedFormat('d M Y, H:i') . ' WIB'
+                    ? $tanggalWib->translatedFormat('d F Y')
                     : '-',
                 'tanggal_survey_relative' => ($tanggalWib && $surveyMasihBerlaku)
                     ? $tanggalWib->diffForHumans(Carbon::now('Asia/Jakarta'))
