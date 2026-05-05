@@ -445,6 +445,15 @@ export default function PerusahaanIndex({ perusahaan = {}, carouselPerusahaan = 
                             <div className="company-title-popup">
                                 <h1>{activePopup.nama}</h1>
                             </div>
+                            {activePopup.logo && (
+                                <div style={{ textAlign: 'center', margin: '15px 0' }}>
+                                    <img 
+                                        src={`/storage/logo_perusahaan/${activePopup.logo}`} 
+                                        alt={activePopup.nama} 
+                                        style={{ maxWidth: '200px', maxHeight: '150px', objectFit: 'contain', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }} 
+                                    />
+                                </div>
+                            )}
                             <div className="company-desc-popup">
                                 <p>{activePopup.deskripsi || 'Deskripsi perusahaan belum tersedia.'}</p>
                             </div>
