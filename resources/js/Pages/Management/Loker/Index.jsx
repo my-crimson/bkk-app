@@ -37,6 +37,9 @@ export default function ManagementLokerIndex({ lowker, jurusanList, filters }) {
 
     const data = lowker?.data || [];
     const links = lowker?.links || [];
+    const from = lowker?.from || 0;
+    const to = lowker?.to || 0;
+    const total = lowker?.total || 0;
 
     return (
         <MainLayout>
@@ -91,13 +94,20 @@ export default function ManagementLokerIndex({ lowker, jurusanList, filters }) {
                 ))}
             </div>
 
-            <div className="pagination">
-                {links.map((link, i) => (
-                    <Link key={i} href={link.url || '#'}
-                        className={`${link.active ? 'active' : ''} ${link.label.includes('Previous') || link.label.includes('Next') ? 'navigate' : ''}`}
-                        dangerouslySetInnerHTML={{ __html: link.label }} preserveScroll />
-                ))}
-            </div>
+            {links.length > 0 && (
+                <div className="pagination-container">
+                    <div className="pagination-info">
+                        <p>Ditampilkan <strong>{from}</strong> sampai <strong>{to}</strong> dari total <strong>{total}</strong> lowongan kerja</p>
+                    </div>
+                    <div className="pagination">
+                        {links.map((link, i) => (
+                            <Link key={i} href={link.url || '#'}
+                                className={`${link.active ? 'active' : ''} ${link.label.includes('Previous') || link.label.includes('Next') ? 'navigate' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: link.label }} />
+                        ))}
+                    </div>
+                </div>
+            )}
         </MainLayout>
     );
 }

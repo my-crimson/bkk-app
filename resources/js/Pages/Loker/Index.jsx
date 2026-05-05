@@ -92,7 +92,7 @@ export default function LokerIndex({ lowker, jurusanList, filters }) {
                                 onClick={() => {
                                     if (link.url) {
                                         router.visit(link.url, {
-                                            preserveScroll: true,
+                                            preserveScroll: false,
                                             preserveState: true, 
                                         });
                                     }

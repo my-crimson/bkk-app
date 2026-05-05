@@ -370,7 +370,7 @@ export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], j
                                 {links.map((link, i) => (
                                     <button
                                         key={i} disabled={!link.url}
-                                        onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                        onClick={() => link.url && router.get(link.url, {}, { preserveState: true, preserveScroll: false })}
                                         style={{ padding: '6px 14px', borderRadius: '6px', border: link.active ? '2px solid #134CBC' : '1px solid #d1d5db', background: link.active ? '#134CBC' : '#fff', color: link.active ? '#fff' : (link.url ? '#333' : '#ccc'), cursor: link.url ? 'pointer' : 'default', fontSize: '13px' }}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />

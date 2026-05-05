@@ -186,7 +186,7 @@ export default function InformasiKegiatan({ berita, filters }) {
                                 onClick={() => {
                                     if (link.url) {
                                         router.visit(link.url, {
-                                            preserveScroll: true,
+                                            preserveScroll: false,
                                             preserveState: true,
                                         });
                                     }

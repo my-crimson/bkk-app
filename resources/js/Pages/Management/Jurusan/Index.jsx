@@ -90,7 +90,6 @@ export default function ManagementJurusanIndex({ jurusan }) {
                                 href={link.url || '#'}
                                 className={`${link.active ? 'active' : ''} ${String(link.label).includes('Previous') || String(link.label).includes('Next') ? 'navigate' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
-                                preserveScroll
                             />
                         ))}
                     </div>

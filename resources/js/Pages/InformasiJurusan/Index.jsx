@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import MainLayout from '../../Layouts/MainLayout';
 
 export default function InformasiJurusanIndex({ jurusan }) {
@@ -97,7 +97,10 @@ export default function InformasiJurusanIndex({ jurusan }) {
                                 className={`page-btn ${link.active ? 'active' : ''}`}
                                 onClick={() => {
                                     if (link.url) {
-                                        window.location.href = link.url;
+                                        router.visit(link.url, {
+                                            preserveScroll: false,
+                                            preserveState: true,
+                                        });
                                     }
                                 }}
                                 dangerouslySetInnerHTML={{ __html: link.label }}

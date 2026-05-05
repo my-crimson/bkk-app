@@ -505,3 +505,36 @@
     gap: 70px; 
 }
 }
+
+/* Hide Perusahaan Carousel on Mobile (Tablet and down) */
+@media (max-width: 768px) {
+    .company-container {
+        display: none !important;
+    }
+}
+
+/* Ukuran Card Khusus Mobile (Maks 480px) */
+@media (max-width: 480px) {
+    /* Set lebar maksimum card seperti pada Struktur Organisasi */
+    .jurusan-card,
+    .job-card,
+    .kegiatan-card,
+    .card-perusahaan,
+    .perusahaan-add-card,
+    .perusahaan-admin-card {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* Pastikan container grid menengah agar card berada di tengah layar */
+    .jurusan-grid,
+    .job-list, 
+    .results-grid, 
+    .kegiatan-grid,
+    .major-grid,
+    .perusahaan-grid {
+        justify-items: center;
+    }
+}
