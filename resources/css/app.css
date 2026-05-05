@@ -2972,7 +2972,8 @@ header .rectangle {
 .modal-gallery img {
     width: 100%;
     height: 250px;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: #f4f6f9;
     border-radius: 12px;
 }
 
@@ -4540,5 +4541,123 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     /* --- General overflows --- */
     .job-list {
         padding: 0 10px;
+    }
+
+    /* --- Rekap Responsive Fixes --- */
+    .rekap-container > div:first-child,
+    .rekap-loker-wrap > div:first-child {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 15px !important;
+    }
+    
+    .rekap-container .btn-print,
+    .rekap-loker-wrap .btn-print {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .rekap-loker-filter {
+        flex-direction: column !important;
+        padding: 15px !important;
+    }
+
+    .rekap-loker-filter select,
+    .rekap-loker-filter input,
+    .rekap-loker-filter button {
+        width: 100% !important;
+        min-width: unset !important;
+        margin-bottom: 5px;
+    }
+    
+    .rekap-loker-summary {
+        flex-direction: column !important;
+        gap: 10px !important;
+        text-align: center !important;
+    }
+}
+
+/* ========== PRINT STYLES ========== */
+.btn-print {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-print:hover {
+    background-color: #c0392b;
+}
+
+@media print {
+    body {
+        background-color: white !important;
+    }
+    header,
+    .header-bar,
+    .navbar,
+    .sidebar,
+    .btn-print,
+    .rekap-loker-filter,
+    .pagination,
+    .main-footer {
+        display: none !important;
+    }
+    .rekap-container,
+    .rekap-loker-wrap {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .rekap-chart-grid {
+        display: block !important;
+    }
+    .rekap-chart-card {
+        width: 80% !important;
+        margin: 0 auto 20px auto !important;
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        padding: 10px !important;
+    }
+    .print-page-break {
+        break-before: page !important;
+        page-break-before: always !important;
+    }
+    .rekap-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+    .rekap-table th, .rekap-table td {
+        border: 1px solid #000 !important;
+        padding: 8px !important;
+        text-align: left !important;
+        color: #000 !important;
+    }
+    .rekap-table th {
+        background-color: #f2f2f2 !important;
+        font-weight: bold !important;
+    }
+}
+
+@media print and (orientation: landscape) {
+    .rekap-chart-grid {
+        display: flex !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+    }
+    .rekap-chart-card {
+        width: 48% !important;
+        margin-bottom: 15px !important;
     }
 }

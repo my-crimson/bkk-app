@@ -39,12 +39,14 @@ class AlumniController extends Controller
             $query->where('id_jurusan', $jurusan);
         }
 
+        $allMatchingIds = (clone $query)->pluck('id');
         $alumni = $query->orderBy('nama', 'asc')->paginate(15)->withQueryString();
         $jurusanList = Jurusan::all();
         $management_users = \App\Models\User::whereIn('role', ['management', 'admin'])->get();
 
         return Inertia::render('Management/Alumni/Index', [
             'alumni' => $alumni,
+            'all_filtered_ids' => $allMatchingIds,
             'jurusanList' => $jurusanList,
             'management_users' => $management_users,
             'filters' => $request->only(['search', 'tahun_lulus', 'jurusan']),

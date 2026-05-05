@@ -11,29 +11,56 @@ use Carbon\Carbon;
 
 class RekapController extends Controller
 {
-    public function alumni()
+    public function alumni(Request $request)
     {
-        $alumniQuery = Alumni::with('jurusan')->orderBy('nama');
-        $alumni = $alumniQuery->paginate(50);
-        $jurusan = Jurusan::whereIn('jurusan', [
-            'Rekayasa Perangkat Lunak (RPL)',
-            'Teknik Kimia Industri (TKI)',
-            'Teknik Komputer dan Jaringan (TKJ)',
-            'Animasi',
-            'Broadcasting',
-            'Usaha Layanan Wisata (ULW)',
-            'Akuntansi & Keuangan Lembaga (AKL)',
-            'Manajemen Perkantoran dan Layanan Bisnis',
-            'Bisnis Digital (BD)',
-            'Desain Komunikasi Visual (DKV)',
-        ])->get();
+        $alumniQuery = Alumni::with('jurusan');
+        
+        if ($request->filled('tahun_lulus')) {
+            $alumniQuery->where('tahun_lulus', $request->tahun_lulus);
+        }
+        
+        if ($request->filled('jurusan')) {
+            $alumniQuery->where('id_jurusan', $request->jurusan);
+        }
+
+        if ($request->filled('nisn')) {
+            $alumniQuery->where('nisn', 'like', '%' . $request->nisn . '%');
+        }
+
+        if ($request->filled('jenis_kelamin')) {
+            $alumniQuery->whereRaw('UPPER(jenis_kelamin) = ?', [strtoupper($request->jenis_kelamin)]);
+        }
+        
+        $alumniQuery->orderBy('nama');
+        
+        $allAlumni = (clone $alumniQuery)->get();
+        
+        $alumni = $alumniQuery->paginate(50)->withQueryString();
+        $jurusan = Jurusan::orderBy('jurusan')->get();
 
         return Inertia::render('Rekap/Alumni', [
             'alumni' => $alumni,
             'jurusan' => $jurusan,
             'summary' => [
-                'total_alumni' => $alumniQuery->count(),
+                'total_alumni' => $allAlumni->count(),
+                'total_laki' => $allAlumni->filter(fn ($a) => strtoupper($a->jenis_kelamin) === 'L')->count(),
+                'total_perempuan' => $allAlumni->filter(fn ($a) => strtoupper($a->jenis_kelamin) === 'P')->count(),
+                'chart_jurusan' => $allAlumni
+                    ->groupBy(fn ($item) => $item->jurusan->jurusan ?? '-')
+                    ->map(fn ($items, $name) => ['label' => $name, 'value' => $items->count()])
+                    ->sortByDesc('value')
+                    ->values(),
+                'chart_gender' => $allAlumni
+                    ->groupBy(fn ($item) => empty($item->jenis_kelamin) ? 'Belum Diisi' : strtoupper($item->jenis_kelamin))
+                    ->map(fn ($items, $name) => ['name' => $name, 'value' => $items->count()])
+                    ->values(),
+                'chart_tahun_lulus' => $allAlumni
+                    ->groupBy(fn ($item) => $item->tahun_lulus ?? 'Belum Diisi')
+                    ->map(fn ($items, $tahun) => ['label' => (string) $tahun, 'value' => $items->count()])
+                    ->sortBy('label')
+                    ->values(),
             ],
+            'filters' => $request->only(['tahun_lulus', 'jurusan', 'nisn', 'jenis_kelamin']),
         ]);
     }
 

@@ -3,7 +3,7 @@ import { useState, useMemo, useCallback } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { confirmAction, notifyActionSuccess, notifyActionError } from '@/Helpers/actionPopup';
 
-export default function ManagementAlumniIndex({ alumni, jurusanList, filters, management_users, current_user }) {
+export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], jurusanList, filters, management_users, current_user }) {
     const [activeTab, setActiveTab] = useState('alumni'); // 'alumni' or 'management'
     const [showProfileEdit, setShowProfileEdit] = useState(false);
     
@@ -65,18 +65,19 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
     const to = alumni?.to || 0;
     const total = alumni?.total || 0;
 
-    const isAllSelected = cards.length > 0 && cards.every(item => selectedIds.includes(item.id));
+    const isAllFilteredSelected = all_filtered_ids.length > 0 && all_filtered_ids.every(id => selectedIds.includes(id));
+    
     const toggleSelect = useCallback((id) => {
         setSelectedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
     }, []);
+    
     const toggleSelectAll = useCallback(() => {
-        if (isAllSelected) {
-            setSelectedIds(prev => prev.filter(id => !cards.find(c => c.id === id)));
+        if (isAllFilteredSelected) {
+            setSelectedIds(prev => prev.filter(id => !all_filtered_ids.includes(id)));
         } else {
-            const currentPageIds = cards.map(c => c.id);
-            setSelectedIds(prev => [...new Set([...prev, ...currentPageIds])]);
+            setSelectedIds(prev => [...new Set([...prev, ...all_filtered_ids])]);
         }
-    }, [isAllSelected, cards]);
+    }, [isAllFilteredSelected, all_filtered_ids]);
 
     const handleBulkDelete = async () => {
         if (selectedIds.length === 0) {
@@ -326,7 +327,7 @@ export default function ManagementAlumniIndex({ alumni, jurusanList, filters, ma
                             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
                                 <thead>
                                     <tr style={{ background: '#f1f5f9', borderBottom: '2px solid #cbd5e1' }}>
-                                        <th style={{ padding: '10px 12px', width: '40px' }}><input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll} style={{ cursor: 'pointer', width: '16px', height: '16px' }} /></th>
+                                        <th style={{ padding: '10px 12px', width: '40px' }}><input type="checkbox" checked={isAllFilteredSelected} onChange={toggleSelectAll} style={{ cursor: 'pointer', width: '16px', height: '16px' }} /></th>
                                         <th style={{ padding: '10px 12px' }}>No</th>
                                         <th style={{ padding: '10px 12px' }}>Nama</th>
                                         <th style={{ padding: '10px 12px' }}>NISN</th>
