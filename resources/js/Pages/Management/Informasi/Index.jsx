@@ -16,7 +16,8 @@ export default function InformasiIndex({ informasi, struktur }) {
 
     // =========== INFORMASI TEXT FORM ===========
     const formInfo = useForm({
-        visi_misi: informasi?.visi_misi || '',
+        visi: informasi?.visi || '',
+        misi: informasi?.misi || '',
         proker: informasi?.proker || '',
         tujuan: informasi?.tujuan || '',
         pengantar: informasi?.pengantar || '',
@@ -144,7 +145,7 @@ export default function InformasiIndex({ informasi, struktur }) {
 
     // =========== TABS ===========
     const tabs = [
-        { id: 'visi_misi', label: 'Visi Misi', icon: 'fa-bullseye' },
+        { id: 'visi_misi', label: 'Visi & Misi', icon: 'fa-bullseye' },
         { id: 'proker', label: 'Program Kerja', icon: 'fa-list-check' },
         { id: 'tujuan', label: 'Tujuan', icon: 'fa-flag' },
         { id: 'pengantar', label: 'Pengantar', icon: 'fa-address-card' },
@@ -163,26 +164,18 @@ export default function InformasiIndex({ informasi, struktur }) {
             <Head title="CRUD Informasi" />
             <div className="header-bar"><a href="#">C.R.U.D / CRUD Informasi</a></div>
 
-            <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
+            <div className="informasi-container">
                 {/* TABS */}
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                <div className="informasi-tabs">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
+                            className="informasi-tab-btn"
                             style={{
-                                padding: '10px 18px',
-                                borderRadius: '8px',
-                                border: activeTab === tab.id ? '2px solid #134CBC' : '1px solid #d1d5db',
-                                cursor: 'pointer',
-                                background: activeTab === tab.id ? '#134CBC' : '#ffffff',
+                                borderColor: activeTab === tab.id ? '#134CBC' : '#d1d5db',
+                                backgroundColor: activeTab === tab.id ? '#134CBC' : '#ffffff',
                                 color: activeTab === tab.id ? '#fff' : '#555',
-                                fontWeight: 600,
-                                fontSize: '14px',
-                                transition: 'all 0.2s ease',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
                             }}
                         >
                             <i className={`fa-solid ${tab.icon}`}></i>
@@ -192,7 +185,7 @@ export default function InformasiIndex({ informasi, struktur }) {
                 </div>
 
                 {/* CONTENT CARD */}
-                <div style={{ background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', border: '1px solid #eaeaea' }}>
+                <div style={{ background: '#fff', padding: 'clamp(15px, 3vw, 30px)', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', border: '1px solid #eaeaea', boxSizing: 'border-box', overflowX: 'auto', maxWidth: '100%' }}>
 
                     {/* ===== TEXT TABS (Visi Misi, Proker, Tujuan) ===== */}
                     {textTabs.includes(activeTab) && (
@@ -204,12 +197,34 @@ export default function InformasiIndex({ informasi, struktur }) {
                             <p style={{ color: '#888', fontSize: '13px', margin: 0 }}>
                                 Pisahkan setiap alinea atau poin dengan menekan tombol Enter.
                             </p>
-                            <textarea
-                                value={formInfo.data[activeTab]}
-                                onChange={e => formInfo.setData(activeTab, e.target.value)}
-                                style={{ width: '100%', height: '300px', padding: '15px', borderRadius: '8px', border: '1px solid #d1d5db', fontFamily: 'inherit', resize: 'vertical', fontSize: '15px', lineHeight: '1.6', outline: 'none', boxSizing: 'border-box' }}
-                                placeholder={`Tulis isi ${tabs.find(t => t.id === activeTab)?.label} di sini...`}
-                            />
+                            
+                            {activeTab === 'visi_misi' ? (
+                                <>
+                                    <label style={{ fontWeight: 'bold', fontSize: '15px', color: '#555', marginTop: '10px' }}>Visi</label>
+                                    <textarea
+                                        value={formInfo.data.visi}
+                                        onChange={e => formInfo.setData('visi', e.target.value)}
+                                        style={{ width: '100%', height: '150px', padding: '15px', borderRadius: '8px', border: '1px solid #d1d5db', fontFamily: 'inherit', resize: 'vertical', fontSize: '15px', lineHeight: '1.6', outline: 'none', boxSizing: 'border-box' }}
+                                        placeholder="Tulis isi Visi di sini..."
+                                    />
+                                    
+                                    <label style={{ fontWeight: 'bold', fontSize: '15px', color: '#555', marginTop: '10px' }}>Misi</label>
+                                    <textarea
+                                        value={formInfo.data.misi}
+                                        onChange={e => formInfo.setData('misi', e.target.value)}
+                                        style={{ width: '100%', height: '200px', padding: '15px', borderRadius: '8px', border: '1px solid #d1d5db', fontFamily: 'inherit', resize: 'vertical', fontSize: '15px', lineHeight: '1.6', outline: 'none', boxSizing: 'border-box' }}
+                                        placeholder="Tulis isi Misi di sini..."
+                                    />
+                                </>
+                            ) : (
+                                <textarea
+                                    value={formInfo.data[activeTab]}
+                                    onChange={e => formInfo.setData(activeTab, e.target.value)}
+                                    style={{ width: '100%', height: '300px', padding: '15px', borderRadius: '8px', border: '1px solid #d1d5db', fontFamily: 'inherit', resize: 'vertical', fontSize: '15px', lineHeight: '1.6', outline: 'none', boxSizing: 'border-box' }}
+                                    placeholder={`Tulis isi ${tabs.find(t => t.id === activeTab)?.label} di sini...`}
+                                />
+                            )}
+
                             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <button type="submit" disabled={formInfo.processing} style={{ padding: '10px 30px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}>
                                     {formInfo.processing ? 'Menyimpan...' : 'Simpan Perubahan'}
@@ -315,8 +330,8 @@ export default function InformasiIndex({ informasi, struktur }) {
                                         </div>
                                     ))}
                                 </div>
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <input type="text" value={newLevelLabel} onChange={e => setNewLevelLabel(e.target.value)} placeholder="Nama level baru..." style={{ padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '13px', flex: 1, maxWidth: '250px' }} />
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    <input type="text" value={newLevelLabel} onChange={e => setNewLevelLabel(e.target.value)} placeholder="Nama level baru..." style={{ padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '13px', flex: '1 1 150px', maxWidth: '100%' }} />
                                     <button type="button" onClick={addLevelOption} style={{ padding: '6px 14px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}>
                                         <i className="fa-solid fa-plus" style={{ marginRight: '4px' }}></i> Tambah Level
                                     </button>
@@ -324,31 +339,21 @@ export default function InformasiIndex({ informasi, struktur }) {
                             </div>
 
                             {/* Struktur Form */}
-                            <form onSubmit={submitStruktur} style={{ display: 'flex', flexDirection: 'column', gap: '15px', background: '#f8fafc', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #e2e8f0' }}>
-                                <h3 style={{ margin: 0, fontSize: '16px' }}>
+                            <form onSubmit={submitStruktur} className="struktur-form-container">
+                                <h3 className="struktur-form-title">
                                     {strukturId ? '✏️ Edit Anggota' : '➕ Tambah Anggota Baru'}
                                 </h3>
 
                                 {/* Level Buttons */}
                                 <div>
                                     <label style={{ display: 'block', fontWeight: 600, marginBottom: '8px', fontSize: '14px' }}>Pilih Level Jabatan</label>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    <div className="struktur-level-selector">
                                         {levelOptions.map(opt => (
                                             <button
                                                 key={opt.level}
                                                 type="button"
                                                 onClick={() => selectLevel(opt.level)}
-                                                style={{
-                                                    padding: '8px 16px',
-                                                    borderRadius: '6px',
-                                                    border: selectedLevel === opt.level ? '2px solid #134CBC' : '1px solid #d1d5db',
-                                                    background: selectedLevel === opt.level ? '#134CBC' : '#fff',
-                                                    color: selectedLevel === opt.level ? '#fff' : '#555',
-                                                    fontWeight: 600,
-                                                    cursor: 'pointer',
-                                                    fontSize: '13px',
-                                                    transition: 'all 0.2s ease',
-                                                }}
+                                                className={`struktur-level-btn ${selectedLevel === opt.level ? 'active' : ''}`}
                                             >
                                                 {opt.label}
                                             </button>
@@ -356,88 +361,92 @@ export default function InformasiIndex({ informasi, struktur }) {
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-                                    <div style={{ flex: '1 1 250px' }}>
-                                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '5px', fontSize: '14px' }}>Jabatan / Keterangan <span style={{ color: '#ef4444' }}>*</span></label>
-                                        <input type="text" value={formStruktur.data.jabatan} onChange={e => formStruktur.setData('jabatan', e.target.value)} required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', boxSizing: 'border-box' }} placeholder="Contoh: Petugas Pengadministrasian BKK" />
+                                <div className="struktur-form-fields">
+                                    <div className="struktur-form-field">
+                                        <label>Jabatan / Keterangan <span style={{ color: '#ef4444' }}>*</span></label>
+                                        <input type="text" value={formStruktur.data.jabatan} onChange={e => formStruktur.setData('jabatan', e.target.value)} required placeholder="Contoh: Petugas Pengadministrasian BKK" />
                                     </div>
-                                    <div style={{ flex: '1 1 250px' }}>
-                                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '5px', fontSize: '14px' }}>Nama Lengkap & Gelar <span style={{ color: '#ef4444' }}>*</span></label>
-                                        <input type="text" value={formStruktur.data.nama} onChange={e => formStruktur.setData('nama', e.target.value)} required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', boxSizing: 'border-box' }} />
+                                    <div className="struktur-form-field">
+                                        <label>Nama Lengkap & Gelar <span style={{ color: '#ef4444' }}>*</span></label>
+                                        <input type="text" value={formStruktur.data.nama} onChange={e => formStruktur.setData('nama', e.target.value)} required />
                                     </div>
                                 </div>
-                                <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-                                    <div style={{ flex: '1 1 250px' }}>
-                                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '5px', fontSize: '14px' }}>NIP</label>
-                                        <input type="text" value={formStruktur.data.nip} onChange={e => formStruktur.setData('nip', e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', boxSizing: 'border-box' }} />
+                                <div className="struktur-form-fields">
+                                    <div className="struktur-form-field">
+                                        <label>NIP</label>
+                                        <input type="text" value={formStruktur.data.nip} onChange={e => formStruktur.setData('nip', e.target.value)} />
                                     </div>
-                                    <div style={{ flex: '1 1 250px' }}>
-                                        <label style={{ display: 'block', fontWeight: 600, marginBottom: '5px', fontSize: '14px' }}>Foto Profil</label>
-                                        <input type="file" accept="image/*" onChange={e => formStruktur.setData('foto_profil', e.target.files[0])} style={{ width: '100%', padding: '8px', background: '#fff', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '13px', boxSizing: 'border-box' }} />
+                                    <div className="struktur-form-field">
+                                        <label>Foto Profil</label>
+                                        <input type="file" accept="image/*" onChange={e => formStruktur.setData('foto_profil', e.target.files[0])} />
                                         {formStruktur.errors.foto_profil && <div style={{ color: 'red', marginTop: '4px', fontSize: '12px' }}>{formStruktur.errors.foto_profil}</div>}
                                     </div>
                                 </div>
-                                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '5px' }}>
+                                <div className="struktur-form-actions">
                                     {strukturId && (
-                                        <button type="button" onClick={resetStruktur} style={{ padding: '8px 20px', background: '#e2e8f0', color: '#333', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}>Batal</button>
+                                        <button type="button" onClick={resetStruktur} className="struktur-form-btn struktur-form-btn-cancel">Batal</button>
                                     )}
-                                    <button type="submit" disabled={formStruktur.processing} style={{ padding: '8px 20px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}>
+                                    <button type="submit" disabled={formStruktur.processing} className="struktur-form-btn struktur-form-btn-submit">
                                         {formStruktur.processing ? 'Menyimpan...' : (strukturId ? 'Update Anggota' : 'Tambah Anggota')}
                                     </button>
                                 </div>
                             </form>
 
                             {/* Tabel Daftar Struktur */}
-                            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                                <thead>
-                                    <tr style={{ background: '#f1f5f9', borderBottom: '2px solid #cbd5e1' }}>
-                                        <th style={{ padding: '10px 12px', fontSize: '13px' }}>Level</th>
-                                        <th style={{ padding: '10px 12px', fontSize: '13px' }}>Foto</th>
-                                        <th style={{ padding: '10px 12px', fontSize: '13px' }}>Jabatan</th>
-                                        <th style={{ padding: '10px 12px', fontSize: '13px' }}>Nama / NIP</th>
-                                        <th style={{ padding: '10px 12px', fontSize: '13px', textAlign: 'center' }}>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {struktur && struktur.length > 0 ? (
-                                        struktur.map(item => (
-                                            <tr key={item.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                                                <td style={{ padding: '10px 12px' }}>
-                                                    <span style={{ background: '#134CBC', color: '#fff', padding: '3px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: 600 }}>
-                                                        {getLevelLabel(item.level)}
-                                                    </span>
-                                                </td>
-                                                <td style={{ padding: '10px 12px' }}>
-                                                    {item.foto_profil ? (
-                                                        <img src={`/storage/uploads/struktur/${item.foto_profil}`} alt={item.nama} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }} />
-                                                    ) : (
-                                                        <div style={{ width: '40px', height: '40px', background: '#e2e8f0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
-                                                            <i className="fa-solid fa-user"></i>
-                                                        </div>
-                                                    )}
-                                                </td>
-                                                <td style={{ padding: '10px 12px', fontSize: '14px' }}>{item.jabatan}</td>
-                                                <td style={{ padding: '10px 12px' }}>
-                                                    <div style={{ fontWeight: 600, fontSize: '14px' }}>{item.nama}</div>
-                                                    <div style={{ fontSize: '12px', color: '#666' }}>{item.nip || '-'}</div>
-                                                </td>
-                                                <td style={{ padding: '10px 12px', textAlign: 'center' }}>
-                                                    <button onClick={() => editStruktur(item)} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '4px', marginRight: '5px', cursor: 'pointer' }}>
-                                                        <i className="fa-solid fa-pen"></i>
-                                                    </button>
-                                                    <button onClick={() => deleteStruktur(item.id)} style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '4px', cursor: 'pointer' }}>
-                                                        <i className="fa-solid fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
+                            <div className="struktur-table-wrapper">
+                                <table className="struktur-table">
+                                    <thead>
                                         <tr>
-                                            <td colSpan="5" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8', fontSize: '15px' }}>Belum ada anggota struktur.</td>
+                                            <th>Level</th>
+                                            <th>Foto</th>
+                                            <th>Jabatan</th>
+                                            <th>Nama / NIP</th>
+                                            <th style={{ textAlign: 'center' }}>Aksi</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {struktur && struktur.length > 0 ? (
+                                            struktur.map(item => (
+                                                <tr key={item.id}>
+                                                    <td>
+                                                        <span className="struktur-level-badge">
+                                                            {getLevelLabel(item.level)}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {item.foto_profil ? (
+                                                            <img src={`/storage/uploads/struktur/${item.foto_profil}`} alt={item.nama} className="struktur-foto" />
+                                                        ) : (
+                                                            <div className="struktur-foto-placeholder">
+                                                                <i className="fa-solid fa-user"></i>
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                    <td>{item.jabatan}</td>
+                                                    <td>
+                                                        <div style={{ fontWeight: 600, fontSize: '14px' }}>{item.nama}</div>
+                                                        <div style={{ fontSize: '12px', color: '#666' }}>{item.nip || '-'}</div>
+                                                    </td>
+                                                    <td style={{ textAlign: 'center' }}>
+                                                        <div className="struktur-actions">
+                                                            <button onClick={() => editStruktur(item)} className="struktur-action-btn struktur-action-btn-edit" title="Edit">
+                                                                <i className="fa-solid fa-pen"></i>
+                                                            </button>
+                                                            <button onClick={() => deleteStruktur(item.id)} className="struktur-action-btn struktur-action-btn-delete" title="Hapus">
+                                                                <i className="fa-solid fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="5" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8', fontSize: '15px' }}>Belum ada anggota struktur.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     )}
                 </div>

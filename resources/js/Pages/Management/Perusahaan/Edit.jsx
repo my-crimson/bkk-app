@@ -1,4 +1,4 @@
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import MainLayout from '../../../Layouts/MainLayout';
 import { validateImage } from '@/Helpers/fileHelper';
@@ -276,9 +276,14 @@ export default function ManagementPerusahaanEdit({ perusahaan }) {
                         )}
                     </div>
 
-                    <button type="submit" className="btn-submit" disabled={processing}>
-                        {processing ? 'Mengupdate...' : 'Update'}
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <Link href="/management/perusahaan" className="btn-submit" style={{ backgroundColor: '#64748b', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            Kembali
+                        </Link>
+                        <button type="submit" className="btn-submit" disabled={processing}>
+                            {processing ? 'Mengupdate...' : 'Update'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </MainLayout>
