@@ -124,27 +124,30 @@ const CarouselStyles = () => (
             transform: scale(1);
         }
 
-        .close-popup button {
+        .close-btn-popup {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 14px;
+            right: 14px;
             border: none;
             background: #f1f5f9;
             color: #64748b;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 34px;
+            height: 34px;
+            font-size: 15px;
+            display: grid;
+            place-items: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            z-index: 10;
-            line-height: 0;
-            padding-bottom: 4px;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+            z-index: 200;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            box-sizing: border-box;
         }
-        .close-popup button:hover {
+        .close-btn-popup:hover {
             background: #ef4444;
             color: white;
             transform: rotate(90deg);
@@ -406,9 +409,14 @@ export default function PerusahaanIndex({ perusahaan = [], carouselPerusahaan = 
             {activePopup && (
                 <div className="popup-overlay active" onClick={() => setActivePopup(null)}>
                     <div className="company-popup" onClick={e => e.stopPropagation()}>
-                        <div className="close-popup">
-                            <button onClick={() => setActivePopup(null)}>&times;</button>
-                        </div>
+                        <button
+                            className="close-btn-popup"
+                            onClick={() => setActivePopup(null)}
+                            title="Tutup"
+                            type="button"
+                        >
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
                         
                         <div className="company-header-popup">
                             <div className="company-title-popup">
