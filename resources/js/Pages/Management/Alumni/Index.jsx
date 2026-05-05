@@ -440,7 +440,13 @@ export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], j
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {management_users?.map((user, idx) => {
+                                    {management_users && [...management_users]
+                                        .sort((a, b) => {
+                                            if (a.id === current_user?.id) return -1;
+                                            if (b.id === current_user?.id) return 1;
+                                            return 0;
+                                        })
+                                        .map((user, idx) => {
                                         const isSelf = user.id === current_user?.id;
                                         return (
                                             <tr key={user.id} style={{
