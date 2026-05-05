@@ -137,18 +137,18 @@ export default function AlumniLogin() {
                                 <i className="fa-solid fa-circle-info" style={{ marginRight: '6px' }}></i>
                                 Jika disetujui, password otomatis direset menjadi <strong>NISN</strong> Anda.
                             </p>
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                 <input
                                     type="text"
                                     placeholder="Masukkan NISN Anda..."
                                     value={forgotNisn}
                                     onChange={e => setForgotNisn(e.target.value)}
-                                    style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', boxSizing: 'border-box' }}
+                                    style={{ flex: '1 1 200px', padding: '10px 12px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '14px', boxSizing: 'border-box' }}
                                 />
                                 <button
                                     onClick={handleForgotSubmit}
                                     disabled={forgotLoading}
-                                    style={{ padding: '8px 16px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap' }}
+                                    style={{ flex: '1 1 80px', padding: '10px 16px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap' }}
                                 >
                                     {forgotLoading ? '...' : 'Kirim'}
                                 </button>
