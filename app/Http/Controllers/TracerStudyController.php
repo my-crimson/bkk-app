@@ -28,7 +28,7 @@ class TracerStudyController extends Controller
             'TKI' => ['Teknik Kimia Industri (TKI)'],
             'TKJ' => ['Teknik Komputer dan Jaringan (TKJ)'],
             'ANM' => ['Animasi'],
-            'BR' => ['Broadcasting'],
+            'PSPT' => ['Broadcasting', 'Produksi dan Siaran Program Televisi'],
             'ULW' => ['Usaha Layanan Wisata (ULW)'],
             'AKL' => ['Akuntansi & Keuangan Lembaga (AKL)'],
             'MPLB' => ['Manajemen Perkantoran dan Layanan Bisnis'],

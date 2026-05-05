@@ -194,6 +194,18 @@ const CarouselStyles = () => (
             padding: 20px 5%; 
             margin-bottom: 50px;
         }
+
+        /* Mobile: 1 baris muat 2 card */
+        @media (max-width: 480px) {
+            .results-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                padding: 12px;
+            }
+            .card-img { height: 110px; }
+            .card-body { padding: 12px; }
+            .card-body h3 { font-size: 14px; }
+        }
         .card-perusahaan {
             background: white;
             border-radius: 15px;

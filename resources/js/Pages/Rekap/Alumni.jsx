@@ -100,7 +100,7 @@ export default function RekapAlumni({ alumni, summary = {}, jurusan = [], filter
                                         dataKey="label" 
                                         tickFormatter={(value) => {
                                             if (value.toLowerCase().includes('animasi')) return 'ANIM';
-                                            if (value.toLowerCase().includes('broadcasting')) return 'BR';
+                                            if (value.toLowerCase().includes('broadcasting')) return 'PSPT';
                                             const match = value.match(/\(([^)]+)\)/);
                                             return match ? match[1] : (value.length > 10 ? value.substring(0, 10) + '...' : value);
                                         }}

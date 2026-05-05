@@ -136,11 +136,11 @@ export default function RekapLoker({
                 </div>
 
                 <h3 className="rekap-loker-subtitle print-page-break" style={{ marginBottom: '15px', color: '#333' }}>Data Berdasarkan Jurusan</h3>
-                <div className="rekap-loker-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '15px', marginBottom: '40px' }}>
+                <div className="rekap-loker-grid">
                     {cards.map((card) => (
-                        <div className="rekap-loker-card" key={card.kode} style={{ background: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', textAlign: 'center', borderTop: '4px solid #134CBC' }}>
-                            <h4 style={{ margin: '0 0 10px', color: '#134CBC', fontSize: '20px' }}>{card.kode}</h4>
-                            <p style={{ margin: 0, fontSize: '16px', color: '#555' }}><strong>{card.jumlah_lowongan}</strong> lowongan</p>
+                        <div className="rekap-loker-card" key={card.kode}>
+                            <h4>{card.kode}</h4>
+                            <p><strong>{card.jumlah_lowongan}</strong> lowongan</p>
                         </div>
                     ))}
                 </div>

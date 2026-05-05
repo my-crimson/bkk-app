@@ -48,15 +48,6 @@ export default function Beranda() {
                         
                         <p className="tagline">DREAM - ACTION - SUCCESS</p>
 
-                        <a 
-                            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
-                            className="video-button" 
-                            target="_blank" 
-                            rel="noreferrer"
-                        >
-                            Video Tutorial
-                            <i className="fa-regular fa-circle-play"></i>
-                        </a>
 
                         {/* Opsi Login hanya muncul jika user belum terautentikasi */}
                         {!auth?.user && (

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import MainLayout from '../../Layouts/MainLayout';
 
 export default function TracerStudyIndex({ rows = [], jurusan = [], filters = {}, summary = {} }) {
-    const allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'BR', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
+    const allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'PSPT', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
     const [selectedSurvey, setSelectedSurvey] = useState(null);
 
     const handleFilter = (e) => {

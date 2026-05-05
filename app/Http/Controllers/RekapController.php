@@ -66,13 +66,13 @@ class RekapController extends Controller
 
     public function loker(Request $request)
     {
-        $allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'BR', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
+        $allowedCodes = ['RPL', 'TKI', 'TKJ', 'ANM', 'PSPT', 'ULW', 'AKL', 'MPLB', 'BD', 'DKV'];
         $codeAliases = [
             'RPL' => ['REKAYASA PERANGKAT LUNAK (RPL)'],
             'TKI' => ['TEKNIK KIMIA INDUSTRI (TKI)'],
             'TKJ' => ['TEKNIK KOMPUTER DAN JARINGAN (TKJ)'],
             'ANM' => ['ANIMASI'],
-            'BR' => ['BROADCASTING'],
+            'PSPT' => ['BROADCASTING', 'PRODUKSI DAN SIARAN PROGRAM TELEVISI'],
             'ULW' => ['USAHA LAYANAN WISATA (ULW)'],
             'AKL' => ['AKUNTANSI & KEUANGAN LEMBAGA (AKL)'],
             'MPLB' => ['MANAJEMEN PERKANTORAN DAN LAYANAN BISNIS'],

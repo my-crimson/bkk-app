@@ -466,9 +466,20 @@ export default function ManagementAlumniIndex({ alumni, all_filtered_ids = [], j
                                                 <td style={{ padding: '10px 12px', fontWeight: 600 }}>
                                                     {user.username}
                                                     {isSelf && (
-                                                        <span style={{ marginLeft: '8px', background: '#134CBC', color: '#fff', padding: '1px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: 600 }}>
-                                                            Akun Saya
-                                                        </span>
+                                                        <span
+                                                            title="Anda sedang login dengan akun ini"
+                                                            aria-label="Akun login saat ini"
+                                                            style={{
+                                                                display: 'inline-block',
+                                                                width: '10px',
+                                                                height: '10px',
+                                                                marginLeft: '8px',
+                                                                borderRadius: '9999px',
+                                                                background: '#134CBC',
+                                                                boxShadow: '0 0 0 3px rgba(19, 76, 188, 0.12)',
+                                                                verticalAlign: 'middle',
+                                                            }}
+                                                        />
                                                     )}
                                                 </td>
                                                 <td style={{ padding: '10px 12px' }}>
