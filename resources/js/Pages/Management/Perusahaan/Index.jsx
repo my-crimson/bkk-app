@@ -26,6 +26,7 @@ export default function ManagementPerusahaanIndex({ perusahaan, filters = {} }) 
             skala: formData.get('skala') || '',
         }, {
             preserveState: true,
+            preserveScroll: true,
             replace: true
         });
     };

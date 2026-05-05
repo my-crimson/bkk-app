@@ -30,7 +30,7 @@ class PerusahaanController extends Controller
             $query->where('skala', $request->skala);
         }
 
-        $filteredData = $query->orderBy('id_perusahaan', 'desc')->get();
+        $filteredData = $query->orderBy('id_perusahaan', 'desc')->paginate(8)->withQueryString();
 
         return Inertia::render('Perusahaan/Index', [
             'carouselPerusahaan' => $carouselData, // Tetap utuh

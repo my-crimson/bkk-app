@@ -17,7 +17,7 @@ export default function RekapAlumni({ alumni, summary = {}, jurusan = [], filter
 
     const applyFilter = (e) => {
         e.preventDefault();
-        router.get('/management/rekap-alumni', filterData, { preserveState: true });
+        router.get('/management/rekap-alumni', filterData, { preserveState: true, preserveScroll: true, replace: true });
     };
     const chartJurusan = summary.chart_jurusan || [];
     const chartGender = summary.chart_gender || [];

@@ -31,7 +31,7 @@ export default function Beranda() {
     }, []);
 
     return (
-        <MainLayout>
+        <MainLayout className="beranda-page">
             <Head title="Beranda" />
 
             {/* Container utama dengan background image dari CSS */}

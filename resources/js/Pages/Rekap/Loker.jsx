@@ -23,7 +23,7 @@ export default function RekapLoker({
             lokasi: formData.get('lokasi') || '',
             jurusan: formData.get('jurusan') || '',
             rentang: formData.get('rentang') || 'all',
-        }, { preserveState: true, replace: true });
+        }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
     return (

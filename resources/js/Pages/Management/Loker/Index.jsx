@@ -18,7 +18,14 @@ export default function ManagementLokerIndex({ lowker, jurusanList, filters }) {
     const handleFilter = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        router.get('/management/loker', { jurusan: formData.get('jurusan'), lokasi: formData.get('lokasi') });
+        router.get('/management/loker', { 
+            jurusan: formData.get('jurusan'), 
+            lokasi: formData.get('lokasi') 
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true
+        });
     };
 
     const handleDelete = async (id) => {
