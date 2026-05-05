@@ -423,6 +423,11 @@
         padding-bottom: 60px;
     }
 
+    /* Pengecualian untuk halaman beranda agar background container tidak terpotong */
+    .beranda-page .content-wrapper {
+        padding-bottom: 0;
+    }
+
     /* Global Footer Mobile */
     .main-footer {
         padding: 30px 20px 20px;

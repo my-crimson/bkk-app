@@ -3011,6 +3011,59 @@ header .rectangle {
         grid-template-columns: 1fr;
     }
 }
+
+/* ========== PAGINATION ========== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 30px 20px 10px;
+}
+
+.page-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #134CBC;
+    color: #ffffff;
+    border-color: #134CBC;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(19, 76, 188, 0.25);
+}
+
+.page-btn.active {
+    background: #134CBC;
+    color: #ffffff;
+    border-color: #134CBC;
+    box-shadow: 0 4px 12px rgba(19, 76, 188, 0.3);
+    pointer-events: none;
+}
+
+.page-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 /* ========== CRUD FORM ========== */
 .crud-form {
     max-width: 800px;
