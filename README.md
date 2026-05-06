@@ -1,59 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BKK App (Bursa Kerja Khusus)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi Bursa Kerja Khusus (BKK) adalah platform berbasis web yang dirancang untuk memfasilitasi informasi lowongan pekerjaan, manajemen perusahaan, dan kebutuhan operasional BKK lainnya. Proyek ini dibangun menggunakan **Laravel**, **Inertia.js**, dan **React**, dengan desain antarmuka responsif menggunakan **Tailwind CSS**.
 
-## About Laravel
+## Persyaratan Sistem
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sebelum menginstal dan menjalankan proyek ini, pastikan komputer Anda telah memenuhi persyaratan berikut:
+- **PHP** versi **8.2**
+- **Composer** (untuk manajemen package PHP)
+- **Node.js** dan **npm** (untuk manajemen package JavaScript)
+- **Database Server** (contoh: MySQL melalui XAMPP/Laragon, MariaDB, atau SQLite)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Langkah-langkah Instalasi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ikuti panduan langkah demi langkah di bawah ini untuk menjalankan proyek di komputer lokal Anda:
 
-## Learning Laravel
+### 1. Clone Repositori Proyek
+Buka terminal (Command Prompt / PowerShell / Git Bash) di komputer Anda, lalu jalankan perintah berikut untuk mengunduh proyek (ganti `<url-repository>` dengan URL git proyek ini):
+```bash
+git clone https://github.com/my-crimson/bkk-app.git
+cd bkk-app
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 2. Instal Dependensi PHP (Composer)
+Jalankan perintah berikut untuk mengunduh semua library PHP yang dibutuhkan aplikasi:
+```bash
+composer install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Instal Dependensi JavaScript (NPM)
+Selanjutnya, jalankan perintah ini untuk mengunduh library antarmuka pengguna (React, Tailwind, dll):
+```bash
+npm install
+```
 
-## Laravel Sponsors
+### 4. Konfigurasi Environment (File .env)
+Aplikasi membutuhkan file konfigurasi lingkungan (environment).
+1. Copy (salin) file `.env.example` dan ubah namanya menjadi `.env`.
+   - *Di terminal, Anda bisa mengetik:* `cp .env.example .env` (atau `copy .env.example .env` di Windows).
+2. Buka file `.env` di text editor (seperti VS Code atau Notepad).
+3. Cari bagian pengaturan database, dan sesuaikan dengan database Anda:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=nama_database_bkk  # Ganti dengan nama database kosong yang sudah Anda buat
+   DB_USERNAME=root               # Biasanya root (bawaan XAMPP)
+   DB_PASSWORD=                   # Kosongkan jika tidak ada password
+   ```
+*(Pastikan Anda sudah membuat database kosong tersebut di phpMyAdmin).*
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 5. Generate Application Key
+Jalankan perintah ini untuk membuat kunci keamanan unik untuk aplikasi Anda:
+```bash
+php artisan key:generate
+```
 
-### Premium Partners
+### 6. Jalankan Migrasi Database
+Untuk membuat struktur tabel di database Anda, jalankan perintah:
+```bash
+php artisan migrate
+```
+*(Jika ada file seeder untuk data awal, Anda bisa menjalankan: `php artisan migrate --seed`)*
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 7. Jalankan Server Lokal
+Aplikasi ini membutuhkan dua server yang berjalan bersamaan (server backend Laravel dan server frontend Vite).
+Buka **dua jendela terminal yang berbeda** (keduanya harus berada di dalam folder proyek `bkk-app`):
 
-## Contributing
+**Di Terminal Pertama (Jalankan server PHP):**
+```bash
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Di Terminal Kedua (Jalankan server Vite untuk React/CSS):**
+```bash
+npm run dev
+```
 
-## Code of Conduct
+### 8. Buka Aplikasi di Browser
+Buka browser (Google Chrome, Firefox, dll.) dan ketikkan alamat berikut:
+```
+http://localhost:8000
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Selamat! Aplikasi BKK App sekarang sudah berjalan di komputer Anda.
