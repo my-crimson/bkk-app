@@ -1,6 +1,6 @@
 # BKK App (Bursa Kerja Khusus)
 
-Aplikasi Bursa Kerja Khusus (BKK) adalah platform berbasis web yang dirancang untuk memfasilitasi informasi lowongan pekerjaan, manajemen perusahaan, dan kebutuhan operasional BKK lainnya. Proyek ini dibangun menggunakan **Laravel**, **Inertia.js**, dan **React**, dengan desain antarmuka responsif menggunakan **Tailwind CSS**.
+Aplikasi Bursa Kerja Khusus (BKK) adalah platform berbasis web yang dirancang untuk memfasilitasi informasi lowongan pekerjaan, manajemen perusahaan, dan kebutuhan operasional BKK lainnya. Proyek ini dibangun menggunakan **Laravel**, **Inertia.js**, dan **React**.
 
 ## Persyaratan Sistem
 
