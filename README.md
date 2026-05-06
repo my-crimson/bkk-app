@@ -5,7 +5,7 @@ Aplikasi Bursa Kerja Khusus (BKK) adalah platform berbasis web yang dirancang un
 ## Persyaratan Sistem
 
 Sebelum menginstal dan menjalankan proyek ini, pastikan komputer Anda telah memenuhi persyaratan berikut:
-- **PHP** versi **8.2**
+- **PHP** versi **8.2** atau yang lebih baru (8.2+)
 - **Composer** (untuk manajemen package PHP)
 - **Node.js** dan **npm** (untuk manajemen package JavaScript)
 - **Database Server** (contoh: MySQL melalui XAMPP/Laragon, MariaDB, atau SQLite)
@@ -15,7 +15,7 @@ Sebelum menginstal dan menjalankan proyek ini, pastikan komputer Anda telah meme
 Ikuti panduan langkah demi langkah di bawah ini untuk menjalankan proyek di komputer lokal Anda:
 
 ### 1. Clone Repositori Proyek
-Buka terminal (Command Prompt / PowerShell / Git Bash) di komputer Anda, lalu jalankan perintah berikut untuk mengunduh proyek (ganti `<url-repository>` dengan URL git proyek ini):
+Buka terminal (Command Prompt / PowerShell / Git Bash) di komputer Anda, lalu jalankan perintah berikut untuk mengunduh proyek:
 ```bash
 git clone https://github.com/my-crimson/bkk-app.git
 cd bkk-app
@@ -55,12 +55,16 @@ Jalankan perintah ini untuk membuat kunci keamanan unik untuk aplikasi Anda:
 php artisan key:generate
 ```
 
-### 6. Jalankan Migrasi Database
-Untuk membuat struktur tabel di database Anda, jalankan perintah:
+### 6. Jalankan Migrasi Database dan Seeder
+Untuk membuat struktur tabel beserta akun awal (*role management*), jalankan perintah berikut:
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
-*(Jika ada file seeder untuk data awal, Anda bisa menjalankan: `php artisan migrate --seed`)*
+*(Perintah ini akan menjalankan seeder untuk membuat akun manajemen secara otomatis).*
+
+**Informasi Login Default:**
+- **Username:** `management`
+- **Password:** `management123`
 
 ### 7. Jalankan Server Lokal
 Aplikasi ini membutuhkan dua server yang berjalan bersamaan (server backend Laravel dan server frontend Vite).
