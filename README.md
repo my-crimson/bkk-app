@@ -66,7 +66,14 @@ php artisan migrate --seed
 - **Username:** `management`
 - **Password:** `management123`
 
-### 7. Jalankan Server Lokal
+### 7. Buat Link Simbolik Storage
+Agar file atau gambar yang diunggah (seperti logo perusahaan atau foto profil) dapat diakses melalui browser, Anda perlu menghubungkan folder storage internal ke folder public. Jalankan perintah berikut:
+```bash
+php artisan storage:link
+```
+*(Langkah ini sangat penting agar gambar lowongan kerja atau logo perusahaan tidak pecah (404) saat ditampilkan di aplikasi.)*
+
+### 8. Jalankan Server Lokal
 Aplikasi ini membutuhkan dua server yang berjalan bersamaan (server backend Laravel dan server frontend Vite).
 Buka **dua jendela terminal yang berbeda** (keduanya harus berada di dalam folder proyek `bkk-app`):
 
@@ -80,7 +87,7 @@ php artisan serve
 npm run dev
 ```
 
-### 8. Buka Aplikasi di Browser
+### 9. Buka Aplikasi di Browser
 Buka browser (Google Chrome, Firefox, dll.) dan ketikkan alamat berikut:
 ```
 http://localhost:8000
