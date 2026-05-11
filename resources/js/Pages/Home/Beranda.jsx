@@ -46,7 +46,7 @@ export default function Beranda() {
                         
                         <hr />
                         
-                        <p className="tagline">DREAM - ACTION - SUCCESS</p>
+                        <p className="tagline">HELP - TAKE - ACTION</p>
 
 
                         {/* Opsi Login hanya muncul jika user belum terautentikasi */}

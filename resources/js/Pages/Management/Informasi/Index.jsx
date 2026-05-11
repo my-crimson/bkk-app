@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Head, useForm, router } from '@inertiajs/react';
 import MainLayout from '../../../Layouts/MainLayout';
-import { notifyActionSuccess, confirmAction } from '@/Helpers/actionPopup';
+import { notifyActionSuccess, notifyActionError, confirmAction } from '@/Helpers/actionPopup';
 
 const DEFAULT_LEVELS = [
     { level: 1, label: 'Pelindung' },
@@ -67,21 +67,73 @@ export default function InformasiIndex({ informasi, struktur }) {
         savedLevels && savedLevels.length > 0 ? savedLevels : DEFAULT_LEVELS
     );
     const [newLevelLabel, setNewLevelLabel] = useState('');
+    const [newLevelNumber, setNewLevelNumber] = useState('');
+    const [editingLevelKey, setEditingLevelKey] = useState(null);
+    const [editLevelLabel, setEditLevelLabel] = useState('');
+    const [editLevelNumber, setEditLevelNumber] = useState('');
 
-    const addLevelOption = () => {
-        if (!newLevelLabel.trim()) return;
-        const maxLevel = Math.max(...levelOptions.map(l => l.level), 0);
-        const updated = [...levelOptions, { level: maxLevel + 1, label: newLevelLabel.trim() }];
+    const addLevelOption = async () => {
+        if (!newLevelLabel.trim() || !newLevelNumber) return;
+        const num = parseInt(newLevelNumber, 10);
+        if (isNaN(num) || num < 1) return;
+        if (levelOptions.some(l => l.level === num)) {
+            notifyActionError(`Level ${num} sudah digunakan. Hapus level tersebut terlebih dahulu atau gunakan nomor lain.`);
+            return;
+        }
+        if (!(await confirmAction(`tambah level ${num} (${newLevelLabel.trim()})`))) return;
+        const updated = [...levelOptions, { level: num, label: newLevelLabel.trim() }]
+            .sort((a, b) => a.level - b.level);
         setLevelOptions(updated);
         setNewLevelLabel('');
-        // Save to DB
-        router.put('/management/informasi/level-options', { level_options: updated }, { preserveScroll: true });
+        setNewLevelNumber('');
+        router.put('/management/informasi/level-options', { level_options: updated }, {
+            preserveScroll: true,
+            onSuccess: () => notifyActionSuccess('tambah level'),
+        });
     };
 
-    const removeLevelOption = (level) => {
+    const removeLevelOption = async (level) => {
+        const opt = levelOptions.find(l => l.level === level);
+        if (!(await confirmAction(`hapus level ${level} (${opt?.label || ''})`))) return;
         const updated = levelOptions.filter(l => l.level !== level);
         setLevelOptions(updated);
-        router.put('/management/informasi/level-options', { level_options: updated }, { preserveScroll: true });
+        router.put('/management/informasi/level-options', { level_options: updated }, {
+            preserveScroll: true,
+            onSuccess: () => notifyActionSuccess('hapus level'),
+        });
+    };
+
+    const startEditLevel = (opt) => {
+        setEditingLevelKey(opt.level);
+        setEditLevelLabel(opt.label);
+        setEditLevelNumber(String(opt.level));
+    };
+
+    const cancelEditLevel = () => {
+        setEditingLevelKey(null);
+        setEditLevelLabel('');
+        setEditLevelNumber('');
+    };
+
+    const saveEditLevel = async () => {
+        const num = parseInt(editLevelNumber, 10);
+        if (isNaN(num) || num < 1 || !editLevelLabel.trim()) return;
+        if (num !== editingLevelKey && levelOptions.some(l => l.level === num)) {
+            notifyActionError(`Level ${num} sudah digunakan. Gunakan nomor lain.`);
+            return;
+        }
+        if (!(await confirmAction(`update level menjadi ${num} (${editLevelLabel.trim()})`))) return;
+        const updated = levelOptions
+            .map(l => l.level === editingLevelKey ? { level: num, label: editLevelLabel.trim() } : l)
+            .sort((a, b) => a.level - b.level);
+        setLevelOptions(updated);
+        setEditingLevelKey(null);
+        setEditLevelLabel('');
+        setEditLevelNumber('');
+        router.put('/management/informasi/level-options', { level_options: updated }, {
+            preserveScroll: true,
+            onSuccess: () => notifyActionSuccess('update level'),
+        });
     };
 
     // =========== STRUKTUR FORM ===========
@@ -313,27 +365,92 @@ export default function InformasiIndex({ informasi, struktur }) {
                             </h2>
 
                             {/* Level Options Management */}
-                            <div style={{ background: '#f0f7ff', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #cce5ff' }}>
-                                <p style={{ fontWeight: 600, margin: '0 0 10px 0', fontSize: '14px', color: '#134CBC' }}>
-                                    <i className="fa-solid fa-layer-group" style={{ marginRight: '6px' }}></i>
-                                    Daftar Level Jabatan
-                                </p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
+                            <div className="level-mgmt-panel">
+                                <div className="level-mgmt-header">
+                                    <i className="fa-solid fa-layer-group"></i>
+                                    <span>Pengaturan Level Jabatan</span>
+                                    <span className="level-mgmt-hint">Setiap nomor level hanya bisa digunakan 1 kali</span>
+                                </div>
+
+                                {/* Existing Levels List */}
+                                <div className="level-mgmt-list">
                                     {levelOptions.map(opt => (
-                                        <div key={opt.level} style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#fff', border: '1px solid #d1d5db', borderRadius: '6px', padding: '6px 12px', fontSize: '13px' }}>
-                                            <span style={{ fontWeight: 600 }}>{opt.level}.</span> {opt.label}
-                                            {levelOptions.length > 1 && (
-                                                <button type="button" onClick={() => removeLevelOption(opt.level)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0 2px', fontSize: '14px' }}>
-                                                    <i className="fa-solid fa-xmark"></i>
-                                                </button>
+                                        <div key={opt.level} className={`level-mgmt-item ${editingLevelKey === opt.level ? 'editing' : ''}`}>
+                                            {editingLevelKey === opt.level ? (
+                                                /* Edit Mode */
+                                                <div className="level-mgmt-edit-row">
+                                                    <div className="level-mgmt-edit-fields">
+                                                        <input
+                                                            type="number"
+                                                            min="1"
+                                                            value={editLevelNumber}
+                                                            onChange={e => setEditLevelNumber(e.target.value)}
+                                                            className="level-mgmt-input level-mgmt-input-num"
+                                                            placeholder="No"
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            value={editLevelLabel}
+                                                            onChange={e => setEditLevelLabel(e.target.value)}
+                                                            className="level-mgmt-input level-mgmt-input-label"
+                                                            placeholder="Nama level..."
+                                                        />
+                                                    </div>
+                                                    <div className="level-mgmt-edit-actions">
+                                                        <button type="button" onClick={saveEditLevel} className="level-mgmt-btn level-mgmt-btn-save" title="Simpan">
+                                                            <i className="fa-solid fa-check"></i>
+                                                        </button>
+                                                        <button type="button" onClick={cancelEditLevel} className="level-mgmt-btn level-mgmt-btn-cancel-edit" title="Batal">
+                                                            <i className="fa-solid fa-xmark"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                /* View Mode */
+                                                <>
+                                                    <div className="level-mgmt-item-info">
+                                                        <span className="level-mgmt-num">{opt.level}</span>
+                                                        <span className="level-mgmt-label">{opt.label}</span>
+                                                    </div>
+                                                    <div className="level-mgmt-item-actions">
+                                                        <button type="button" onClick={() => startEditLevel(opt)} className="level-mgmt-btn level-mgmt-btn-edit" title="Edit Level">
+                                                            <i className="fa-solid fa-pen-to-square"></i>
+                                                        </button>
+                                                        {levelOptions.length > 1 && (
+                                                            <button type="button" onClick={() => removeLevelOption(opt.level)} className="level-mgmt-btn level-mgmt-btn-delete" title="Hapus Level">
+                                                                <i className="fa-solid fa-trash-can"></i>
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </>
                                             )}
                                         </div>
                                     ))}
                                 </div>
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                    <input type="text" value={newLevelLabel} onChange={e => setNewLevelLabel(e.target.value)} placeholder="Nama level baru..." style={{ padding: '6px 10px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '13px', flex: '1 1 150px', maxWidth: '100%' }} />
-                                    <button type="button" onClick={addLevelOption} style={{ padding: '6px 14px', background: '#134CBC', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}>
-                                        <i className="fa-solid fa-plus" style={{ marginRight: '4px' }}></i> Tambah Level
+
+                                {/* Add New Level */}
+                                <div className="level-mgmt-add">
+                                    <div className="level-mgmt-add-fields">
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={newLevelNumber}
+                                            onChange={e => setNewLevelNumber(e.target.value)}
+                                            className="level-mgmt-input level-mgmt-input-num"
+                                            placeholder="No"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={newLevelLabel}
+                                            onChange={e => setNewLevelLabel(e.target.value)}
+                                            className="level-mgmt-input level-mgmt-input-label"
+                                            placeholder="Nama level baru..."
+                                            onKeyDown={e => e.key === 'Enter' && addLevelOption()}
+                                        />
+                                    </div>
+                                    <button type="button" onClick={addLevelOption} className="level-mgmt-btn level-mgmt-btn-add" disabled={!newLevelLabel.trim() || !newLevelNumber}>
+                                        <i className="fa-solid fa-plus"></i>
+                                        <span>Tambah</span>
                                     </button>
                                 </div>
                             </div>
